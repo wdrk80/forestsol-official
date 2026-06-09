@@ -6,17 +6,18 @@
   <title>Forestsol Official</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-   body {
-  margin: 0;
-  font-family: sans-serif;
-  background:
-    linear-gradient(rgba(7, 16, 13, 0.35), rgba(7, 16, 13, 0.75)),
-    url("images/backgrounds/main-bg.png");
-  background-size: cover;
-  background-position: center top;
-  background-attachment: fixed;
-  color: #f2f2f2;
-}
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background:
+        linear-gradient(rgba(7, 16, 13, 0.35), rgba(7, 16, 13, 0.75)),
+        url("images/backgrounds/main-bg.png");
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
+      color: #f2f2f2;
+    }
+
 ```
 header {
   padding: 0;
@@ -59,6 +60,7 @@ h2 {
   text-align: center;
   font-size: 30px;
   margin-bottom: 28px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
 }
 
 .member-grid {
@@ -68,12 +70,13 @@ h2 {
 }
 
 .member-card {
-  background: #111c19;
+  background: rgba(17, 28, 25, 0.88);
   border: 1px solid #2d5147;
   border-radius: 18px;
   padding: 20px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
 }
 
 .member-card img {
@@ -113,11 +116,12 @@ h2 {
 }
 
 .notice {
-  background: #101816;
+  background: rgba(16, 24, 22, 0.88);
   border: 1px solid #2e4a42;
   border-radius: 16px;
   padding: 22px;
   line-height: 1.8;
+  backdrop-filter: blur(4px);
 }
 
 footer {
@@ -127,6 +131,16 @@ footer {
   color: #cccccc;
   font-size: 13px;
   line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .header-image {
+    max-height: 260px;
+  }
 }
 ```
 
