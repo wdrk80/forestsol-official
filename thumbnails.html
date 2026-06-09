@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Thumbnails | Forestsol Official</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #07100d; color: #f2f2f2; }
+    header { text-align: center; padding: 55px 20px; background: linear-gradient(135deg, #07100d, #123b2f); }
+    nav { text-align: center; padding: 16px; background: #050808; border-bottom: 1px solid #24463c; }
+    nav a { color: #fff; margin: 0 10px; text-decoration: none; font-weight: bold; font-size: 14px; }
+    section { max-width: 1150px; margin: auto; padding: 40px 18px; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .item {
+      background: #111c19;
+      border: 1px solid #2d5147;
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .item img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #000;
+    }
+    .item p { text-align: center; color: #d8e8df; }
+    footer { text-align: center; padding: 30px 20px; background: #030505; color: #ccc; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>THUMBNAILS</h1>
+  <p>フォレストソル関連のサムネイル置き場</p>
+</header>
+
+<nav>
+  <a href="index.html">MEMBERS</a>
+  <a href="thumbnails.html">THUMBNAILS</a>
+  <a href="illustrations.html">ILLUSTRATIONS</a>
+  <a href="terms.html">TERMS</a>
+</nav>
+
+<section>
+  <div class="gallery">
+    <div class="item">
+      <img src="images/thumbnails/thumb1.jpg" alt="サムネイル1">
+      <p>サムネイル 1</p>
+    </div>
+    <div class="item">
+      <img src="images/thumbnails/thumb2.jpg" alt="サムネイル2">
+      <p>サムネイル 2</p>
+    </div>
+    <div class="item">
+      <img src="images/thumbnails/thumb3.jpg" alt="サムネイル3">
+      <p>サムネイル 3</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © Forestsol / ウォルフィ雷尾. Unauthorized use prohibited.
+</footer>
+
+</body>
+</html>
