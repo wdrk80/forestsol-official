@@ -13,21 +13,17 @@
     }
 
     header {
-      text-align: center;
-      padding: 70px 20px 45px;
-      background: linear-gradient(135deg, #07100d, #123b2f, #0b1d18);
-    }
+  padding: 0;
+  background: #07100d;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 42px;
-      letter-spacing: 2px;
-    }
-
-    header p {
-      color: #d8e8df;
-      margin-top: 12px;
-    }
+.header-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 430px;
+  object-fit: cover;
+}
 
     nav {
       position: sticky;
@@ -131,8 +127,7 @@
 <body>
 
 <header>
-  <h1>Forestsol Official</h1>
-  <p>フォレストソルのメンバー・キャラクター・イラスト公式サイト</p>
+  <img class="header-image" src="images/logos/main-header.png" alt="Forestsol Official">
 </header>
 
 <nav>
