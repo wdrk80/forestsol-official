@@ -8,57 +8,123 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #0b1010;
+      background: #07100d;
       color: #f2f2f2;
-      text-align: center;
     }
 
     header {
-      padding: 70px 20px 40px;
-      background: linear-gradient(135deg, #0b1010, #173b2f);
+      text-align: center;
+      padding: 70px 20px 45px;
+      background: linear-gradient(135deg, #07100d, #123b2f, #0b1d18);
     }
 
     h1 {
+      margin: 0;
       font-size: 42px;
       letter-spacing: 2px;
-      margin-bottom: 10px;
     }
 
-    p {
-      line-height: 1.8;
+    header p {
+      color: #d8e8df;
+      margin-top: 12px;
     }
 
     nav {
-      padding: 20px;
-      background: #111;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      text-align: center;
+      padding: 16px;
+      background: rgba(5, 8, 8, 0.95);
+      border-bottom: 1px solid #24463c;
     }
 
     nav a {
       color: #ffffff;
-      margin: 0 12px;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 45px 18px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 28px;
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .member-card {
+      background: #111c19;
+      border: 1px solid #2d5147;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .member-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 14px;
+      background: #0b0b0b;
+      border: 1px solid #355f52;
+    }
+
+    .member-card h3 {
+      margin: 16px 0 8px;
+      font-size: 22px;
+    }
+
+    .role {
+      color: #95d8bd;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .button-area {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-block;
+      margin: 8px;
+      padding: 13px 22px;
+      border-radius: 999px;
+      background: #1f6f58;
+      color: #fff;
       text-decoration: none;
       font-weight: bold;
     }
 
-    section {
-      padding: 50px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    .card {
-      background: #151f1d;
+    .notice {
+      background: #101816;
       border: 1px solid #2e4a42;
       border-radius: 16px;
-      padding: 25px;
-      margin: 20px 0;
+      padding: 22px;
+      line-height: 1.8;
     }
 
     footer {
+      text-align: center;
       padding: 30px 20px;
-      background: #050707;
-      font-size: 13px;
+      background: #030505;
       color: #cccccc;
+      font-size: 13px;
+      line-height: 1.7;
     }
   </style>
 </head>
@@ -66,67 +132,67 @@
 
 <header>
   <h1>Forestsol Official</h1>
-  <p>フォレストソルの公式キャラクター・イラストサイト</p>
+  <p>フォレストソルのメンバー・キャラクター・イラスト公式サイト</p>
 </header>
 
 <nav>
-  <a href="#about">ABOUT</a>
-  <a href="#characters">CHARACTERS</a>
-  <a href="#gallery">GALLERY</a>
-  <a href="#terms">TERMS</a>
-  <a href="#links">LINKS</a>
+  <a href="index.html">MEMBERS</a>
+  <a href="thumbnails.html">THUMBNAILS</a>
+  <a href="illustrations.html">ILLUSTRATIONS</a>
+  <a href="terms.html">TERMS</a>
 </nav>
 
-<section id="about">
+<section>
+  <h2>MEMBERS</h2>
+
+  <div class="member-grid">
+
+    <div class="member-card">
+      <img src="images/members/wolfy.png" alt="ウォルフィ雷尾">
+      <h3>ウォルフィ雷尾</h3>
+      <div class="role">Forestsol Member</div>
+      <p>
+        フォレストソル所属。狼をイメージしたキャラクター・作品を中心に活動。
+      </p>
+    </div>
+
+    <div class="member-card">
+      <img src="images/members/member2.png" alt="メンバー2">
+      <h3>メンバー名</h3>
+      <div class="role">Forestsol Member</div>
+      <p>
+        ここにメンバー紹介文を入れます。
+      </p>
+    </div>
+
+    <div class="member-card">
+      <img src="images/members/member3.png" alt="メンバー3">
+      <h3>メンバー名</h3>
+      <div class="role">Forestsol Member</div>
+      <p>
+        ここにメンバー紹介文を入れます。
+      </p>
+    </div>
+
+  </div>
+
+  <div class="button-area">
+    <a class="button" href="thumbnails.html">サムネを見る</a>
+    <a class="button" href="illustrations.html">イラストを見る</a>
+    <a class="button" href="terms.html">利用規約を見る</a>
+  </div>
+</section>
+
+<section>
   <h2>ABOUT</h2>
-  <div class="card">
-    <p>
-      Forestsol Officialは、フォレストソル関連のキャラクター、イラスト、作品をまとめる公式サイトです。
-    </p>
-  </div>
-</section>
-
-<section id="characters">
-  <h2>CHARACTERS</h2>
-  <div class="card">
-    <h3>ウォルフィ雷尾</h3>
-    <p>フォレストソル所属。キャラクター・イラスト・作品情報をここに掲載します。</p>
-  </div>
-  <div class="card">
-    <h3>キアラ</h3>
-    <p>コーヒーが好きな熊のキャラクター。紹介文は後から追加できます。</p>
-  </div>
-</section>
-
-<section id="gallery">
-  <h2>GALLERY</h2>
-  <div class="card">
-    <p>ここにイラストギャラリーを追加予定です。</p>
-  </div>
-</section>
-
-<section id="terms">
-  <h2>TERMS</h2>
-  <div class="card">
-    <p>
-      © Forestsol / ウォルフィ雷尾<br>
-      当サイト内のキャラクター、イラスト、ロゴ、文章の無断転載・無断使用・AI学習・自作発言・二次配布・商用利用を禁止します。<br>
-      使用希望の場合は事前にご連絡ください。
-    </p>
-  </div>
-</section>
-
-<section id="links">
-  <h2>LINKS</h2>
-  <div class="card">
-    <p>
-      YouTube / X / Pixiv などのリンクをここに追加します。
-    </p>
+  <div class="notice">
+    Forestsol Officialは、フォレストソル関連のメンバー、キャラクター、サムネイル、イラストをまとめる公式サイトです。
   </div>
 </section>
 
 <footer>
-  © Forestsol / ウォルフィ雷尾. Unauthorized use prohibited.
+  © Forestsol / ウォルフィ雷尾<br>
+  無断転載・無断使用・AI学習・自作発言・二次配布・商用利用禁止
 </footer>
 
 </body>
