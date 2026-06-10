@@ -144,20 +144,92 @@ h2 {
   backdrop-filter: blur(4px);
 }
 
-.youtube-box {
-  background: rgba(16, 24, 22, 0.88);
+.youtube-app {
+  background: rgba(16, 24, 22, 0.9);
   border: 1px solid #2e4a42;
-  border-radius: 16px;
-  padding: 26px;
-  line-height: 1.8;
-  text-align: center;
+  border-radius: 18px;
+  padding: 24px;
   backdrop-filter: blur(4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
-.youtube-box p {
-  margin: 0 0 18px;
+.youtube-app-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.youtube-app-header p {
+  margin: 0;
   color: #d8e8df;
+  line-height: 1.8;
+}
+
+.youtube-player-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #050505;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #355f52;
+  margin-bottom: 22px;
+}
+
+.youtube-player-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.youtube-status {
+  text-align: center;
+  color: #d8e8df;
+  padding: 14px;
+  line-height: 1.7;
+}
+
+.youtube-video-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.youtube-video-card {
+  background: rgba(8, 14, 13, 0.88);
+  border: 1px solid #2e4a42;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.youtube-video-card:hover {
+  transform: translateY(-3px);
+  border-color: #95d8bd;
+  background: rgba(18, 32, 28, 0.95);
+}
+
+.youtube-video-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: #000;
+}
+
+.youtube-video-card p {
+  margin: 0;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.youtube-button-area {
+  text-align: center;
+  margin-top: 22px;
 }
 
 .youtube-button {
@@ -203,6 +275,10 @@ footer {
   .music-image-button {
     width: 130px;
   }
+
+  .youtube-app {
+    padding: 16px;
+  }
 }
 ```
 
@@ -219,7 +295,7 @@ footer {
   <a href="thumbnails.html">サムネ置き場</a>
   <a href="illustrations.html">イラスト</a>
   <a href="terms.html">利用規約</a>
-  <a href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">YouTube</a>
+  <a href="#youtube">YouTube</a>
 </nav>
 
 <section class="music-player">
@@ -283,15 +359,40 @@ footer {
   </div>
 </section>
 
-<section>
+<section id="youtube">
   <h2>YouTube</h2>
-  <div class="youtube-box">
-    <p>
-      Forestsolの配信・動画はこちらからチェックできます。
-    </p>
-    <a class="youtube-button" href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">
-      YouTubeチャンネルを見る
-    </a>
+
+  <div class="youtube-app">
+    <div class="youtube-app-header">
+      <p>
+        Forestsolの最新動画をこのページ内で見ることができます。
+      </p>
+    </div>
+
+```
+<div class="youtube-player-wrap">
+  <iframe
+    id="youtubePlayer"
+    src=""
+    title="Forestsol YouTube Player"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<div id="youtubeStatus" class="youtube-status">
+  動画を読み込み中...
+</div>
+
+<div id="youtubeVideoList" class="youtube-video-list"></div>
+
+<div class="youtube-button-area">
+  <a class="youtube-button" href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">
+    YouTubeチャンネルを開く
+  </a>
+</div>
+```
+
   </div>
 </section>
 
@@ -345,6 +446,93 @@ footer {
         setPlayingState(false);
       });
   });
+</script>
+
+<script>
+  const API_KEY = "AIzaSyCXX-HDeGj7BALJaA5oyIwxZn02hjG77Wo";
+  const CHANNEL_ID = "UCdx244IH_vITEOS_jVfgk5A";
+
+  const youtubePlayer = document.getElementById("youtubePlayer");
+  const youtubeVideoList = document.getElementById("youtubeVideoList");
+  const youtubeStatus = document.getElementById("youtubeStatus");
+
+  function escapeHtml(text) {
+    return text
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  async function loadForestsolVideos() {
+    if (API_KEY === "ここに自分のAPIキー") {
+      youtubeStatus.innerHTML = "APIキーを設定してください。index.html内の「ここに自分のAPIキー」を自分のAPIキーに置き換える必要があります。";
+      return;
+    }
+
+    try {
+      const channelUrl =
+        "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=" + CHANNEL_ID + "&key=" + API_KEY;
+
+      const channelRes = await fetch(channelUrl);
+      const channelData = await channelRes.json();
+
+      if (!channelRes.ok || !channelData.items || channelData.items.length === 0) {
+        youtubeStatus.innerHTML = "チャンネル情報を取得できませんでした。APIキーの制限設定を確認してください。";
+        return;
+      }
+
+      const uploadsPlaylistId =
+        channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+      const videosUrl =
+        "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + uploadsPlaylistId + "&maxResults=6&key=" + API_KEY;
+
+      const videosRes = await fetch(videosUrl);
+      const videosData = await videosRes.json();
+
+      if (!videosRes.ok || !videosData.items || videosData.items.length === 0) {
+        youtubeStatus.innerHTML = "動画一覧を取得できませんでした。動画が公開されているか確認してください。";
+        return;
+      }
+
+      youtubeVideoList.innerHTML = "";
+      youtubeStatus.style.display = "none";
+
+      videosData.items.forEach(function(item, index) {
+        const videoId = item.snippet.resourceId.videoId;
+        const title = item.snippet.title;
+        const thumbnail =
+          item.snippet.thumbnails.high?.url ||
+          item.snippet.thumbnails.medium?.url ||
+          item.snippet.thumbnails.default?.url;
+
+        if (index === 0) {
+          youtubePlayer.src = "https://www.youtube.com/embed/" + videoId;
+        }
+
+        const card = document.createElement("div");
+        card.className = "youtube-video-card";
+
+        card.innerHTML =
+          '<img src="' + thumbnail + '" alt="' + escapeHtml(title) + '">' +
+          '<p>' + escapeHtml(title) + '</p>';
+
+        card.addEventListener("click", function() {
+          youtubePlayer.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+          document.getElementById("youtube").scrollIntoView({ behavior: "smooth" });
+        });
+
+        youtubeVideoList.appendChild(card);
+      });
+
+    } catch (error) {
+      youtubeStatus.innerHTML = "YouTube動画の読み込み中にエラーが出ました。APIキー、チャンネルID、GitHub PagesのURL制限を確認してください。";
+    }
+  }
+
+  loadForestsolVideos();
 </script>
 
 </body>
