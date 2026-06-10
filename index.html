@@ -442,7 +442,7 @@ footer {
 
 <script>
   const API_KEY = "AIzaSyCXX-HDeGj7BALJaA5oyIwxZn02hjG77Wo";
-  const CHANNEL_ID = "UCdx244IH_vITEOS_jVfgk5A";
+  const CHANNEL_HANDLE = "Forest-Sol";
 
   const youtubePlayer = document.getElementById("youtubePlayer");
   const youtubeVideoList = document.getElementById("youtubeVideoList");
@@ -459,7 +459,7 @@ footer {
 
   async function loadForestsolVideos() {
     if (API_KEY === "ここに自分のAPIキー" || API_KEY.trim() === "") {
-      youtubeStatus.innerHTML = "APIキーがまだ設定されていません。index.html内の「ここに自分のAPIキー」を自分のAPIキーに置き換えてください。";
+      youtubeStatus.innerHTML = "APIキーがまだ設定されていません。";
       return;
     }
 
@@ -467,8 +467,8 @@ footer {
       youtubeStatus.innerHTML = "チャンネル情報を読み込み中...";
 
       const channelUrl =
-        "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=" +
-        CHANNEL_ID +
+        "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forHandle=" +
+        CHANNEL_HANDLE +
         "&key=" +
         API_KEY;
 
@@ -482,11 +482,13 @@ footer {
           escapeHtml(JSON.stringify(channelData, null, 2)) +
           "</pre>";
 
+```
     return;
   }
 
   if (!channelData.items || channelData.items.length === 0) {
-    youtubeStatus.innerHTML = "チャンネルが見つかりませんでした。CHANNEL_IDを確認してください。";
+    youtubeStatus.innerHTML =
+      "チャンネルが見つかりませんでした。@Forest-Sol のハンドル名を確認してください。";
     return;
   }
 
@@ -514,7 +516,8 @@ footer {
   }
 
   if (!videosData.items || videosData.items.length === 0) {
-    youtubeStatus.innerHTML = "公開動画が見つかりませんでした。公開動画が0本、または動画が非公開の可能性があります。";
+    youtubeStatus.innerHTML =
+      "公開動画が見つかりませんでした。公開動画が0本、または動画が非公開の可能性があります。";
     return;
   }
 
@@ -557,10 +560,12 @@ footer {
     escapeHtml(error) +
     "</pre>";
 }
+```
 
 }
 
 loadForestsolVideos(); </script>
+
 
 </body>
 </html>
