@@ -96,7 +96,7 @@ h2 {
 
 .member-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 22px;
 }
 
@@ -164,7 +164,7 @@ h2 {
 
 .youtube-video-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
@@ -242,132 +242,145 @@ footer {
   }
 
   nav {
-    padding: 12px 8px;
-  }
-
-  nav a {
-    display: inline-block;
-    margin: 6px 7px;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  section {
-    padding: 34px 16px;
-  }
-
-  h2 {
-    font-size: 26px;
-    margin-bottom: 22px;
-  }
-
-  .music-player {
-    padding: 14px 16px 0;
-  }
-
-  .music-image-button {
-    width: 125px;
-  }
-
-  .member-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    max-width: 430px;
-    margin: 0 auto;
-  }
-
-  .member-card {
-    padding: 18px;
-    border-radius: 18px;
-  }
-
-  .member-card img {
-    height: 300px;
-  }
-
-  .member-card h3 {
-    font-size: 22px;
-  }
-
-  .member-card p {
-    font-size: 14px;
-    line-height: 1.8;
-  }
-
-  .youtube-player-wrap {
-    border-radius: 14px;
-    margin-bottom: 18px;
-  }
-
-  .youtube-video-list {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    max-width: 430px;
-    margin: 0 auto;
-  }
-
-  .youtube-button {
-    padding: 12px 22px;
-    font-size: 14px;
-  }
-
-  footer {
-    padding: 26px 14px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  nav {
     padding: 10px 6px;
   }
 
   nav a {
-    margin: 5px 5px;
+    display: inline-block;
+    margin: 4px 5px;
     font-size: 12px;
+    line-height: 1.4;
   }
 
   section {
-    padding: 28px 14px;
+    padding: 24px 10px;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .music-player {
+    padding: 10px 10px 0;
   }
 
   .music-image-button {
-    width: 112px;
+    width: 95px;
   }
 
   .member-grid {
-    max-width: 360px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
 
   .member-card {
-    padding: 14px;
-  }
-
-  .member-card img {
-    height: 250px;
+    padding: 8px;
     border-radius: 12px;
   }
 
+  .member-card img {
+    height: 130px;
+    border-radius: 9px;
+  }
+
   .member-card h3 {
-    margin: 14px 0 8px;
-    font-size: 21px;
+    margin: 8px 0 4px;
+    font-size: 15px;
   }
 
   .member-card p {
-    font-size: 13.5px;
+    font-size: 10.5px;
+    line-height: 1.55;
+  }
+
+  .role {
+    margin-bottom: 4px;
+  }
+
+  .youtube-player-wrap {
+    border-radius: 12px;
+    margin-bottom: 14px;
   }
 
   .youtube-video-list {
-    max-width: 360px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .youtube-video-card {
+    border-radius: 10px;
   }
 
   .youtube-video-card p {
+    font-size: 10.5px;
+    line-height: 1.35;
+    padding: 7px;
+  }
+
+  .youtube-button {
+    padding: 10px 18px;
     font-size: 13px;
-    padding: 10px;
+  }
+
+  footer {
+    padding: 22px 12px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  section {
+    padding: 22px 8px;
+  }
+
+  .member-grid {
+    gap: 6px;
+  }
+
+  .member-card {
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .member-card img {
+    height: 110px;
+  }
+
+  .member-card h3 {
+    font-size: 13px;
+  }
+
+  .member-card p {
+    font-size: 9.5px;
+    line-height: 1.45;
+  }
+
+  .youtube-video-list {
+    gap: 6px;
+  }
+
+  .youtube-video-card p {
+    font-size: 9.5px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 360px) {
+  .member-card img {
+    height: 95px;
+  }
+
+  .member-card h3 {
+    font-size: 12px;
+  }
+
+  .member-card p {
+    font-size: 8.8px;
+  }
+
+  .youtube-video-card p {
+    font-size: 8.8px;
   }
 }
 
