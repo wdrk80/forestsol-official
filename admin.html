@@ -93,8 +93,29 @@ button:disabled {
   font-size: 16px;
 }
 
+.rename-button {
+  background: #365fa8;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.rename-button:hover {
+  background: #4778d1;
+}
+
+.move-button {
+  background: #8a6a1f;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.move-button:hover {
+  background: #b88e29;
+}
+
 .delete-button {
   background: #8a1f1f;
+  width: 100%;
   margin-top: 10px;
 }
 
@@ -179,6 +200,11 @@ button:disabled {
   line-height: 1.5;
 }
 
+.rename-input {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
 .links {
   text-align: center;
   margin-top: 24px;
@@ -221,6 +247,7 @@ button:disabled {
   <div class="admin-box">
     <h2>アップロード</h2>
 
+```
 <label for="type">アップロード先</label>
 <select id="type">
   <option value="thumbnail">サムネ置き場</option>
@@ -247,12 +274,14 @@ button:disabled {
   対応形式：PNG / JPG / WEBP<br>
   アップロードすると、GitHubの images フォルダと data JSON に自動保存されます。
 </div>
+```
 
   </div>
 
   <div class="admin-box">
-    <h2>削除管理</h2>
+    <h2>管理・タイトル変更・移動・削除</h2>
 
+```
 <div class="manage-controls">
   <select id="manageType">
     <option value="thumbnail">サムネ置き場</option>
@@ -269,6 +298,7 @@ button:disabled {
 </div>
 
 <div id="itemList" class="item-list"></div>
+```
 
   </div>
 
@@ -295,15 +325,6 @@ button:disabled {
 
   let selectedBase64 = "";
   let selectedFilename = "";
-
-  function escapeHtml(text) {
-    return String(text)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
 
   imageFileInput.addEventListener("change", function() {
     const file = imageFileInput.files[0];
@@ -418,7 +439,6 @@ button:disabled {
       }
 
       manageStatus.textContent = items.length + "件見つかりました。";
-
       itemList.innerHTML = "";
 
       items.forEach(function(item) {
@@ -430,11 +450,54 @@ button:disabled {
         const card = document.createElement("div");
         card.className = "item-card";
 
-        card.innerHTML =
-          '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '">' +
-          '<p>' + escapeHtml(title) + '</p>' +
-          '<div class="item-path">' + escapeHtml(image) + '</div>' +
-          '<button class="delete-button" onclick="deleteItem(\'' + escapeHtml(type) + '\', \'' + escapeHtml(image) + '\')">削除する</button>';
+        const img = document.createElement("img");
+        img.src = image;
+        img.alt = title;
+
+        const titleText = document.createElement("p");
+        titleText.textContent = title;
+
+        const pathText = document.createElement("div");
+        pathText.className = "item-path";
+        pathText.textContent = image;
+
+        const renameInput = document.createElement("input");
+        renameInput.className = "rename-input";
+        renameInput.type = "text";
+        renameInput.value = title;
+        renameInput.placeholder = "新しいタイトル";
+
+        const renameButton = document.createElement("button");
+        renameButton.className = "rename-button";
+        renameButton.textContent = "タイトル変更";
+        renameButton.onclick = function() {
+          renameItem(type, image, renameInput.value);
+        };
+
+        const moveButton = document.createElement("button");
+        moveButton.className = "move-button";
+        moveButton.textContent =
+          type === "thumbnail"
+            ? "イラストへ移動"
+            : "サムネ置き場へ移動";
+        moveButton.onclick = function() {
+          moveItem(type, image);
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-button";
+        deleteButton.textContent = "削除する";
+        deleteButton.onclick = function() {
+          deleteItem(type, image);
+        };
+
+        card.appendChild(img);
+        card.appendChild(titleText);
+        card.appendChild(pathText);
+        card.appendChild(renameInput);
+        card.appendChild(renameButton);
+        card.appendChild(moveButton);
+        card.appendChild(deleteButton);
 
         itemList.appendChild(card);
       });
@@ -442,6 +505,100 @@ button:disabled {
     } catch (error) {
       manageStatus.textContent =
         "一覧の読み込みに失敗しました。\n\n" +
+        String(error);
+    }
+  }
+
+  async function renameItem(type, image, newTitle) {
+    const cleanTitle = String(newTitle || "").trim();
+
+    if (!cleanTitle) {
+      manageStatus.textContent = "新しいタイトルを入力してください。";
+      return;
+    }
+
+    manageStatus.textContent = "タイトル変更中...";
+
+    try {
+      const response = await fetch(WORKER_URL + "/rename", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          type: type,
+          image: image,
+          title: cleanTitle
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        manageStatus.textContent =
+          "タイトル変更失敗\n\n" +
+          JSON.stringify(result, null, 2);
+        return;
+      }
+
+      manageStatus.textContent =
+        "タイトル変更成功！\n\n" +
+        result.newTitle;
+
+      loadManageList();
+
+    } catch (error) {
+      manageStatus.textContent =
+        "タイトル変更中にエラーが出ました。\n\n" +
+        String(error);
+    }
+  }
+
+  async function moveItem(type, image) {
+    const targetName =
+      type === "thumbnail"
+        ? "イラスト"
+        : "サムネ置き場";
+
+    const ok = confirm("この画像を「" + targetName + "」へ移動しますか？\n\n" + image);
+
+    if (!ok) {
+      return;
+    }
+
+    manageStatus.textContent = "移動中...";
+
+    try {
+      const response = await fetch(WORKER_URL + "/move", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          type: type,
+          image: image
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        manageStatus.textContent =
+          "移動失敗\n\n" +
+          JSON.stringify(result, null, 2);
+        return;
+      }
+
+      manageStatus.textContent =
+        "移動成功！\n\n" +
+        "移動前： " + result.oldImagePath + "\n" +
+        "移動後： " + result.newImagePath;
+
+      loadManageList();
+
+    } catch (error) {
+      manageStatus.textContent =
+        "移動中にエラーが出ました。\n\n" +
         String(error);
     }
   }
