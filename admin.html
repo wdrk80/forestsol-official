@@ -1,10 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Admin | Forestsol Official</title>
+  <title>Forestsol Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       margin: 0;
@@ -13,133 +13,262 @@
       color: #f2f2f2;
     }
 
-    header {
-      text-align: center;
-      padding: 60px 20px 35px;
-      background: linear-gradient(135deg, #07100d, #123b2f, #0b1d18);
-    }
+```
+header {
+  text-align: center;
+  padding: 34px 18px;
+  background: #030505;
+  border-bottom: 1px solid #24463c;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 36px;
-      letter-spacing: 2px;
-    }
+h1 {
+  margin: 0;
+  font-size: 30px;
+}
 
-    header p {
-      color: #d8e8df;
-      margin-top: 12px;
-    }
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 34px 18px;
+}
 
-    main {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 18px;
-    }
+.admin-box {
+  background: rgba(16, 24, 22, 0.95);
+  border: 1px solid #2e4a42;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
 
-    .box {
-      background: #111c19;
-      border: 1px solid #2d5147;
-      border-radius: 18px;
-      padding: 22px;
-      margin-bottom: 22px;
-    }
+label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #d8e8df;
+}
 
-    h2 {
-      margin-top: 0;
-      color: #bfffe8;
-    }
+input,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #355f52;
+  background: #050807;
+  color: #ffffff;
+  font-size: 15px;
+}
 
-    .admin-link {
-      display: block;
-      margin: 12px 0;
-      padding: 14px 18px;
-      background: #1f6f58;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: bold;
-    }
+button {
+  margin-top: 24px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: #1f6f58;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-    .admin-link:hover {
-      background: #2b8b70;
-    }
+button:hover {
+  background: #2c8a6d;
+}
 
-    .note {
-      color: #cccccc;
-      line-height: 1.8;
-      font-size: 14px;
-    }
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
 
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      background: #030505;
-      color: #cccccc;
-      font-size: 13px;
-      line-height: 1.7;
-    }
+.preview {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.preview img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 14px;
+  border: 1px solid #355f52;
+  background: #000;
+}
+
+.status {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.35);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.links {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.links a {
+  color: #95d8bd;
+  margin: 0 8px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.note {
+  margin-top: 18px;
+  color: #cccccc;
+  font-size: 13px;
+  line-height: 1.7;
+}
+```
+
   </style>
 </head>
-
 <body>
 
 <header>
   <h1>Forestsol Admin</h1>
-  <p>管理者用ページ</p>
 </header>
 
 <main>
+  <div class="admin-box">
+    <label for="type">アップロード先</label>
+    <select id="type">
+      <option value="thumbnail">サムネ置き場</option>
+      <option value="illustration">イラスト</option>
+    </select>
 
-  <div class="box">
-    <h2>画像をアップロード</h2>
+```
+<label for="title">タイトル</label>
+<input id="title" type="text" placeholder="例：マイクラ配信用サムネ">
 
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/upload/main/images/illustrations" target="_blank">
-      イラスト画像を追加
-    </a>
+<label for="imageFile">画像ファイル</label>
+<input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp">
 
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/upload/main/images/thumbnails" target="_blank">
-      サムネイル画像を追加
-    </a>
+<div class="preview" id="preview"></div>
 
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/upload/main/images/members" target="_blank">
-      メンバー画像を追加
-    </a>
+<button id="uploadButton" onclick="uploadImage()">
+  アップロードする
+</button>
+
+<div class="status" id="status">
+  画像を選んでアップロードしてください。
+</div>
+
+<div class="note">
+  対応形式：PNG / JPG / WEBP<br>
+  アップロードすると、GitHubの images フォルダと data JSON に自動保存されます。
+</div>
+```
+
   </div>
 
-  <div class="box">
-    <h2>ページを編集</h2>
-
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/edit/main/illustrations.html" target="_blank">
-      イラストページを編集
-    </a>
-
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/edit/main/thumbnails.html" target="_blank">
-      サムネイルページを編集
-    </a>
-
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/edit/main/index.html" target="_blank">
-      メンバーページを編集
-    </a>
-
-    <a class="admin-link" href="https://github.com/wdrk80/forestsol-official/edit/main/terms.html" target="_blank">
-      利用規約ページを編集
-    </a>
+  <div class="links">
+    <a href="index.html">トップへ</a>
+    <a href="thumbnails.html">サムネ置き場</a>
+    <a href="illustrations.html">イラスト</a>
   </div>
-
-  <div class="box">
-    <h2>注意</h2>
-    <p class="note">
-      このページはサイト上のメニューには表示しない管理用ページです。<br>
-      ただし、完全なパスワード保護ページではありません。<br>
-      実際に編集できるのは、GitHubにログインしていて、このリポジトリを編集できる管理者だけです。
-    </p>
-  </div>
-
 </main>
 
-<footer>
-  © Forestsol / ウォルフィ雷尾. Unauthorized use prohibited.
-</footer>
+<script>
+  const WORKER_URL = "https://forestsol-upload-worker.foresutosoru.workers.dev/upload";
+
+  const typeInput = document.getElementById("type");
+  const titleInput = document.getElementById("title");
+  const imageFileInput = document.getElementById("imageFile");
+  const preview = document.getElementById("preview");
+  const statusBox = document.getElementById("status");
+  const uploadButton = document.getElementById("uploadButton");
+
+  let selectedBase64 = "";
+  let selectedFilename = "";
+
+  imageFileInput.addEventListener("change", function() {
+    const file = imageFileInput.files[0];
+
+    selectedBase64 = "";
+    selectedFilename = "";
+    preview.innerHTML = "";
+
+    if (!file) {
+      statusBox.textContent = "画像を選んでください。";
+      return;
+    }
+
+    selectedFilename = file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      selectedBase64 = event.target.result;
+      preview.innerHTML = '<img src="' + selectedBase64 + '" alt="preview">';
+      statusBox.textContent = "画像を読み込みました。アップロードできます。";
+    };
+
+    reader.onerror = function() {
+      statusBox.textContent = "画像の読み込みに失敗しました。";
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  async function uploadImage() {
+    if (!selectedBase64) {
+      statusBox.textContent = "先に画像を選んでください。";
+      return;
+    }
+
+    uploadButton.disabled = true;
+    statusBox.textContent = "アップロード中...";
+
+    const payload = {
+      type: typeInput.value,
+      title: titleInput.value.trim(),
+      filename: selectedFilename,
+      base64: selectedBase64
+    };
+
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        statusBox.textContent =
+          "アップロード失敗\n\n" +
+          JSON.stringify(result, null, 2);
+        uploadButton.disabled = false;
+        return;
+      }
+
+      statusBox.textContent =
+        "アップロード成功！\n\n" +
+        "画像： " + result.imagePath + "\n" +
+        "データ： " + result.dataPath;
+
+      titleInput.value = "";
+      imageFileInput.value = "";
+      selectedBase64 = "";
+      selectedFilename = "";
+      preview.innerHTML = "";
+
+    } catch (error) {
+      statusBox.textContent =
+        "アップロード中にエラーが出ました。\n\n" +
+        String(error);
+    }
+
+    uploadButton.disabled = false;
+  }
+</script>
 
 </body>
 </html>
