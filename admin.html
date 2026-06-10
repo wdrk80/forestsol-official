@@ -25,8 +25,13 @@ h1 {
   font-size: 30px;
 }
 
+h2 {
+  margin-top: 0;
+  color: #d8e8df;
+}
+
 main {
-  max-width: 760px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 34px 18px;
 }
@@ -37,6 +42,7 @@ main {
   border-radius: 18px;
   padding: 24px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  margin-bottom: 26px;
 }
 
 label {
@@ -60,15 +66,14 @@ select {
 }
 
 button {
-  margin-top: 24px;
-  width: 100%;
-  padding: 14px;
+  margin-top: 16px;
+  padding: 12px 18px;
   border: none;
   border-radius: 999px;
   background: #1f6f58;
   color: #ffffff;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -79,6 +84,22 @@ button:hover {
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.upload-button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px;
+  font-size: 16px;
+}
+
+.delete-button {
+  background: #8a1f1f;
+  margin-top: 10px;
+}
+
+.delete-button:hover {
+  background: #b92b2b;
 }
 
 .preview {
@@ -103,6 +124,61 @@ button:disabled {
   white-space: pre-wrap;
 }
 
+.manage-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.manage-controls select {
+  flex: 1;
+}
+
+.manage-controls button {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.item-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.item-card {
+  background: rgba(8, 14, 13, 0.88);
+  border: 1px solid #2e4a42;
+  border-radius: 14px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.item-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: #000;
+  border-radius: 10px;
+}
+
+.item-card p {
+  margin: 10px 0 0;
+  color: #d8e8df;
+  font-weight: bold;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.item-path {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #aaaaaa;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
 .links {
   text-align: center;
   margin-top: 24px;
@@ -122,6 +198,17 @@ button:disabled {
   line-height: 1.7;
 }
 
+@media (max-width: 640px) {
+  .manage-controls {
+    display: block;
+  }
+
+  .manage-controls button {
+    width: 100%;
+    margin-top: 12px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -132,11 +219,13 @@ button:disabled {
 
 <main>
   <div class="admin-box">
-    <label for="type">アップロード先</label>
-    <select id="type">
-      <option value="thumbnail">サムネ置き場</option>
-      <option value="illustration">イラスト</option>
-    </select>
+    <h2>アップロード</h2>
+
+<label for="type">アップロード先</label>
+<select id="type">
+  <option value="thumbnail">サムネ置き場</option>
+  <option value="illustration">イラスト</option>
+</select>
 
 <label for="title">タイトル</label>
 <input id="title" type="text" placeholder="例：マイクラ配信用サムネ">
@@ -146,7 +235,7 @@ button:disabled {
 
 <div class="preview" id="preview"></div>
 
-<button id="uploadButton" onclick="uploadImage()">
+<button id="uploadButton" class="upload-button" onclick="uploadImage()">
   アップロードする
 </button>
 
@@ -161,6 +250,28 @@ button:disabled {
 
   </div>
 
+  <div class="admin-box">
+    <h2>削除管理</h2>
+
+<div class="manage-controls">
+  <select id="manageType">
+    <option value="thumbnail">サムネ置き場</option>
+    <option value="illustration">イラスト</option>
+  </select>
+
+  <button onclick="loadManageList()">
+    一覧を更新
+  </button>
+</div>
+
+<div class="status" id="manageStatus">
+  一覧を読み込んでください。
+</div>
+
+<div id="itemList" class="item-list"></div>
+
+  </div>
+
   <div class="links">
     <a href="index.html">トップへ</a>
     <a href="thumbnails.html">サムネ置き場</a>
@@ -169,7 +280,7 @@ button:disabled {
 </main>
 
 <script>
-  const WORKER_URL = "https://forestsol-upload-worker.foresutosoru.workers.dev/upload";
+  const WORKER_URL = "https://forestsol-upload-worker.foresutosoru.workers.dev";
 
   const typeInput = document.getElementById("type");
   const titleInput = document.getElementById("title");
@@ -178,8 +289,21 @@ button:disabled {
   const statusBox = document.getElementById("status");
   const uploadButton = document.getElementById("uploadButton");
 
+  const manageTypeInput = document.getElementById("manageType");
+  const manageStatus = document.getElementById("manageStatus");
+  const itemList = document.getElementById("itemList");
+
   let selectedBase64 = "";
   let selectedFilename = "";
+
+  function escapeHtml(text) {
+    return String(text)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
 
   imageFileInput.addEventListener("change", function() {
     const file = imageFileInput.files[0];
@@ -227,7 +351,7 @@ button:disabled {
     };
 
     try {
-      const response = await fetch(WORKER_URL, {
+      const response = await fetch(WORKER_URL + "/upload", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -256,6 +380,9 @@ button:disabled {
       selectedFilename = "";
       preview.innerHTML = "";
 
+      manageTypeInput.value = typeInput.value;
+      loadManageList();
+
     } catch (error) {
       statusBox.textContent =
         "アップロード中にエラーが出ました。\n\n" +
@@ -264,6 +391,105 @@ button:disabled {
 
     uploadButton.disabled = false;
   }
+
+  async function loadManageList() {
+    const type = manageTypeInput.value;
+    const jsonPath =
+      type === "thumbnail"
+        ? "data/thumbnails.json"
+        : "data/illustrations.json";
+
+    itemList.innerHTML = "";
+    manageStatus.textContent = "一覧を読み込み中...";
+
+    try {
+      const response = await fetch(jsonPath + "?time=" + Date.now());
+
+      if (!response.ok) {
+        manageStatus.textContent = "まだデータがありません。";
+        return;
+      }
+
+      const items = await response.json();
+
+      if (!Array.isArray(items) || items.length === 0) {
+        manageStatus.textContent = "まだ画像がありません。";
+        return;
+      }
+
+      manageStatus.textContent = items.length + "件見つかりました。";
+
+      itemList.innerHTML = "";
+
+      items.forEach(function(item) {
+        const title = item.title || "無題";
+        const image = item.image || "";
+
+        if (!image) return;
+
+        const card = document.createElement("div");
+        card.className = "item-card";
+
+        card.innerHTML =
+          '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '">' +
+          '<p>' + escapeHtml(title) + '</p>' +
+          '<div class="item-path">' + escapeHtml(image) + '</div>' +
+          '<button class="delete-button" onclick="deleteItem(\'' + escapeHtml(type) + '\', \'' + escapeHtml(image) + '\')">削除する</button>';
+
+        itemList.appendChild(card);
+      });
+
+    } catch (error) {
+      manageStatus.textContent =
+        "一覧の読み込みに失敗しました。\n\n" +
+        String(error);
+    }
+  }
+
+  async function deleteItem(type, image) {
+    const ok = confirm("この画像を削除しますか？\n\n" + image);
+
+    if (!ok) {
+      return;
+    }
+
+    manageStatus.textContent = "削除中...";
+
+    try {
+      const response = await fetch(WORKER_URL + "/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          type: type,
+          image: image
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        manageStatus.textContent =
+          "削除失敗\n\n" +
+          JSON.stringify(result, null, 2);
+        return;
+      }
+
+      manageStatus.textContent =
+        "削除成功！\n\n" +
+        result.imagePath;
+
+      loadManageList();
+
+    } catch (error) {
+      manageStatus.textContent =
+        "削除中にエラーが出ました。\n\n" +
+        String(error);
+    }
+  }
+
+  loadManageList();
 </script>
 
 </body>
