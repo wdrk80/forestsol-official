@@ -3,18 +3,13 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Forestsol Official</title>
+  <title>Illustrations | Forestsol Official</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
       font-family: sans-serif;
-      background:
-        linear-gradient(rgba(7, 16, 13, 0.35), rgba(7, 16, 13, 0.75)),
-        url("images/backgrounds/main-bg.png");
-      background-size: cover;
-      background-position: center top;
-      background-attachment: fixed;
+      background: #07100d;
       color: #f2f2f2;
     }
 
@@ -29,21 +24,18 @@ header {
   height: auto;
   display: block;
   object-fit: contain;
-  opacity: 0.98;
+  opacity: 0.88;
 }
 
 nav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   text-align: center;
   padding: 16px;
-  background: rgba(5, 8, 8, 0.95);
+  background: #050808;
   border-bottom: 1px solid #24463c;
 }
 
 nav a {
-  color: #ffffff;
+  color: #fff;
   margin: 0 10px;
   text-decoration: none;
   font-weight: bold;
@@ -55,198 +47,68 @@ nav a:hover {
 }
 
 section {
-  max-width: 1100px;
+  max-width: 1150px;
   margin: auto;
-  padding: 45px 18px;
+  padding: 40px 18px;
 }
 
-h2 {
-  text-align: center;
-  font-size: 30px;
-  margin-bottom: 28px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+.gallery {
+  columns: 3 260px;
+  column-gap: 18px;
 }
 
-.music-player {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 18px 18px 5px;
-  text-align: center;
-}
-
-.music-box {
-  display: inline-block;
-  background: transparent;
-  border: none;
-  padding: 0;
-  box-shadow: none;
-  backdrop-filter: none;
-}
-
-.music-image-button {
-  width: 150px;
-  height: auto;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-  display: inline-block;
-}
-
-.music-image-button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-.member-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 22px;
-}
-
-.member-card {
-  background: rgba(17, 28, 25, 0.88);
+.item {
+  break-inside: avoid;
+  background: #111c19;
   border: 1px solid #2d5147;
-  border-radius: 18px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  backdrop-filter: blur(4px);
-}
-
-.member-card img {
-  width: 100%;
-  height: 360px;
-  object-fit: contain;
-  border-radius: 14px;
-  background: #0b0b0b;
-  border: 1px solid #355f52;
-}
-
-.member-card h3 {
-  margin: 16px 0 8px;
-  font-size: 22px;
-}
-
-.role {
-  color: #95d8bd;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.youtube-player-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #050505;
   border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid #355f52;
-  margin-bottom: 22px;
+  padding: 12px;
+  margin-bottom: 18px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
-.youtube-player-wrap iframe {
+.item img {
   width: 100%;
-  height: 100%;
-  border: none;
+  border-radius: 12px;
+  background: #000;
   display: block;
 }
 
-.youtube-status {
+.item p {
   text-align: center;
   color: #d8e8df;
-  padding: 14px;
-  line-height: 1.7;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
-}
-
-.youtube-video-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 16px;
-}
-
-.youtube-video-card {
-  background: rgba(8, 14, 13, 0.88);
-  border: 1px solid #2e4a42;
-  border-radius: 14px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-}
-
-.youtube-video-card:hover {
-  transform: translateY(-3px);
-  border-color: #95d8bd;
-  background: rgba(18, 32, 28, 0.95);
-}
-
-.youtube-video-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-  background: #000;
-}
-
-.youtube-video-card p {
-  margin: 0;
-  padding: 12px;
-  font-size: 14px;
+  font-weight: bold;
   line-height: 1.5;
-  color: #ffffff;
-  font-weight: bold;
+  margin: 12px 0 4px;
 }
 
-.youtube-button-area {
+.status {
   text-align: center;
-  margin-top: 22px;
-}
-
-.youtube-button {
-  display: inline-block;
-  padding: 13px 28px;
-  border-radius: 999px;
-  background: #cc0000;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: bold;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  transition: transform 0.15s ease, background 0.15s ease;
-}
-
-.youtube-button:hover {
-  background: #ff0000;
-  transform: scale(1.04);
+  color: #d8e8df;
+  padding: 30px 18px;
+  line-height: 1.8;
+  background: #111c19;
+  border: 1px solid #2d5147;
+  border-radius: 16px;
 }
 
 footer {
   text-align: center;
   padding: 30px 20px;
   background: #030505;
-  color: #cccccc;
+  color: #ccc;
   font-size: 13px;
   line-height: 1.7;
 }
 
 @media (max-width: 768px) {
-  body {
-    background-attachment: scroll;
-  }
-
-  .header-image {
-    max-height: none;
-  }
-
   nav a {
     display: inline-block;
     margin: 5px 8px;
   }
 
-  .music-image-button {
-    width: 130px;
+  .header-image {
+    max-height: none;
   }
 }
 
@@ -255,7 +117,7 @@ footer {
 <body>
 
 <header>
-  <img class="header-image" src="images/logos/main-header.png" alt="Forestsol Official">
+  <img class="header-image" src="images/logos/illustrations-header.png" alt="Illustration Gallery">
 </header>
 
 <nav>
@@ -265,141 +127,19 @@ footer {
   <a href="terms.html">利用規約</a>
 </nav>
 
-<section class="music-player">
-  <div class="music-box">
-    <audio id="themeSong" src="audio/forestsol-theme.mp3" loop autoplay></audio>
-
-<img
-  id="musicToggleButton"
-  class="music-image-button"
-  src="images/buttons/play-button.png"
-  alt="再生"
-  onclick="toggleTheme()"
->
-
-  </div>
-</section>
-
 <section>
-  <h2>メンバー</h2>
-
-  <div class="member-grid">
-
-<div class="member-card">
-  <img src="images/members/yoshi.png" alt="YOSHI">
-  <h3>YOSHI</h3>
-  <div class="role">Forestsol Member</div>
-  <p>
-    フォレストソル暴れん坊。一番配信に参加してるぞ。
-  </p>
-</div>
-
-<div class="member-card">
-  <img src="images/members/wolfy.png" alt="ウォルフィ">
-  <h3>ウォルフィ</h3>
-  <div class="role">Forestsol Member</div>
-  <p>
-    フォレストソルのイタズラ屋。コマンド書いたり、挨拶を担当してるよ。
-  </p>
-</div>
-
-<div class="member-card">
-  <img src="images/members/kiara.png" alt="キアラ">
-  <h3>キアラ</h3>
-  <div class="role">Forestsol Member</div>
-  <p>
-    コーヒーが大好きな白黒熊さん。少し負けず嫌いで、やられたらやり返すタイプなので注意を。
-  </p>
-</div>
-
-  </div>
-</section>
-
-<section id="youtube">
-  <h2>YouTube</h2>
-
-  <div class="youtube-player-wrap">
-    <iframe
-      id="youtubePlayer"
-      src=""
-      title="Forestsol YouTube Player"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <div id="youtubeStatus" class="youtube-status">
-    動画を読み込み中...
-  </div>
-
-  <div id="youtubeVideoList" class="youtube-video-list"></div>
-
-  <div class="youtube-button-area">
-    <a class="youtube-button" href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">
-      YouTubeチャンネルを開く
-    </a>
+  <div id="gallery" class="gallery">
+    <div class="status">イラストを読み込み中...</div>
   </div>
 </section>
 
 <footer>
   © Forestsol / ウォルフィ<br>
-  無断転載・無断使用・AI学習・自作発言・二次配布・商用利用禁止
+  Unauthorized use prohibited.
 </footer>
 
 <script>
-  const themeSong = document.getElementById("themeSong");
-  const musicToggleButton = document.getElementById("musicToggleButton");
-
-  let isPlaying = false;
-
-  function setPlayingState(playing) {
-    isPlaying = playing;
-
-    if (playing) {
-      musicToggleButton.src = "images/buttons/stop-button.png";
-      musicToggleButton.alt = "停止";
-    } else {
-      musicToggleButton.src = "images/buttons/play-button.png";
-      musicToggleButton.alt = "再生";
-    }
-  }
-
-  function toggleTheme() {
-    if (isPlaying) {
-      themeSong.pause();
-      setPlayingState(false);
-    } else {
-      themeSong.volume = 0.45;
-      themeSong.play()
-        .then(() => {
-          setPlayingState(true);
-        })
-        .catch(() => {
-          setPlayingState(false);
-        });
-    }
-  }
-
-  window.addEventListener("load", function() {
-    themeSong.volume = 0.35;
-
-    themeSong.play()
-      .then(() => {
-        setPlayingState(true);
-      })
-      .catch(() => {
-        setPlayingState(false);
-      });
-  });
-</script>
-
-<script>
-  const API_KEY = "AIzaSyBaQMbMeYCET25U0i7dJcZZGRUiZYXuLt0";
-  const CHANNEL_HANDLE = "Forest-Sol";
-
-  const youtubePlayer = document.getElementById("youtubePlayer");
-  const youtubeVideoList = document.getElementById("youtubeVideoList");
-  const youtubeStatus = document.getElementById("youtubeStatus");
+  const gallery = document.getElementById("gallery");
 
   function escapeHtml(text) {
     return String(text)
@@ -410,112 +150,47 @@ footer {
       .replaceAll("'", "&#039;");
   }
 
-  async function loadForestsolVideos() {
-    if (API_KEY === "ここに自分のAPIキー" || API_KEY.trim() === "") {
-      youtubeStatus.innerHTML = "APIキーがまだ設定されていません。";
-      return;
-    }
-
+  async function loadIllustrations() {
     try {
-      youtubeStatus.innerHTML = "チャンネル情報を読み込み中...";
+      const response = await fetch("data/illustrations.json?time=" + Date.now());
 
-      const channelUrl =
-        "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forHandle=" +
-        CHANNEL_HANDLE +
-        "&key=" +
-        API_KEY;
+      if (!response.ok) {
+        gallery.innerHTML = '<div class="status">まだイラストがありません。管理ページからアップロードしてください。</div>';
+        return;
+      }
 
-      const channelRes = await fetch(channelUrl);
-      const channelData = await channelRes.json();
+      const items = await response.json();
 
-      if (!channelRes.ok) {
-        youtubeStatus.innerHTML =
-          "チャンネル情報を取得できませんでした。<br><br>" +
-          "Googleの返答：<br><pre style='white-space:pre-wrap;text-align:left;'>" +
-          escapeHtml(JSON.stringify(channelData, null, 2)) +
-          "</pre>";
+      if (!Array.isArray(items) || items.length === 0) {
+        gallery.innerHTML = '<div class="status">まだイラストがありません。管理ページからアップロードしてください。</div>';
+        return;
+      }
 
-    return;
-  }
+      gallery.innerHTML = "";
 
-  if (!channelData.items || channelData.items.length === 0) {
-    youtubeStatus.innerHTML =
-      "チャンネルが見つかりませんでした。@Forest-Sol のハンドル名を確認してください。";
-    return;
-  }
+      items.forEach(function(item) {
+        const title = item.title || "イラスト";
+        const image = item.image || "";
 
-  const uploadsPlaylistId =
-    channelData.items[0].contentDetails.relatedPlaylists.uploads;
+        if (!image) return;
 
-  youtubeStatus.innerHTML = "動画一覧を読み込み中...";
+        const card = document.createElement("div");
+        card.className = "item";
 
-  const videosUrl =
-    "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" +
-    uploadsPlaylistId +
-    "&maxResults=6&key=" +
-    API_KEY;
+        card.innerHTML =
+          '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '">' +
+          '<p>' + escapeHtml(title) + '</p>';
 
-  const videosRes = await fetch(videosUrl);
-  const videosData = await videosRes.json();
+        gallery.appendChild(card);
+      });
 
-  if (!videosRes.ok) {
-    youtubeStatus.innerHTML =
-      "動画一覧を取得できませんでした。<br><br>" +
-      "Googleの返答：<br><pre style='white-space:pre-wrap;text-align:left;'>" +
-      escapeHtml(JSON.stringify(videosData, null, 2)) +
-      "</pre>";
-    return;
-  }
-
-  if (!videosData.items || videosData.items.length === 0) {
-    youtubeStatus.innerHTML =
-      "公開動画が見つかりませんでした。公開動画が0本、または動画が非公開の可能性があります。";
-    return;
-  }
-
-  youtubeVideoList.innerHTML = "";
-  youtubeStatus.style.display = "none";
-
-  videosData.items.forEach(function(item, index) {
-    const videoId = item.snippet.resourceId.videoId;
-    const title = item.snippet.title;
-
-    const thumbnail =
-      item.snippet.thumbnails.high?.url ||
-      item.snippet.thumbnails.medium?.url ||
-      item.snippet.thumbnails.default?.url;
-
-    if (index === 0) {
-      youtubePlayer.src = "https://www.youtube.com/embed/" + videoId;
+    } catch (error) {
+      gallery.innerHTML = '<div class="status">イラストの読み込みに失敗しました。</div>';
     }
+  }
 
-    const card = document.createElement("div");
-    card.className = "youtube-video-card";
-
-    card.innerHTML =
-      '<img src="' + thumbnail + '" alt="' + escapeHtml(title) + '">' +
-      '<p>' + escapeHtml(title) + '</p>';
-
-    card.addEventListener("click", function() {
-      youtubePlayer.src =
-        "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
-      document.getElementById("youtube").scrollIntoView({ behavior: "smooth" });
-    });
-
-    youtubeVideoList.appendChild(card);
-  });
-
-} catch (error) {
-  youtubeStatus.innerHTML =
-    "YouTube読み込み中にエラーが出ました。<br><br>" +
-    "<pre style='white-space:pre-wrap;text-align:left;'>" +
-    escapeHtml(error) +
-    "</pre>";
-}
-
-}
-
-loadForestsolVideos(); </script>
+  loadIllustrations();
+</script>
 
 </body>
 </html>
