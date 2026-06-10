@@ -18,6 +18,7 @@
       color: #f2f2f2;
     }
 
+```
 header {
   padding: 0;
   background: transparent;
@@ -86,20 +87,19 @@ h2 {
   color: #d8e8df;
 }
 
-.music-button {
-  margin: 4px;
-  padding: 10px 30px;
+.music-image-button {
+  width: 150px;
+  height: auto;
   border: none;
-  border-radius: 999px;
-  background: #1f6f58;
-  color: #fff;
-  font-weight: bold;
+  background: transparent;
   cursor: pointer;
-  font-size: 15px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  display: inline-block;
 }
 
-.music-button:hover {
-  background: #2c8a6d;
+.music-image-button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
 }
 
 .member-grid {
@@ -169,7 +169,12 @@ footer {
     display: inline-block;
     margin: 5px 8px;
   }
+
+  .music-image-button {
+    width: 130px;
+  }
 }
+```
 
   </style>
 </head>
@@ -190,11 +195,17 @@ footer {
   <div class="music-box">
     <div class="music-title">Forestsol Theme Song</div>
 
+```
 <audio id="themeSong" src="audio/forestsol-theme.mp3" loop autoplay></audio>
 
-<button id="musicToggleButton" class="music-button" onclick="toggleTheme()">
-  再生
-</button>
+<img
+  id="musicToggleButton"
+  class="music-image-button"
+  src="images/buttons/play-button.png"
+  alt="再生"
+  onclick="toggleTheme()"
+>
+```
 
   </div>
 </section>
@@ -204,6 +215,7 @@ footer {
 
   <div class="member-grid">
 
+```
 <div class="member-card">
   <img src="images/members/yoshi.png" alt="YOSHI">
   <h3>YOSHI</h3>
@@ -230,6 +242,7 @@ footer {
     コーヒーが大好きな白黒熊さん。少し負けず嫌いで、やられたらやり返すタイプなので注意を。
   </p>
 </div>
+```
 
   </div>
 </section>
@@ -254,7 +267,14 @@ footer {
 
   function setPlayingState(playing) {
     isPlaying = playing;
-    musicToggleButton.textContent = playing ? "停止" : "再生";
+
+    if (playing) {
+      musicToggleButton.src = "images/buttons/stop-button.png";
+      musicToggleButton.alt = "停止";
+    } else {
+      musicToggleButton.src = "images/buttons/play-button.png";
+      musicToggleButton.alt = "再生";
+    }
   }
 
   function toggleTheme() {
