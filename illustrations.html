@@ -13,7 +13,6 @@
       color: #f2f2f2;
     }
 
-```
 header {
   padding: 0;
   background: transparent;
@@ -43,6 +42,10 @@ nav a {
   font-size: 14px;
 }
 
+nav a:hover {
+  color: #95d8bd;
+}
+
 section {
   max-width: 1150px;
   margin: auto;
@@ -61,6 +64,7 @@ section {
   border-radius: 16px;
   padding: 12px;
   margin-bottom: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
 .item img {
@@ -73,6 +77,19 @@ section {
 .item p {
   text-align: center;
   color: #d8e8df;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 12px 0 4px;
+}
+
+.status {
+  text-align: center;
+  color: #d8e8df;
+  padding: 30px 18px;
+  line-height: 1.8;
+  background: #111c19;
+  border: 1px solid #2d5147;
+  border-radius: 16px;
 }
 
 footer {
@@ -83,7 +100,17 @@ footer {
   font-size: 13px;
   line-height: 1.7;
 }
-```
+
+@media (max-width: 768px) {
+  nav a {
+    display: inline-block;
+    margin: 5px 8px;
+  }
+
+  .header-image {
+    max-height: none;
+  }
+}
 
   </style>
 </head>
@@ -101,19 +128,8 @@ footer {
 </nav>
 
 <section>
-  <div class="gallery">
-    <div class="item">
-      <img src="images/illustrations/1.png" alt="イラスト1">
-      <p>イラスト 1</p>
-    </div>
-    <div class="item">
-      <img src="images/illustrations/art2.jpg" alt="イラスト2">
-      <p>イラスト 2</p>
-    </div>
-    <div class="item">
-      <img src="images/illustrations/art3.jpg" alt="イラスト3">
-      <p>イラスト 3</p>
-    </div>
+  <div id="gallery" class="gallery">
+    <div class="status">イラストを読み込み中...</div>
   </div>
 </section>
 
@@ -121,6 +137,60 @@ footer {
   © Forestsol / ウォルフィ<br>
   Unauthorized use prohibited.
 </footer>
+
+<script>
+  const gallery = document.getElementById("gallery");
+
+  function escapeHtml(text) {
+    return String(text)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  async function loadIllustrations() {
+    try {
+      const response = await fetch("data/illustrations.json?time=" + Date.now());
+
+      if (!response.ok) {
+        gallery.innerHTML = '<div class="status">まだイラストがありません。管理ページからアップロードしてください。</div>';
+        return;
+      }
+
+      const items = await response.json();
+
+      if (!Array.isArray(items) || items.length === 0) {
+        gallery.innerHTML = '<div class="status">まだイラストがありません。管理ページからアップロードしてください。</div>';
+        return;
+      }
+
+      gallery.innerHTML = "";
+
+      items.forEach(function(item) {
+        const title = item.title || "イラスト";
+        const image = item.image || "";
+
+        if (!image) return;
+
+        const card = document.createElement("div");
+        card.className = "item";
+
+        card.innerHTML =
+          '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '">' +
+          '<p>' + escapeHtml(title) + '</p>';
+
+        gallery.appendChild(card);
+      });
+
+    } catch (error) {
+      gallery.innerHTML = '<div class="status">イラストの読み込みに失敗しました。</div>';
+    }
+  }
+
+  loadIllustrations();
+</script>
 
 </body>
 </html>
