@@ -134,35 +134,6 @@ h2 {
   margin-bottom: 10px;
 }
 
-.notice {
-  background: rgba(16, 24, 22, 0.88);
-  border: 1px solid #2e4a42;
-  border-radius: 16px;
-  padding: 22px;
-  line-height: 1.8;
-  backdrop-filter: blur(4px);
-}
-
-.youtube-app {
-  background: rgba(16, 24, 22, 0.9);
-  border: 1px solid #2e4a42;
-  border-radius: 18px;
-  padding: 24px;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-}
-
-.youtube-app-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.youtube-app-header p {
-  margin: 0;
-  color: #d8e8df;
-  line-height: 1.8;
-}
-
 .youtube-player-wrap {
   position: relative;
   width: 100%;
@@ -172,6 +143,7 @@ h2 {
   overflow: hidden;
   border: 1px solid #355f52;
   margin-bottom: 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
 .youtube-player-wrap iframe {
@@ -186,6 +158,7 @@ h2 {
   color: #d8e8df;
   padding: 14px;
   line-height: 1.7;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
 }
 
 .youtube-video-list {
@@ -201,6 +174,7 @@ h2 {
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
 .youtube-video-card:hover {
@@ -274,10 +248,6 @@ footer {
   .music-image-button {
     width: 130px;
   }
-
-  .youtube-app {
-    padding: 16px;
-  }
 }
 
   </style>
@@ -293,7 +263,6 @@ footer {
   <a href="thumbnails.html">サムネ置き場</a>
   <a href="illustrations.html">イラスト</a>
   <a href="terms.html">利用規約</a>
-  <a href="#youtube">YouTube</a>
 </nav>
 
 <section class="music-player">
@@ -346,45 +315,29 @@ footer {
   </div>
 </section>
 
-<section>
-  <h2>ABOUT</h2>
-  <div class="notice">
-    Forestsol Officialは、フォレストソル関連のメンバー、キャラクター、サムネイル、イラストをまとめる公式サイトです。
-  </div>
-</section>
-
 <section id="youtube">
   <h2>YouTube</h2>
 
-  <div class="youtube-app">
-    <div class="youtube-app-header">
-      <p>
-        Forestsolの最新動画をこのページ内で見ることができます。
-      </p>
-    </div>
+  <div class="youtube-player-wrap">
+    <iframe
+      id="youtubePlayer"
+      src=""
+      title="Forestsol YouTube Player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
 
-<div class="youtube-player-wrap">
-  <iframe
-    id="youtubePlayer"
-    src=""
-    title="Forestsol YouTube Player"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen>
-  </iframe>
-</div>
+  <div id="youtubeStatus" class="youtube-status">
+    動画を読み込み中...
+  </div>
 
-<div id="youtubeStatus" class="youtube-status">
-  動画を読み込み中...
-</div>
+  <div id="youtubeVideoList" class="youtube-video-list"></div>
 
-<div id="youtubeVideoList" class="youtube-video-list"></div>
-
-<div class="youtube-button-area">
-  <a class="youtube-button" href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">
-    YouTubeチャンネルを開く
-  </a>
-</div>
-
+  <div class="youtube-button-area">
+    <a class="youtube-button" href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">
+      YouTubeチャンネルを開く
+    </a>
   </div>
 </section>
 
@@ -563,7 +516,6 @@ footer {
 }
 
 loadForestsolVideos(); </script>
-
 
 </body>
 </html>
