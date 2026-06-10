@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -12,75 +13,105 @@
       color: #f2f2f2;
     }
 
-    header {
-      padding: 0;
-      background: #07100d;
-    }
+header {
+  padding: 0;
+  background: #07100d;
+}
 
-    .header-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 430px;
-      object-fit: cover;
-    }
+.header-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 430px;
+  object-fit: cover;
+}
 
-    nav {
-      text-align: center;
-      padding: 16px;
-      background: #050808;
-      border-bottom: 1px solid #24463c;
-    }
+nav {
+  text-align: center;
+  padding: 16px;
+  background: #050808;
+  border-bottom: 1px solid #24463c;
+}
 
-    nav a {
-      color: #fff;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-    }
+nav a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
 
-    section {
-      max-width: 1150px;
-      margin: auto;
-      padding: 40px 18px;
-    }
+nav a:hover {
+  color: #95d8bd;
+}
 
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-    }
+section {
+  max-width: 1150px;
+  margin: auto;
+  padding: 40px 18px;
+}
 
-    .item {
-      background: #111c19;
-      border: 1px solid #2d5147;
-      border-radius: 16px;
-      padding: 12px;
-    }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
 
-    .item img {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 12px;
-      background: #000;
-      display: block;
-    }
+.item {
+  background: #111c19;
+  border: 1px solid #2d5147;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
 
-    .item p {
-      text-align: center;
-      color: #d8e8df;
-    }
+.item img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #000;
+  display: block;
+}
 
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      background: #030505;
-      color: #ccc;
-      font-size: 13px;
-      line-height: 1.7;
-    }
+.item p {
+  text-align: center;
+  color: #d8e8df;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 12px 0 4px;
+}
+
+.status {
+  text-align: center;
+  color: #d8e8df;
+  padding: 30px 18px;
+  line-height: 1.8;
+  background: #111c19;
+  border: 1px solid #2d5147;
+  border-radius: 16px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  background: #030505;
+  color: #ccc;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  nav a {
+    display: inline-block;
+    margin: 5px 8px;
+  }
+
+  .header-image {
+    max-height: none;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -97,19 +128,8 @@
 </nav>
 
 <section>
-  <div class="gallery">
-    <div class="item">
-      <img src="images/thumbnails/thumb1.jpg" alt="サムネイル1">
-      <p>サムネイル 1</p>
-    </div>
-    <div class="item">
-      <img src="images/thumbnails/thumb2.jpg" alt="サムネイル2">
-      <p>サムネイル 2</p>
-    </div>
-    <div class="item">
-      <img src="images/thumbnails/thumb3.jpg" alt="サムネイル3">
-      <p>サムネイル 3</p>
-    </div>
+  <div id="gallery" class="gallery">
+    <div class="status">サムネイルを読み込み中...</div>
   </div>
 </section>
 
@@ -117,6 +137,60 @@
   © Forestsol / ウォルフィ<br>
   Unauthorized use prohibited.
 </footer>
+
+<script>
+  const gallery = document.getElementById("gallery");
+
+  function escapeHtml(text) {
+    return String(text)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  async function loadThumbnails() {
+    try {
+      const response = await fetch("data/thumbnails.json?time=" + Date.now());
+
+      if (!response.ok) {
+        gallery.innerHTML = '<div class="status">まだサムネイルがありません。管理ページからアップロードしてください。</div>';
+        return;
+      }
+
+      const items = await response.json();
+
+      if (!Array.isArray(items) || items.length === 0) {
+        gallery.innerHTML = '<div class="status">まだサムネイルがありません。管理ページからアップロードしてください。</div>';
+        return;
+      }
+
+      gallery.innerHTML = "";
+
+      items.forEach(function(item) {
+        const title = item.title || "サムネイル";
+        const image = item.image || "";
+
+        if (!image) return;
+
+        const card = document.createElement("div");
+        card.className = "item";
+
+        card.innerHTML =
+          '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '">' +
+          '<p>' + escapeHtml(title) + '</p>';
+
+        gallery.appendChild(card);
+      });
+
+    } catch (error) {
+      gallery.innerHTML = '<div class="status">サムネイルの読み込みに失敗しました。</div>';
+    }
+  }
+
+  loadThumbnails();
+</script>
 
 </body>
 </html>
