@@ -9,11 +9,10 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background:
-        linear-gradient(rgba(7, 10, 22, 0.18), rgba(7, 10, 22, 0.72)),
-        url("images/backgrounds/illustrations-bg.png");
+      background-image: url("images/backgrounds/illustrations-bg.png");
       background-size: cover;
       background-position: center top;
+      background-repeat: no-repeat;
       background-attachment: fixed;
       color: #f2f2f2;
     }
@@ -29,7 +28,7 @@ header {
   height: auto;
   display: block;
   object-fit: contain;
-  opacity: 0.92;
+  opacity: 0.96;
 }
 
 nav {
@@ -38,8 +37,8 @@ nav {
   z-index: 10;
   text-align: center;
   padding: 16px;
-  background: rgba(5, 8, 18, 0.92);
-  border-bottom: 1px solid rgba(170, 150, 255, 0.35);
+  background: rgba(5, 8, 18, 0.78);
+  border-bottom: 1px solid rgba(170, 150, 255, 0.45);
   backdrop-filter: blur(4px);
 }
 
@@ -69,13 +68,13 @@ section {
 
 .item {
   break-inside: avoid;
-  background: rgba(20, 18, 40, 0.72);
-  border: 1px solid rgba(190, 170, 255, 0.38);
+  background: rgba(20, 18, 40, 0.42);
+  border: 1px solid rgba(215, 200, 255, 0.55);
   border-radius: 16px;
   padding: 12px;
   margin-bottom: 18px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
-  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.24);
+  backdrop-filter: blur(2px);
 }
 
 .item img {
@@ -87,37 +86,40 @@ section {
 
 .item p {
   text-align: center;
-  color: #eee6ff;
+  color: #ffffff;
   font-weight: bold;
   line-height: 1.5;
   margin: 12px 0 4px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.75);
 }
 
 .status {
   text-align: center;
-  color: #eee6ff;
+  color: #ffffff;
   padding: 30px 18px;
   line-height: 1.8;
-  background: rgba(20, 18, 40, 0.72);
-  border: 1px solid rgba(190, 170, 255, 0.38);
+  background: rgba(20, 18, 40, 0.42);
+  border: 1px solid rgba(215, 200, 255, 0.55);
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
-  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.24);
+  backdrop-filter: blur(2px);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.75);
 }
 
 footer {
   text-align: center;
   padding: 30px 20px;
-  background: rgba(3, 5, 10, 0.95);
-  color: #ccc;
+  background: rgba(3, 5, 10, 0.82);
+  color: #ddd;
   font-size: 13px;
   line-height: 1.7;
+  backdrop-filter: blur(3px);
 }
 
 @media (max-width: 768px) {
   body {
     background-attachment: scroll;
+    background-position: center top;
   }
 
   nav a {
