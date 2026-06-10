@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -18,162 +17,154 @@
       color: #f2f2f2;
     }
 
-header {
-  padding: 0;
-  background: transparent;
-  overflow: hidden;
-}
+    header {
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
 
-.header-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  opacity: 0.98;
-}
+    .header-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      opacity: 0.98;
+    }
 
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  text-align: center;
-  padding: 16px;
-  background: rgba(5, 8, 8, 0.95);
-  border-bottom: 1px solid #24463c;
-}
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      text-align: center;
+      padding: 16px;
+      background: rgba(5, 8, 8, 0.95);
+      border-bottom: 1px solid #24463c;
+    }
 
-nav a {
-  color: #ffffff;
-  margin: 0 10px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 14px;
-}
+    nav a {
+      color: #ffffff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
 
-section {
-  max-width: 1100px;
-  margin: auto;
-  padding: 45px 18px;
-}
+    section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 45px 18px;
+    }
 
-h2 {
-  text-align: center;
-  font-size: 30px;
-  margin-bottom: 28px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
-}
+    h2 {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+    }
 
-.music-player {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 18px 18px 5px;
-  text-align: center;
-}
+    .music-player {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 18px 5px;
+      text-align: center;
+    }
 
-.music-box {
-  display: inline-block;
-  background: rgba(16, 24, 22, 0.88);
-  border: 1px solid #2e4a42;
-  border-radius: 18px;
-  padding: 14px 22px;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-}
+    .music-box {
+      display: inline-block;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
 
-.music-title {
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #d8e8df;
-}
+    .music-image-button {
+      width: 150px;
+      height: auto;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      display: inline-block;
+    }
 
-.music-image-button {
-  width: 150px;
-  height: auto;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-  display: inline-block;
-}
+    .music-image-button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
 
-.music-image-button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
 
-.member-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 22px;
-}
+    .member-card {
+      background: rgba(17, 28, 25, 0.88);
+      border: 1px solid #2d5147;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      backdrop-filter: blur(4px);
+    }
 
-.member-card {
-  background: rgba(17, 28, 25, 0.88);
-  border: 1px solid #2d5147;
-  border-radius: 18px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  backdrop-filter: blur(4px);
-}
+    .member-card img {
+      width: 100%;
+      height: 360px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: #0b0b0b;
+      border: 1px solid #355f52;
+    }
 
-.member-card img {
-  width: 100%;
-  height: 360px;
-  object-fit: contain;
-  border-radius: 14px;
-  background: #0b0b0b;
-  border: 1px solid #355f52;
-}
+    .member-card h3 {
+      margin: 16px 0 8px;
+      font-size: 22px;
+    }
 
-.member-card h3 {
-  margin: 16px 0 8px;
-  font-size: 22px;
-}
+    .role {
+      color: #95d8bd;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-.role {
-  color: #95d8bd;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+    .notice {
+      background: rgba(16, 24, 22, 0.88);
+      border: 1px solid #2e4a42;
+      border-radius: 16px;
+      padding: 22px;
+      line-height: 1.8;
+      backdrop-filter: blur(4px);
+    }
 
-.notice {
-  background: rgba(16, 24, 22, 0.88);
-  border: 1px solid #2e4a42;
-  border-radius: 16px;
-  padding: 22px;
-  line-height: 1.8;
-  backdrop-filter: blur(4px);
-}
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #030505;
+      color: #cccccc;
+      font-size: 13px;
+      line-height: 1.7;
+    }
 
-footer {
-  text-align: center;
-  padding: 30px 20px;
-  background: #030505;
-  color: #cccccc;
-  font-size: 13px;
-  line-height: 1.7;
-}
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
 
-@media (max-width: 768px) {
-  body {
-    background-attachment: scroll;
-  }
+      .header-image {
+        max-height: none;
+      }
 
-  .header-image {
-    max-height: none;
-  }
+      nav a {
+        display: inline-block;
+        margin: 5px 8px;
+      }
 
-  nav a {
-    display: inline-block;
-    margin: 5px 8px;
-  }
-
-  .music-image-button {
-    width: 130px;
-  }
-}
-
+      .music-image-button {
+        width: 130px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -191,18 +182,15 @@ footer {
 
 <section class="music-player">
   <div class="music-box">
-    <div class="music-title">Forestsol Theme Song</div>
+    <audio id="themeSong" src="audio/forestsol-theme.mp3" loop autoplay></audio>
 
-<audio id="themeSong" src="audio/forestsol-theme.mp3" loop autoplay></audio>
-
-<img
-  id="musicToggleButton"
-  class="music-image-button"
-  src="images/buttons/play-button.png"
-  alt="再生"
-  onclick="toggleTheme()"
->
-
+    <img
+      id="musicToggleButton"
+      class="music-image-button"
+      src="images/buttons/play-button.png"
+      alt="再生"
+      onclick="toggleTheme()"
+    >
   </div>
 </section>
 
@@ -211,32 +199,32 @@ footer {
 
   <div class="member-grid">
 
-<div class="member-card">
-  <img src="images/members/yoshi.png" alt="YOSHI">
-  <h3>YOSHI</h3>
-  <div class="role">Forestsol Member</div>
-  <p>
-    フォレストソル暴れん坊。一番配信に参加してるぞ。
-  </p>
-</div>
+    <div class="member-card">
+      <img src="images/members/yoshi.png" alt="YOSHI">
+      <h3>YOSHI</h3>
+      <div class="role">Forestsol Member</div>
+      <p>
+        フォレストソル暴れん坊。一番配信に参加してるぞ。
+      </p>
+    </div>
 
-<div class="member-card">
-  <img src="images/members/wolfy.png" alt="ウォルフィ">
-  <h3>ウォルフィ</h3>
-  <div class="role">Forestsol Member</div>
-  <p>
-    フォレストソルのイタズラ屋。コマンド書いたり、挨拶を担当してるよ。
-  </p>
-</div>
+    <div class="member-card">
+      <img src="images/members/wolfy.png" alt="ウォルフィ">
+      <h3>ウォルフィ</h3>
+      <div class="role">Forestsol Member</div>
+      <p>
+        フォレストソルのイタズラ屋。コマンド書いたり、挨拶を担当してるよ。
+      </p>
+    </div>
 
-<div class="member-card">
-  <img src="images/members/kiara.png" alt="キアラ">
-  <h3>キアラ</h3>
-  <div class="role">Forestsol Member</div>
-  <p>
-    コーヒーが大好きな白黒熊さん。少し負けず嫌いで、やられたらやり返すタイプなので注意を。
-  </p>
-</div>
+    <div class="member-card">
+      <img src="images/members/kiara.png" alt="キアラ">
+      <h3>キアラ</h3>
+      <div class="role">Forestsol Member</div>
+      <p>
+        コーヒーが大好きな白黒熊さん。少し負けず嫌いで、やられたらやり返すタイプなので注意を。
+      </p>
+    </div>
 
   </div>
 </section>
