@@ -9,7 +9,12 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #07100d;
+      background:
+        linear-gradient(rgba(7, 10, 22, 0.18), rgba(7, 10, 22, 0.72)),
+        url("images/backgrounds/illustrations-bg.png");
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
       color: #f2f2f2;
     }
 
@@ -24,7 +29,7 @@ header {
   height: auto;
   display: block;
   object-fit: contain;
-  opacity: 0.96;
+  opacity: 0.92;
 }
 
 nav {
@@ -34,7 +39,7 @@ nav {
   text-align: center;
   padding: 16px;
   background: rgba(5, 8, 18, 0.92);
-  border-bottom: 1px solid rgba(170, 150, 255, 0.45);
+  border-bottom: 1px solid rgba(170, 150, 255, 0.35);
   backdrop-filter: blur(4px);
 }
 
@@ -50,18 +55,11 @@ nav a:hover {
   color: #d8c7ff;
 }
 
-.page-bg {
-  background-image: url("images/backgrounds/illustrations-bg.png");
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  min-height: 520px;
-  padding: 56px 18px 70px;
-}
-
 section {
   max-width: 1150px;
   margin: auto;
+  padding: 46px 18px;
+  min-height: 380px;
 }
 
 .gallery {
@@ -71,13 +69,13 @@ section {
 
 .item {
   break-inside: avoid;
-  background: rgba(20, 18, 40, 0.48);
-  border: 1px solid rgba(215, 200, 255, 0.55);
+  background: rgba(20, 18, 40, 0.72);
+  border: 1px solid rgba(190, 170, 255, 0.38);
   border-radius: 16px;
   padding: 12px;
   margin-bottom: 18px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.28);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 .item img {
@@ -89,40 +87,37 @@ section {
 
 .item p {
   text-align: center;
-  color: #ffffff;
+  color: #eee6ff;
   font-weight: bold;
   line-height: 1.5;
   margin: 12px 0 4px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.75);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
 }
 
 .status {
   text-align: center;
-  color: #ffffff;
+  color: #eee6ff;
   padding: 30px 18px;
   line-height: 1.8;
-  background: rgba(20, 18, 40, 0.48);
-  border: 1px solid rgba(215, 200, 255, 0.55);
+  background: rgba(20, 18, 40, 0.72);
+  border: 1px solid rgba(190, 170, 255, 0.38);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.28);
-  backdrop-filter: blur(2px);
-  text-shadow: 0 2px 8px rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
 }
 
 footer {
   text-align: center;
   padding: 30px 20px;
   background: rgba(3, 5, 10, 0.95);
-  color: #ddd;
+  color: #ccc;
   font-size: 13px;
   line-height: 1.7;
 }
 
 @media (max-width: 768px) {
-  .page-bg {
-    background-size: cover;
-    background-position: center top;
-    padding: 38px 14px 54px;
+  body {
+    background-attachment: scroll;
   }
 
   nav a {
@@ -150,13 +145,11 @@ footer {
   <a href="terms.html">利用規約</a>
 </nav>
 
-<div class="page-bg">
-  <section>
-    <div id="gallery" class="gallery">
-      <div class="status">イラストを読み込み中...</div>
-    </div>
-  </section>
-</div>
+<section>
+  <div id="gallery" class="gallery">
+    <div class="status">イラストを読み込み中...</div>
+  </div>
+</section>
 
 <footer>
   © Forestsol / ウォルフィ<br>
