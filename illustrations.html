@@ -9,7 +9,12 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #07100d;
+      background:
+        linear-gradient(rgba(7, 10, 22, 0.18), rgba(7, 10, 22, 0.72)),
+        url("images/backgrounds/illustrations-bg.png");
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
       color: #f2f2f2;
     }
 
@@ -24,14 +29,18 @@ header {
   height: auto;
   display: block;
   object-fit: contain;
-  opacity: 0.88;
+  opacity: 0.92;
 }
 
 nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   text-align: center;
   padding: 16px;
-  background: #050808;
-  border-bottom: 1px solid #24463c;
+  background: rgba(5, 8, 18, 0.92);
+  border-bottom: 1px solid rgba(170, 150, 255, 0.35);
+  backdrop-filter: blur(4px);
 }
 
 nav a {
@@ -43,13 +52,14 @@ nav a {
 }
 
 nav a:hover {
-  color: #95d8bd;
+  color: #d8c7ff;
 }
 
 section {
   max-width: 1150px;
   margin: auto;
-  padding: 40px 18px;
+  padding: 46px 18px;
+  min-height: 380px;
 }
 
 .gallery {
@@ -59,12 +69,13 @@ section {
 
 .item {
   break-inside: avoid;
-  background: #111c19;
-  border: 1px solid #2d5147;
+  background: rgba(20, 18, 40, 0.72);
+  border: 1px solid rgba(190, 170, 255, 0.38);
   border-radius: 16px;
   padding: 12px;
   margin-bottom: 18px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+  backdrop-filter: blur(4px);
 }
 
 .item img {
@@ -76,32 +87,39 @@ section {
 
 .item p {
   text-align: center;
-  color: #d8e8df;
+  color: #eee6ff;
   font-weight: bold;
   line-height: 1.5;
   margin: 12px 0 4px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
 }
 
 .status {
   text-align: center;
-  color: #d8e8df;
+  color: #eee6ff;
   padding: 30px 18px;
   line-height: 1.8;
-  background: #111c19;
-  border: 1px solid #2d5147;
+  background: rgba(20, 18, 40, 0.72);
+  border: 1px solid rgba(190, 170, 255, 0.38);
   border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+  backdrop-filter: blur(4px);
 }
 
 footer {
   text-align: center;
   padding: 30px 20px;
-  background: #030505;
+  background: rgba(3, 5, 10, 0.95);
   color: #ccc;
   font-size: 13px;
   line-height: 1.7;
 }
 
 @media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+
   nav a {
     display: inline-block;
     margin: 5px 8px;
