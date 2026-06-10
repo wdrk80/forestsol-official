@@ -18,6 +18,7 @@
       color: #f2f2f2;
     }
 
+```
 header {
   padding: 0;
   background: transparent;
@@ -279,6 +280,7 @@ footer {
     padding: 16px;
   }
 }
+```
 
   </style>
 </head>
@@ -300,6 +302,7 @@ footer {
   <div class="music-box">
     <audio id="themeSong" src="audio/forestsol-theme.mp3" loop autoplay></audio>
 
+```
 <img
   id="musicToggleButton"
   class="music-image-button"
@@ -307,6 +310,7 @@ footer {
   alt="再生"
   onclick="toggleTheme()"
 >
+```
 
   </div>
 </section>
@@ -316,6 +320,7 @@ footer {
 
   <div class="member-grid">
 
+```
 <div class="member-card">
   <img src="images/members/yoshi.png" alt="YOSHI">
   <h3>YOSHI</h3>
@@ -342,6 +347,7 @@ footer {
     コーヒーが大好きな白黒熊さん。少し負けず嫌いで、やられたらやり返すタイプなので注意を。
   </p>
 </div>
+```
 
   </div>
 </section>
@@ -363,6 +369,7 @@ footer {
       </p>
     </div>
 
+```
 <div class="youtube-player-wrap">
   <iframe
     id="youtubePlayer"
@@ -384,6 +391,7 @@ footer {
     YouTubeチャンネルを開く
   </a>
 </div>
+```
 
   </div>
 </section>
@@ -449,7 +457,7 @@ footer {
   const youtubeStatus = document.getElementById("youtubeStatus");
 
   function escapeHtml(text) {
-    return text
+    return String(text)
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
@@ -458,74 +466,111 @@ footer {
   }
 
   async function loadForestsolVideos() {
-    if (API_KEY === "AIzaSyCXX-HDeGj7BALJaA5oyIwxZn02hjG77Wo") {
-      youtubeStatus.innerHTML = "APIキーを設定してください。index.html内の「ここに自分のAPIキー」を自分のAPIキーに置き換える必要があります。";
+    if (API_KEY === "AIzaSyCXX-HDeGj7BALJaA5oyIwxZn02hjG77Wo" || API_KEY.trim() === "") {
+      youtubeStatus.innerHTML = "APIキーがまだ設定されていません。index.html内の「ここに自分のAPIキー」を自分のAPIキーに置き換えてください。";
       return;
     }
 
     try {
+      youtubeStatus.innerHTML = "チャンネル情報を読み込み中...";
+
       const channelUrl =
-        "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=" + CHANNEL_ID + "&key=" + API_KEY;
+        "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=" +
+        CHANNEL_ID +
+        "&key=" +
+        API_KEY;
 
       const channelRes = await fetch(channelUrl);
       const channelData = await channelRes.json();
 
-      if (!channelRes.ok || !channelData.items || channelData.items.length === 0) {
-        youtubeStatus.innerHTML = "チャンネル情報を取得できませんでした。APIキーの制限設定を確認してください。";
-        return;
-      }
+      if (!channelRes.ok) {
+        youtubeStatus.innerHTML =
+          "チャンネル情報を取得できませんでした。<br><br>" +
+          "Googleの返答：<br><pre style='white-space:pre-wrap;text-align:left;'>" +
+          escapeHtml(JSON.stringify(channelData, null, 2)) +
+          "</pre>";
 
-      const uploadsPlaylistId =
-        channelData.items[0].contentDetails.relatedPlaylists.uploads;
-
-      const videosUrl =
-        "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + uploadsPlaylistId + "&maxResults=6&key=" + API_KEY;
-
-      const videosRes = await fetch(videosUrl);
-      const videosData = await videosRes.json();
-
-      if (!videosRes.ok || !videosData.items || videosData.items.length === 0) {
-        youtubeStatus.innerHTML = "動画一覧を取得できませんでした。動画が公開されているか確認してください。";
-        return;
-      }
-
-      youtubeVideoList.innerHTML = "";
-      youtubeStatus.style.display = "none";
-
-      videosData.items.forEach(function(item, index) {
-        const videoId = item.snippet.resourceId.videoId;
-        const title = item.snippet.title;
-        const thumbnail =
-          item.snippet.thumbnails.high?.url ||
-          item.snippet.thumbnails.medium?.url ||
-          item.snippet.thumbnails.default?.url;
-
-        if (index === 0) {
-          youtubePlayer.src = "https://www.youtube.com/embed/" + videoId;
-        }
-
-        const card = document.createElement("div");
-        card.className = "youtube-video-card";
-
-        card.innerHTML =
-          '<img src="' + thumbnail + '" alt="' + escapeHtml(title) + '">' +
-          '<p>' + escapeHtml(title) + '</p>';
-
-        card.addEventListener("click", function() {
-          youtubePlayer.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
-          document.getElementById("youtube").scrollIntoView({ behavior: "smooth" });
-        });
-
-        youtubeVideoList.appendChild(card);
-      });
-
-    } catch (error) {
-      youtubeStatus.innerHTML = "YouTube動画の読み込み中にエラーが出ました。APIキー、チャンネルID、GitHub PagesのURL制限を確認してください。";
-    }
+```
+    return;
   }
 
-  loadForestsolVideos();
-</script>
+  if (!channelData.items || channelData.items.length === 0) {
+    youtubeStatus.innerHTML = "チャンネルが見つかりませんでした。CHANNEL_IDを確認してください。";
+    return;
+  }
+
+  const uploadsPlaylistId =
+    channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+  youtubeStatus.innerHTML = "動画一覧を読み込み中...";
+
+  const videosUrl =
+    "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" +
+    uploadsPlaylistId +
+    "&maxResults=6&key=" +
+    API_KEY;
+
+  const videosRes = await fetch(videosUrl);
+  const videosData = await videosRes.json();
+
+  if (!videosRes.ok) {
+    youtubeStatus.innerHTML =
+      "動画一覧を取得できませんでした。<br><br>" +
+      "Googleの返答：<br><pre style='white-space:pre-wrap;text-align:left;'>" +
+      escapeHtml(JSON.stringify(videosData, null, 2)) +
+      "</pre>";
+    return;
+  }
+
+  if (!videosData.items || videosData.items.length === 0) {
+    youtubeStatus.innerHTML = "公開動画が見つかりませんでした。公開動画が0本、または動画が非公開の可能性があります。";
+    return;
+  }
+
+  youtubeVideoList.innerHTML = "";
+  youtubeStatus.style.display = "none";
+
+  videosData.items.forEach(function(item, index) {
+    const videoId = item.snippet.resourceId.videoId;
+    const title = item.snippet.title;
+
+    const thumbnail =
+      item.snippet.thumbnails.high?.url ||
+      item.snippet.thumbnails.medium?.url ||
+      item.snippet.thumbnails.default?.url;
+
+    if (index === 0) {
+      youtubePlayer.src = "https://www.youtube.com/embed/" + videoId;
+    }
+
+    const card = document.createElement("div");
+    card.className = "youtube-video-card";
+
+    card.innerHTML =
+      '<img src="' + thumbnail + '" alt="' + escapeHtml(title) + '">' +
+      '<p>' + escapeHtml(title) + '</p>';
+
+    card.addEventListener("click", function() {
+      youtubePlayer.src =
+        "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+      document.getElementById("youtube").scrollIntoView({ behavior: "smooth" });
+    });
+
+    youtubeVideoList.appendChild(card);
+  });
+
+} catch (error) {
+  youtubeStatus.innerHTML =
+    "YouTube読み込み中にエラーが出ました。<br><br>" +
+    "<pre style='white-space:pre-wrap;text-align:left;'>" +
+    escapeHtml(error) +
+    "</pre>";
+}
+```
+
+}
+
+loadForestsolVideos(); </script>
 
 </body>
 </html>
