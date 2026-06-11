@@ -145,6 +145,18 @@ button:disabled {
   white-space: pre-wrap;
 }
 
+.password-box {
+  border-color: #4f7c68;
+  background: rgba(20, 34, 30, 0.96);
+}
+
+.password-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #cccccc;
+  line-height: 1.7;
+}
+
 .manage-controls {
   display: flex;
   gap: 10px;
@@ -244,6 +256,31 @@ button:disabled {
 </header>
 
 <main>
+  <div class="admin-box password-box">
+    <h2>管理パスワード</h2>
+
+<label for="adminPassword">管理パスワード</label>
+<input id="adminPassword" type="password" placeholder="Cloudflareに設定したADMIN_PASSWORD">
+
+<button onclick="savePassword()">
+  このパスワードを使用
+</button>
+
+<button onclick="clearPassword()" style="background:#555;">
+  パスワードを消す
+</button>
+
+<div class="password-note">
+  このパスワードはブラウザ内だけに保存されます。<br>
+  アップロード・タイトル変更・移動・削除の時にWorker側で確認されます。
+</div>
+
+<div class="status" id="passwordStatus">
+  管理パスワードを入力してください。
+</div>
+
+  </div>
+
   <div class="admin-box">
     <h2>アップロード</h2>
 
@@ -319,8 +356,53 @@ button:disabled {
   const manageStatus = document.getElementById("manageStatus");
   const itemList = document.getElementById("itemList");
 
+  const adminPasswordInput = document.getElementById("adminPassword");
+  const passwordStatus = document.getElementById("passwordStatus");
+
   let selectedBase64 = "";
   let selectedFilename = "";
+
+  function getPassword() {
+    return localStorage.getItem("forestsol_admin_password") || "";
+  }
+
+  function savePassword() {
+    const password = adminPasswordInput.value.trim();
+
+    if (!password) {
+      passwordStatus.textContent = "パスワードを入力してください。";
+      return;
+    }
+
+    localStorage.setItem("forestsol_admin_password", password);
+    passwordStatus.textContent = "管理パスワードを保存しました。";
+  }
+
+  function clearPassword() {
+    localStorage.removeItem("forestsol_admin_password");
+    adminPasswordInput.value = "";
+    passwordStatus.textContent = "保存したパスワードを消しました。";
+  }
+
+  function requirePassword(statusTarget) {
+    const password = getPassword();
+
+    if (!password) {
+      statusTarget.textContent = "先に管理パスワードを入力して「このパスワードを使用」を押してください。";
+      return "";
+    }
+
+    return password;
+  }
+
+  window.addEventListener("load", function() {
+    const savedPassword = getPassword();
+
+    if (savedPassword) {
+      adminPasswordInput.value = savedPassword;
+      passwordStatus.textContent = "保存済みの管理パスワードがあります。";
+    }
+  });
 
   imageFileInput.addEventListener("change", function() {
     const file = imageFileInput.files[0];
@@ -352,6 +434,10 @@ button:disabled {
   });
 
   async function uploadImage() {
+    const password = requirePassword(statusBox);
+
+    if (!password) return;
+
     if (!selectedBase64) {
       statusBox.textContent = "先に画像を選んでください。";
       return;
@@ -361,6 +447,7 @@ button:disabled {
     statusBox.textContent = "アップロード中...";
 
     const payload = {
+      password: password,
       type: typeInput.value,
       title: titleInput.value.trim(),
       filename: selectedFilename,
@@ -506,6 +593,10 @@ button:disabled {
   }
 
   async function renameItem(type, image, newTitle) {
+    const password = requirePassword(manageStatus);
+
+    if (!password) return;
+
     const cleanTitle = String(newTitle || "").trim();
 
     if (!cleanTitle) {
@@ -522,6 +613,7 @@ button:disabled {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          password: password,
           type: type,
           image: image,
           title: cleanTitle
@@ -551,6 +643,10 @@ button:disabled {
   }
 
   async function moveItem(type, image) {
+    const password = requirePassword(manageStatus);
+
+    if (!password) return;
+
     const targetName =
       type === "thumbnail"
         ? "イラスト"
@@ -571,6 +667,7 @@ button:disabled {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          password: password,
           type: type,
           image: image
         })
@@ -600,6 +697,10 @@ button:disabled {
   }
 
   async function deleteItem(type, image) {
+    const password = requirePassword(manageStatus);
+
+    if (!password) return;
+
     const ok = confirm("この画像を削除しますか？\n\n" + image);
 
     if (!ok) {
@@ -615,6 +716,7 @@ button:disabled {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          password: password,
           type: type,
           image: image
         })
