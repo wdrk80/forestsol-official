@@ -147,10 +147,17 @@
       background-repeat: no-repeat;
       background-color: #0b0b0b;
     }
-
-    .member-visual:::writing{variant="standard" id="62184"} .member-visual::before { content: ""; position: absolute; inset: 0; background-image: inherit; background-size: cover; background-position: center; filter: blur(1px) brightness(0.92) saturate(1.04); transform: scale(1.01); } :::
-
-    .member-visual::after {
+    .member-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: inherit;
+      background-size: cover;
+      background-position: center;
+      filter: blur(1px) brightness(0.92) saturate(1.04);
+      transform: scale(1.01);
+    }
+.member-visual::after {
 content: "";
 position: absolute;
 inset: 0;
@@ -477,7 +484,7 @@ rgba(0,0,0,0.10)
 
   <div class="member-grid">
 
-<div class="member-card">
+<div class="member-card secret-tap" data-secret="yoshi">
   <div class="member-visual" style="background-image: url('images/backgrounds/yoshi-bg.png');">
     <img src="images/members/yoshi.png" alt="YOSHI">
   </div>
@@ -488,7 +495,7 @@ rgba(0,0,0,0.10)
   </p>
 </div>
 
-<div class="member-card">
+<div class="member-card secret-tap" data-secret="wolfy">
   <div class="member-visual" style="background-image: url('images/backgrounds/wolfy-bg.png');">
     <img src="images/members/wolfy.png" alt="ウォルフィ">
   </div>
@@ -499,7 +506,7 @@ rgba(0,0,0,0.10)
   </p>
 </div>
 
-<div class="member-card">
+<div class="member-card secret-tap" data-secret="kiara">
   <div class="member-visual" style="background-image: url('images/backgrounds/kiara-bg.png');">
     <img src="images/members/kiara.png" alt="キアラ">
   </div>
@@ -714,6 +721,32 @@ rgba(0,0,0,0.10)
 }
 
 loadForestsolVideos(); </script>
+
+
+<script>
+  const secretOrder = ["wolfy", "yoshi", "kiara"];
+  let secretProgress = [];
+
+  document.querySelectorAll(".secret-tap").forEach(function(card) {
+    card.addEventListener("click", function() {
+      const tapped = card.dataset.secret;
+
+      secretProgress.push(tapped);
+
+      if (secretProgress.length > secretOrder.length) {
+        secretProgress.shift();
+      }
+
+      const current = secretProgress.join(",");
+      const answer = secretOrder.join(",");
+
+      if (current === answer) {
+        sessionStorage.setItem("forestsol_secret_unlocked", "yes");
+        window.location.href = "secret.html";
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
