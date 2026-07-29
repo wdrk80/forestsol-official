@@ -130,6 +130,42 @@
       grid-column: 1 / -1;
     }
 
+    .pagination {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .pagination.visible {
+      display: flex;
+    }
+
+    .pagination button {
+      min-width: 42px;
+      min-height: 42px;
+      padding: 8px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 10px;
+      background: rgba(5, 5, 12, 0.82);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .pagination button:hover:not(:disabled),
+    .pagination button.active {
+      border-color: rgba(255, 255, 255, 0.82);
+      background: rgba(105, 80, 175, 0.86);
+    }
+
+    .pagination button:disabled {
+      cursor: default;
+      opacity: 0.42;
+    }
+
     footer {
       text-align: center;
       padding: 30px 20px;
@@ -221,6 +257,7 @@
   <div id="gallery" class="gallery">
     <div class="status">イラストを読み込み中...</div>
   </div>
+  <div id="pagination" class="pagination" aria-label="ギャラリーのページ切り替え"></div>
 </section>
 
 <footer>
@@ -234,6 +271,93 @@
 
 <script>
   const gallery = document.getElementById("gallery");
+
+  const pagination = document.getElementById("pagination");
+  const ITEMS_PER_PAGE = 30;
+  const DEFAULT_TITLE = "イラスト";
+  let galleryItems = [];
+
+  function getRequestedPage() {
+    const page = Number.parseInt(new URLSearchParams(window.location.search).get("page"), 10);
+    return Number.isInteger(page) && page > 0 ? page : 1;
+  }
+
+  function updatePageUrl(page) {
+    const url = new URL(window.location.href);
+
+    if (page === 1) {
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.set("page", String(page));
+    }
+
+    window.history.replaceState(null, "", url);
+  }
+
+  function createCard(item) {
+    const title = item.title || DEFAULT_TITLE;
+    const image = item.image || "";
+    const card = document.createElement("div");
+
+    card.className = "item";
+    card.innerHTML =
+      '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '" onclick="openImage(this.src)">' +
+      '<p>' + escapeHtml(title) + '</p>';
+
+    return card;
+  }
+
+  function addPageButton(label, page, currentPage, disabled) {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.textContent = label;
+    button.disabled = disabled;
+
+    if (page === currentPage && !disabled) {
+      button.classList.add("active");
+      button.setAttribute("aria-current", "page");
+    }
+
+    button.addEventListener("click", function() {
+      renderPage(page);
+      document.querySelector("section").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    pagination.appendChild(button);
+  }
+
+  function renderPagination(currentPage, pageCount) {
+    pagination.innerHTML = "";
+    pagination.classList.toggle("visible", pageCount > 1);
+
+    if (pageCount <= 1) return;
+
+    addPageButton("前へ", currentPage - 1, currentPage, currentPage === 1);
+
+    for (let page = 1; page <= pageCount; page += 1) {
+      addPageButton(String(page), page, currentPage, false);
+    }
+
+    addPageButton("次へ", currentPage + 1, currentPage, currentPage === pageCount);
+  }
+
+  function renderPage(page) {
+    const pageCount = Math.ceil(galleryItems.length / ITEMS_PER_PAGE);
+    const currentPage = Math.min(Math.max(page, 1), pageCount);
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+
+    gallery.innerHTML = "";
+
+    galleryItems
+      .slice(start, start + ITEMS_PER_PAGE)
+      .forEach(function(item) {
+        gallery.appendChild(createCard(item));
+      });
+
+    renderPagination(currentPage, pageCount);
+    updatePageUrl(currentPage);
+  }
 
   function escapeHtml(text) {
     return String(text)
@@ -276,23 +400,11 @@
         return;
       }
 
-      gallery.innerHTML = "";
-
-      items.forEach(function(item) {
-        const title = item.title || "イラスト";
-        const image = item.image || "";
-
-        if (!image) return;
-
-        const card = document.createElement("div");
-        card.className = "item";
-
-        card.innerHTML =
-          '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '" onclick="openImage(this.src)">' +
-          '<p>' + escapeHtml(title) + '</p>';
-
-        gallery.appendChild(card);
+      galleryItems = items.filter(function(item) {
+        return item && item.image;
       });
+
+      renderPage(getRequestedPage());
 
     } catch (error) {
       gallery.innerHTML = '<div class="status">イラストの読み込みに失敗しました。</div>';
