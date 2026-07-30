@@ -200,6 +200,62 @@
       line-height: 1.8;
     }
 
+    .test-recruitment {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      margin: 0 0 34px;
+      padding: 26px 28px;
+      overflow: hidden;
+      border: 1px solid rgba(224, 189, 104, 0.4);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 90% 16%, rgba(255, 221, 120, 0.2), transparent 14rem),
+        linear-gradient(135deg, rgba(46, 92, 59, 0.96), rgba(17, 44, 30, 0.97));
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.28);
+    }
+
+    .test-recruitment .label {
+      margin: 0 0 7px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+    }
+
+    .test-recruitment h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .test-recruitment p {
+      margin: 9px 0 0;
+      color: #d9e7dc;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .test-recruitment a {
+      display: inline-block;
+      min-width: 190px;
+      padding: 13px 22px;
+      border-radius: 999px;
+      color: #173421;
+      text-align: center;
+      text-decoration: none;
+      background: linear-gradient(135deg, #ffe498, #e6bb54);
+      box-shadow: 0 9px 22px rgba(0, 0, 0, 0.24);
+      font-size: 13px;
+      font-weight: 900;
+      transition: transform 0.16s ease, filter 0.16s ease;
+    }
+
+    .test-recruitment a:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
     .overview {
       display: grid;
       grid-template-columns: 220px 1fr;
@@ -514,6 +570,15 @@
         padding: 22px;
       }
 
+      .test-recruitment {
+        grid-template-columns: 1fr;
+        padding: 22px;
+      }
+
+      .test-recruitment a {
+        width: 100%;
+      }
+
       .mine-card img {
         min-height: 230px;
       }
@@ -601,6 +666,15 @@
     このページの数値は、ネタバレを避けるための大まかな公開用目安です。
     実際の開発順や内容は、調整によって前後することがあります。
   </p>
+
+  <section class="test-recruitment" aria-labelledby="test-title">
+    <div>
+      <p class="label">2026 NOVEMBER · CLOSED BETA TEST</p>
+      <h2 id="test-title">クローズドβテスト参加者募集</h2>
+      <p>一般公開前の森を一緒に遊び、気づいたことを教えてくれるテスターを募集します。</p>
+    </div>
+    <a href="forestfarm-test.html">参加希望フォームへ</a>
+  </section>
 
   <section class="overview" aria-labelledby="overall-title">
     <div class="overall-number">
