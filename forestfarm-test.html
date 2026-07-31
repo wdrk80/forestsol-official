@@ -751,6 +751,109 @@
       font-weight: 700;
     }
 
+    .layout.is-complete {
+      grid-template-columns: 1fr;
+    }
+
+    .completion-screen {
+      display: grid;
+      justify-items: center;
+      min-height: 620px;
+      padding: 42px 34px 48px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(247, 211, 122, 0.3), transparent 18rem),
+        linear-gradient(180deg, #fffdf4 0%, #f2f6e7 100%);
+    }
+
+    .completion-screen[hidden] {
+      display: none;
+    }
+
+    .completion-screen:focus {
+      outline: none;
+    }
+
+    .completion-image {
+      width: min(100%, 520px);
+      max-height: 300px;
+      display: block;
+      object-fit: cover;
+      border: 1px solid rgba(73, 122, 82, 0.24);
+      border-radius: 22px;
+      box-shadow: 0 18px 42px rgba(45, 80, 52, 0.16);
+    }
+
+    .completion-screen .section-kicker {
+      margin-top: 28px;
+    }
+
+    .completion-screen h2 {
+      margin: 8px 0 0;
+      color: var(--forest-950);
+      font-size: clamp(29px, 5vw, 42px);
+      line-height: 1.25;
+    }
+
+    .completion-lead {
+      max-width: 620px;
+      margin: 16px auto 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .completion-reference {
+      display: grid;
+      gap: 5px;
+      min-width: min(100%, 360px);
+      margin: 24px auto 0;
+      padding: 16px 22px;
+      border: 1px solid rgba(73, 122, 82, 0.24);
+      border-radius: 16px;
+      color: var(--forest-700);
+      background: rgba(255, 253, 244, 0.86);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .completion-reference strong {
+      color: var(--forest-950);
+      font-size: clamp(18px, 4vw, 24px);
+      letter-spacing: 0.04em;
+      overflow-wrap: anywhere;
+    }
+
+    .completion-note {
+      max-width: 620px;
+      margin: 18px auto 0;
+      padding: 14px 16px;
+      border-left: 4px solid var(--sun-500);
+      border-radius: 0 12px 12px 0;
+      color: #5f563d;
+      background: rgba(255, 246, 216, 0.82);
+      font-size: 12px;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .completion-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .completion-actions a {
+      min-width: 200px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
     footer {
       padding: 34px 20px;
       color: #dce9df;
@@ -814,6 +917,11 @@
       form {
         padding-left: 20px;
         padding-right: 20px;
+      }
+
+      .completion-screen {
+        min-height: 560px;
+        padding: 28px 20px 34px;
       }
 
       .field-grid,
@@ -969,9 +1077,9 @@
     </div>
   </section>
 
-  <div class="layout">
+  <div id="applicationLayout" class="layout">
     <section class="form-card" aria-labelledby="form-title">
-      <div class="form-heading">
+      <div id="formHeading" class="form-heading">
         <p class="section-kicker">APPLICATION FORM</p>
         <h2 id="form-title">クローズドβテスト参加希望フォーム</h2>
         <p>必須項目を入力したあと、送信前に内容を確認できます。</p>
@@ -1151,9 +1259,31 @@
           <p id="formStatus" class="status-message" role="alert" aria-live="polite"></p>
         </div>
       </form>
+
+      <section id="completionScreen" class="completion-screen" tabindex="-1" aria-labelledby="completionTitle" hidden>
+        <img class="completion-image" src="images/forestfarm/cbt-complete.webp" alt="森の木製ポストへ無事に届いた応募の手紙">
+        <p class="section-kicker">APPLICATION RECEIVED</p>
+        <h2 id="completionTitle">応募を受け付けました！</h2>
+        <p class="completion-lead">
+          送信は正常に完了しています。ForestSolから参加をお願いする方へ、
+          入力されたDiscordユーザー名を通して後日ご連絡します。
+        </p>
+        <p class="completion-reference">
+          受付番号
+          <strong id="completionReference">発行済み</strong>
+        </p>
+        <p class="completion-note">
+          受付番号は問い合わせ時の確認に使います。この画面をスクリーンショットして保存しておくと安心です。
+          応募者全員への個別連絡ではなく、参加をお願いする方へのみご案内します。
+        </p>
+        <div class="completion-actions">
+          <a class="primary-button" href="forestfarm.html">ForestFarmへ戻る</a>
+          <a class="secondary-button" href="index.html">トップページへ戻る</a>
+        </div>
+      </section>
     </section>
 
-    <aside class="side-card" aria-label="応募前の確認">
+    <aside id="applicationSideCard" class="side-card" aria-label="応募前の確認">
       <img src="images/forestfarm/cbt-complete.webp" alt="森の木製ポストへ届いた応募の手紙">
       <div class="side-copy">
         <h3>応募前に確認してね</h3>
@@ -1196,9 +1326,14 @@
 
     var APPLICATION_ENDPOINT = window.FORESTFARM_APPLICATION_ENDPOINT || "";
 
+    var applicationLayout = document.getElementById("applicationLayout");
+    var formHeading = document.getElementById("formHeading");
     var form = document.getElementById("applicationForm");
     var formStatus = document.getElementById("formStatus");
     var applicationStatusBadge = document.getElementById("applicationStatusBadge");
+    var applicationSideCard = document.getElementById("applicationSideCard");
+    var completionScreen = document.getElementById("completionScreen");
+    var completionReference = document.getElementById("completionReference");
     var modal = document.getElementById("previewModal");
     var previewList = document.getElementById("previewList");
     var editButton = document.getElementById("editButton");
@@ -1396,12 +1531,17 @@
         form.reset();
         pendingPayload = null;
         formStartedAt = Date.now();
-        formStatus.style.color = "#31714e";
-        formStatus.textContent = "応募を受け付けました。受付番号：" +
-          (responseData.referenceId || "発行済み") +
-          "。結果の連絡までお待ちください。";
-        formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+        formStatus.textContent = "";
+        completionReference.textContent = responseData.referenceId || "発行済み";
+        formHeading.hidden = true;
+        form.hidden = true;
+        applicationSideCard.hidden = true;
+        applicationLayout.classList.add("is-complete");
+        completionScreen.hidden = false;
+        completionScreen.focus();
+        completionScreen.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (error) {
+        formStatus.style.color = "";
         if (error.status === 429) {
           formStatus.textContent = error.message || "短時間に続けて送信されています。時間をおいて、もう一度お試しください。";
         } else {
