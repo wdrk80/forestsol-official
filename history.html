@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>森の歴史 | フォレストソル公式サイト</title>
+
+  <meta name="description" content="一匹の青い狼から、太陽の森・フォレストソルへ。ウォルフィの姿の変遷、旧チーム、再結成、キアラの加入、現在の3人へ続く足跡を紹介します。">
+  <meta name="keywords" content="フォレストソル, Forestsol, 森の歴史, ウォルフィ, YOSHI, キアラ, YouTube, ゲーム配信">
+  <meta name="author" content="Forestsol / ウォルフィ">
+
+  <meta property="og:title" content="森の歴史 | Forestsol Official">
+  <meta property="og:description" content="一匹の青い狼から、太陽の森へ。フォレストソルが現在の3人になるまでの足跡。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://forestsol.jp/history.html">
+  <meta property="og:image" content="https://forestsol.jp/images/history/history-header.webp">
+  <meta property="og:site_name" content="フォレストソル / Forestsol Official">
+  <meta property="og:locale" content="ja_JP">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="森の歴史 | Forestsol Official">
+  <meta name="twitter:description" content="一匹の青い狼から、太陽の森へ。フォレストソルが現在の3人になるまでの足跡。">
+  <meta name="twitter:image" content="https://forestsol.jp/images/history/history-header.webp">
+
+  <link rel="canonical" href="https://forestsol.jp/history.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="assets/page-transition.js" defer></script>
+
+  <style>
+    :root {
+      --ink: #f6f3e7;
+      --muted: #cbd6c8;
+      --green: #9ad29f;
+      --green-strong: #68b879;
+      --gold: #f1cb70;
+      --gold-soft: #ffe7a4;
+      --bark: #8e5f34;
+      --panel: rgba(12, 27, 20, 0.92);
+      --panel-soft: rgba(20, 40, 29, 0.84);
+      --line: rgba(177, 218, 171, 0.27);
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 92px;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      background:
+        linear-gradient(rgba(5, 14, 9, 0.48), rgba(4, 12, 8, 0.88)),
+        url("images/history/history-bg.webp") center top / cover fixed;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #102418;
+      background: var(--gold-soft);
+      font-weight: 800;
+      transform: translateY(-150%);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .history-hero {
+      position: relative;
+      min-height: clamp(360px, 42vw, 600px);
+      overflow: hidden;
+      isolation: isolate;
+      background: #122217;
+    }
+
+    .history-hero > img {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .history-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, rgba(3, 10, 7, 0.7), rgba(3, 10, 7, 0.28) 46%, rgba(3, 10, 7, 0.12)),
+        linear-gradient(0deg, rgba(4, 12, 8, 0.76), transparent 48%);
+    }
+
+    .history-hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      z-index: -1;
+      height: 90px;
+      background: linear-gradient(transparent, rgba(4, 12, 8, 0.98));
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: clamp(360px, 42vw, 600px);
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 54px 0 62px;
+    }
+
+    .hero-copy-inner {
+      width: min(620px, 100%);
+      padding: 26px 30px 30px;
+      border: 1px solid rgba(255, 227, 154, 0.32);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(8, 25, 16, 0.84), rgba(8, 18, 13, 0.62));
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(5px);
+    }
+
+    .hero-eyebrow,
+    .section-kicker {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+      font-size: clamp(50px, 8vw, 96px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-shadow: 0 5px 24px rgba(0, 0, 0, 0.65);
+    }
+
+    .hero-lead {
+      margin: 18px 0 0;
+      color: #fff5d7;
+      font-size: clamp(17px, 2vw, 22px);
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .hero-note {
+      margin: 10px 0 0;
+      color: #dce8d8;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button,
+    .chapter-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 11px 19px;
+      border: 1px solid rgba(255, 224, 146, 0.55);
+      border-radius: 999px;
+      color: #17321f;
+      text-decoration: none;
+      background: linear-gradient(135deg, #ffe7a2, #e9bd55);
+      box-shadow: 0 9px 22px rgba(0, 0, 0, 0.25);
+      font-size: 13px;
+      font-weight: 900;
+      transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .button:hover,
+    .button:focus-visible,
+    .chapter-nav a:hover,
+    .chapter-nav a:focus-visible {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      box-shadow: 0 12px 27px rgba(0, 0, 0, 0.32);
+    }
+
+    .button.secondary {
+      color: #f4f8ef;
+      border-color: rgba(184, 218, 183, 0.45);
+      background: rgba(17, 46, 30, 0.78);
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 15px 8px;
+      text-align: center;
+      background: rgba(4, 11, 8, 0.94);
+      border-bottom: 1px solid rgba(135, 190, 146, 0.32);
+      backdrop-filter: blur(10px);
+    }
+
+    .site-nav a {
+      display: inline-block;
+      margin: 0 9px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible,
+    .site-nav a[aria-current="page"] {
+      color: var(--gold-soft);
+    }
+
+    main {
+      width: min(1120px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 82px;
+    }
+
+    .intro-card,
+    .chapter,
+    .record-note,
+    .closing-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(5px);
+    }
+
+    .intro-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 52px);
+      border-radius: 26px;
+    }
+
+    .intro-card::after {
+      content: "";
+      position: absolute;
+      right: -52px;
+      bottom: -78px;
+      width: 240px;
+      height: 240px;
+      border: 18px double rgba(232, 197, 108, 0.09);
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 0 20px rgba(232, 197, 108, 0.05),
+        inset 0 0 0 46px rgba(232, 197, 108, 0.04);
+    }
+
+    h2 {
+      margin: 0;
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+      font-size: clamp(29px, 5vw, 46px);
+      line-height: 1.35;
+    }
+
+    .intro-card > p:not(.section-kicker) {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    .forest-facts {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .forest-facts li {
+      min-height: 112px;
+      padding: 19px;
+      border: 1px solid rgba(194, 221, 188, 0.19);
+      border-radius: 16px;
+      background: rgba(37, 70, 48, 0.42);
+    }
+
+    .forest-facts strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--gold-soft);
+      font-size: 14px;
+    }
+
+    .forest-facts span {
+      color: #d6e0d3;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .chapter-nav {
+      position: sticky;
+      top: 62px;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      margin: 22px 0 50px;
+      padding: 11px;
+      border: 1px solid rgba(166, 210, 164, 0.26);
+      border-radius: 18px;
+      background: rgba(5, 16, 10, 0.88);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(10px);
+    }
+
+    .chapter-nav a {
+      min-height: 42px;
+      padding: 9px 12px;
+      color: #e8f1e5;
+      border-color: rgba(164, 205, 164, 0.25);
+      background: rgba(30, 67, 43, 0.7);
+      box-shadow: none;
+      font-size: 12px;
+    }
+
+    .chapter-nav a::before {
+      content: attr(data-step);
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .chapter {
+      margin-top: 42px;
+      padding: clamp(26px, 5vw, 48px);
+      border-radius: 26px;
+      scroll-margin-top: 122px;
+    }
+
+    .chapter-heading {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 30px;
+    }
+
+    .chapter-number {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border: 1px solid rgba(255, 219, 133, 0.47);
+      border-radius: 50%;
+      color: var(--gold-soft);
+      background: radial-gradient(circle, rgba(145, 94, 39, 0.65), rgba(43, 68, 41, 0.7));
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: 800;
+      box-shadow: inset 0 0 0 5px rgba(255, 227, 161, 0.06);
+    }
+
+    .chapter-heading h2 {
+      font-size: clamp(28px, 4vw, 40px);
+    }
+
+    .chapter-heading p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .origin-feature {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(280px, 0.94fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .origin-feature img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border: 1px solid rgba(218, 231, 208, 0.28);
+      border-radius: 20px;
+      box-shadow: 0 13px 34px rgba(0, 0, 0, 0.3);
+    }
+
+    .origin-copy h3,
+    .timeline-card h3,
+    .activity-copy h3,
+    .closing-card h2 {
+      margin: 0;
+      color: #fff4cb;
+      font-size: 23px;
+      line-height: 1.5;
+    }
+
+    .origin-copy p,
+    .timeline-card p,
+    .activity-copy p,
+    .closing-card p {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.95;
+    }
+
+    .memory-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 13px;
+      padding: 6px 10px;
+      border: 1px solid rgba(236, 199, 111, 0.3);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      background: rgba(108, 72, 32, 0.35);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .evolution-title {
+      margin: 38px 0 18px;
+      font-size: 20px;
+    }
+
+    .evolution-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+
+    .evolution-card {
+      overflow: hidden;
+      border: 1px solid rgba(176, 213, 174, 0.22);
+      border-radius: 17px;
+      background: rgba(16, 37, 26, 0.84);
+    }
+
+    .evolution-image {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: #07100b;
+      cursor: zoom-in;
+    }
+
+    .evolution-image img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      transition: transform 0.24s ease, filter 0.24s ease;
+    }
+
+    .evolution-card:nth-child(3) .evolution-image img,
+    .evolution-card:nth-child(4) .evolution-image img {
+      object-fit: contain;
+      background: linear-gradient(150deg, #203e2b, #07110b);
+    }
+
+    .evolution-image:hover img,
+    .evolution-image:focus-visible img {
+      transform: scale(1.035);
+      filter: brightness(1.06);
+    }
+
+    .evolution-card figcaption {
+      padding: 14px;
+    }
+
+    .evolution-card strong {
+      display: block;
+      color: #fff0c2;
+      font-size: 13px;
+    }
+
+    .evolution-card span {
+      display: block;
+      margin-top: 5px;
+      color: #bfcbbd;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      bottom: 20px;
+      left: 50%;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(var(--bark), var(--gold), var(--green-strong));
+      box-shadow: 0 0 18px rgba(241, 203, 112, 0.2);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 64px 1fr;
+      align-items: center;
+      min-height: 190px;
+    }
+
+    .timeline-marker {
+      grid-column: 2;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin: auto;
+      border: 3px solid #d9b65e;
+      border-radius: 50%;
+      color: #3a2812;
+      background: #f3d47d;
+      box-shadow: 0 0 0 7px rgba(13, 31, 21, 0.95), 0 7px 18px rgba(0, 0, 0, 0.28);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .timeline-card {
+      width: calc(100% - 17px);
+      padding: 23px;
+      border: 1px solid rgba(184, 216, 179, 0.22);
+      border-radius: 18px;
+      background: rgba(19, 43, 29, 0.82);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    .timeline-item:nth-child(odd) .timeline-card {
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .timeline-item:nth-child(even) .timeline-card {
+      grid-column: 3;
+      justify-self: end;
+    }
+
+    .timeline-era {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .timeline-card h3 {
+      font-size: 20px;
+    }
+
+    .timeline-card p {
+      font-size: 13px;
+    }
+
+    .name-origin {
+      margin-top: 28px;
+      padding: 27px;
+      border: 1px solid rgba(247, 206, 109, 0.34);
+      border-radius: 20px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 216, 105, 0.18), transparent 56%),
+        linear-gradient(135deg, rgba(62, 82, 43, 0.78), rgba(19, 46, 30, 0.84));
+    }
+
+    .name-origin .formula {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin: 10px 0 0;
+      color: #fff1bf;
+      font-family: "Yu Mincho", serif;
+      font-size: clamp(24px, 4vw, 38px);
+      font-weight: 800;
+    }
+
+    .formula .operator {
+      color: var(--gold);
+      font-family: sans-serif;
+      font-size: 22px;
+    }
+
+    .name-origin p {
+      max-width: 720px;
+      margin: 15px auto 0;
+      color: #d6e2d4;
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .member-history-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .member-history-card {
+      overflow: hidden;
+      border: 1px solid rgba(184, 218, 181, 0.23);
+      border-radius: 19px;
+      background: rgba(17, 37, 26, 0.84);
+    }
+
+    .member-history-card img {
+      display: block;
+      width: 100%;
+      height: 270px;
+      padding: 12px;
+      object-fit: contain;
+      background:
+        radial-gradient(circle at 50% 26%, rgba(164, 207, 148, 0.24), transparent 48%),
+        linear-gradient(150deg, rgba(44, 77, 50, 0.95), rgba(8, 21, 13, 0.98));
+    }
+
+    .member-history-card div {
+      padding: 18px;
+    }
+
+    .member-history-card h3 {
+      margin: 0;
+      color: #fff2c8;
+      font-size: 19px;
+    }
+
+    .member-history-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .activity-card {
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 28px;
+      border: 1px solid rgba(238, 201, 110, 0.28);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(88, 68, 33, 0.58), rgba(24, 55, 35, 0.78));
+    }
+
+    .activity-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .activity-point {
+      display: grid;
+      place-items: center;
+      min-height: 105px;
+      padding: 11px;
+      border: 1px solid rgba(250, 224, 156, 0.24);
+      border-radius: 14px;
+      color: #fff1c5;
+      text-align: center;
+      background: rgba(8, 23, 14, 0.58);
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .record-note {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 15px;
+      align-items: start;
+      margin-top: 28px;
+      padding: 22px 24px;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 16px 16px 0;
+      background: rgba(22, 31, 25, 0.9);
+    }
+
+    .record-note strong {
+      color: var(--gold-soft);
+      font-size: 13px;
+    }
+
+    .record-note p {
+      margin: 0;
+      color: #cbd5c8;
+      font-size: 12px;
+      line-height: 1.85;
+    }
+
+    .closing-card {
+      margin-top: 42px;
+      padding: clamp(30px, 5vw, 52px);
+      border-color: rgba(241, 203, 112, 0.34);
+      border-radius: 26px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(247, 210, 112, 0.2), transparent 42%),
+        linear-gradient(140deg, rgba(34, 77, 45, 0.95), rgba(11, 30, 19, 0.96));
+    }
+
+    .closing-card h2 {
+      font-family: "Yu Mincho", serif;
+      font-size: clamp(29px, 5vw, 44px);
+    }
+
+    .closing-card p {
+      max-width: 690px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .closing-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 24px;
+    }
+
+    footer {
+      padding: 30px 20px;
+      color: #c6cec4;
+      text-align: center;
+      background: rgba(3, 8, 5, 0.96);
+      border-top: 1px solid rgba(134, 177, 139, 0.22);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    dialog {
+      width: min(920px, calc(100% - 28px));
+      max-height: calc(100vh - 28px);
+      padding: 12px;
+      overflow: auto;
+      border: 1px solid rgba(244, 215, 142, 0.5);
+      border-radius: 18px;
+      color: var(--ink);
+      background: #0b1710;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.86);
+      backdrop-filter: blur(5px);
+    }
+
+    .dialog-close {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: block;
+      width: 42px;
+      height: 42px;
+      margin: 0 0 10px auto;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(4, 10, 7, 0.92);
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    dialog img {
+      display: block;
+      width: 100%;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #050805;
+    }
+
+    dialog p {
+      margin: 12px 7px 4px;
+      color: #d8e1d5;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.58s ease, transform 0.58s ease;
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .forest-facts,
+      .member-history-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .forest-facts li {
+        min-height: 0;
+      }
+
+      .origin-feature,
+      .activity-card {
+        grid-template-columns: 1fr;
+      }
+
+      .evolution-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .timeline::before {
+        left: 23px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        min-height: 0;
+        margin-bottom: 18px;
+      }
+
+      .timeline-marker {
+        grid-column: 1;
+        grid-row: 1;
+        width: 42px;
+        height: 42px;
+      }
+
+      .timeline-item:nth-child(odd) .timeline-card,
+      .timeline-item:nth-child(even) .timeline-card {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: stretch;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .history-hero,
+      .hero-copy {
+        min-height: 480px;
+      }
+
+      .history-hero > img {
+        object-position: 62% center;
+      }
+
+      .hero-copy {
+        width: min(100% - 24px, 1180px);
+        justify-content: flex-end;
+        padding-bottom: 46px;
+      }
+
+      .hero-copy-inner {
+        padding: 22px 20px 24px;
+      }
+
+      h1 {
+        font-size: clamp(47px, 16vw, 70px);
+      }
+
+      .site-nav {
+        padding: 10px 5px;
+      }
+
+      .site-nav a {
+        margin: 4px 6px;
+        font-size: 12px;
+      }
+
+      main {
+        width: min(100% - 20px, 1120px);
+        padding-top: 22px;
+      }
+
+      .intro-card,
+      .chapter,
+      .closing-card {
+        border-radius: 20px;
+      }
+
+      .chapter-nav {
+        top: 86px;
+        display: flex;
+        overflow-x: auto;
+        margin-bottom: 34px;
+        padding: 8px;
+        scrollbar-width: thin;
+      }
+
+      .chapter-nav a {
+        flex: 0 0 auto;
+        min-width: 128px;
+      }
+
+      .chapter-heading {
+        grid-template-columns: 46px 1fr;
+        gap: 12px;
+      }
+
+      .chapter-number {
+        width: 46px;
+        height: 46px;
+        font-size: 14px;
+      }
+
+      .evolution-grid {
+        gap: 8px;
+      }
+
+      .evolution-card figcaption {
+        padding: 11px;
+      }
+
+      .evolution-card strong {
+        font-size: 12px;
+      }
+
+      .evolution-card span {
+        font-size: 10px;
+      }
+
+      .member-history-card img {
+        height: 240px;
+      }
+
+      .activity-points {
+        grid-template-columns: 1fr;
+      }
+
+      .activity-point {
+        min-height: 64px;
+      }
+
+      .record-note {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      [data-reveal] {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#history-story">歴史本文へ移動</a>
+
+  <header class="history-hero">
+    <img src="images/history/history-header.webp" alt="古い森から朝日の差す森へ続く、足跡の残る一本道">
+    <div class="hero-copy">
+      <div class="hero-copy-inner">
+        <p class="hero-eyebrow">ForestSol Chronicle</p>
+        <h1>森の歴史</h1>
+        <p class="hero-lead">一匹の青い狼から、太陽の森へ。</p>
+        <p class="hero-note">残っている記録をたどり、フォレストソルが現在の3人になるまでの足跡をまとめました。</p>
+        <div class="hero-actions">
+          <a class="button" href="#history-story">足跡をたどる</a>
+          <a class="button secondary" href="#forestsol-now">今の森を見る</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" aria-label="メインメニュー">
+    <a href="index.html">メンバー紹介</a>
+    <a href="history.html" aria-current="page">森の歴史</a>
+    <a href="forestfarm.html">ForestFarm</a>
+    <a href="thumbnails.html">サムネ置き場</a>
+    <a href="illustrations.html">イラスト</a>
+    <a href="terms.html">利用規約</a>
+  </nav>
+
+  <main>
+    <section class="intro-card" id="history-story" data-reveal>
+      <p class="section-kicker">Record of the Forest</p>
+      <h2>残っている足跡を、順番に。</h2>
+      <p>
+        これは年表の空白を想像で埋めた物語ではなく、今までに確認できた出来事を並べたフォレストソルの記録です。
+        始まりはウォルフィの一枚絵。そこからYouTube、仲間との出会い、解散と再結成を経て、今の「太陽の森」へつながりました。
+      </p>
+
+      <ul class="forest-facts" aria-label="森の歴史の要点">
+        <li>
+          <strong>はじまり</strong>
+          <span>青と濃い灰色をまとった、一匹の四足の狼。</span>
+        </li>
+        <li>
+          <strong>名前の意味</strong>
+          <span>旧名から「森」を残し、「太陽」を加えた“太陽の森”。</span>
+        </li>
+        <li>
+          <strong>現在の3人</strong>
+          <span>YOSHI・ウォルフィ・キアラ。フォレストソルでは全員が同期。</span>
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav" aria-label="歴史の章へ移動">
+      <a href="#wolfy-origin" data-step="01">狼の原点</a>
+      <a href="#youtube-step" data-step="02">YouTubeへ</a>
+      <a href="#team-history" data-step="03">仲間と再結成</a>
+      <a href="#forestsol-now" data-step="04">太陽の森</a>
+    </nav>
+
+    <section class="chapter" id="wolfy-origin" data-reveal>
+      <div class="chapter-heading">
+        <span class="chapter-number" aria-hidden="true">01</span>
+        <div>
+          <p class="section-kicker">The First Footprint</p>
+          <h2>青い狼の原点</h2>
+          <p>現在のウォルフィへつながる、いちばん古い足跡。</p>
+        </div>
+      </div>
+
+      <div class="origin-feature">
+        <img src="images/history/wolfy-origin.webp" alt="最初期の青と濃い灰色の四足狼" loading="lazy">
+        <div class="origin-copy">
+          <span class="memory-tag">最初期の記録</span>
+          <h3>最初は、四足の一枚絵だった。</h3>
+          <p>
+            ウォルフィの最初期デザインは、青と濃い灰色を主体にした四足の狼でした。
+            今のデフォルメ姿とは大きく違いますが、ここが長い道の出発点です。
+          </p>
+          <p>
+            首元の赤いバンダナには、今は亡き愛犬・雷尾の思い出が受け継がれています。
+            見た目を飾るだけではない、今のウォルフィまで変わらず残った大切な印です。
+          </p>
+        </div>
+      </div>
+
+      <h3 class="evolution-title" id="youtube-step">姿が変わっても、残ったもの</h3>
+      <div class="evolution-grid">
+        <figure class="evolution-card">
+          <button class="evolution-image" type="button" data-lightbox="images/history/wolfy-origin.webp" data-caption="最初期の四足狼。青と濃い灰色を主体にした原点の姿。" aria-label="最初期の四足狼を拡大表示">
+            <img src="images/history/wolfy-origin.webp" alt="最初期の四足狼" loading="lazy">
+          </button>
+          <figcaption>
+            <strong>四足狼の原点</strong>
+            <span>青と濃い灰色の、最初期デザイン。</span>
+          </figcaption>
+        </figure>
+
+        <figure class="evolution-card">
+          <button class="evolution-image" type="button" data-lightbox="images/history/wolfy-thunder-era.webp" data-caption="ジンオウガに魅了された後、雷の意匠を取り入れた四足時代の姿。" aria-label="雷の意匠を取り入れた四足狼を拡大表示">
+            <img src="images/history/wolfy-thunder-era.webp" alt="雷の意匠を取り入れた四足狼" loading="lazy">
+          </button>
+          <figcaption>
+            <strong>雷をまとった時代</strong>
+            <span>ジンオウガとの出会いから、雷の要素が加わった。</span>
+          </figcaption>
+        </figure>
+
+        <figure class="evolution-card">
+          <button class="evolution-image" type="button" data-lightbox="images/history/wolfy-first-chibi.webp" data-caption="動画で動かしやすくするため、自分で作った初代デフォルメ版。" aria-label="初代デフォルメ版ウォルフィを拡大表示">
+            <img src="images/history/wolfy-first-chibi.webp" alt="初代デフォルメ版ウォルフィ" loading="lazy">
+          </button>
+          <figcaption>
+            <strong>YouTube用デフォルメ</strong>
+            <span>動画で扱いやすい姿を求め、自らデフォルメ化。</span>
+          </figcaption>
+        </figure>
+
+        <figure class="evolution-card">
+          <button class="evolution-image" type="button" data-lightbox="images/members/wolfy.png" data-caption="現在の公式デザイン。雷は背中の模様ではなく、青い雷を操る能力として残っている。" aria-label="現在のウォルフィを拡大表示">
+            <img src="images/members/wolfy.png" alt="現在のウォルフィ" loading="lazy">
+          </button>
+          <figcaption>
+            <strong>現在のウォルフィ</strong>
+            <span>雷は模様から、青い雷を操る能力へ。</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="team-history" data-reveal>
+      <div class="chapter-heading">
+        <span class="chapter-number" aria-hidden="true">02</span>
+        <div>
+          <p class="section-kicker">Companions of the Forest</p>
+          <h2>仲間と歩き始めた道</h2>
+          <p>旧チームから再結成へ。3人の足跡がひとつの道になるまで。</p>
+        </div>
+      </div>
+
+      <ol class="timeline">
+        <li class="timeline-item" data-reveal>
+          <span class="timeline-marker" aria-hidden="true">01</span>
+          <article class="timeline-card">
+            <span class="timeline-era">Before ForestSol</span>
+            <h3>ウォルフィとYOSHIの出会い</h3>
+            <p>
+              2人はフォレストソルより前に、同じ別チームで活動していました。
+              当時のYOSHIのMinecraftスキンをウォルフィが作り直した際、動物系の姿へ変わっています。
+            </p>
+          </article>
+        </li>
+
+        <li class="timeline-item" data-reveal>
+          <span class="timeline-marker" aria-hidden="true">02</span>
+          <article class="timeline-card">
+            <span class="timeline-era">A Turning Point</span>
+            <h3>一度の解散</h3>
+            <p>
+              以前のチームは一度解散します。ただし、ここで仲間の道が終わったわけではありませんでした。
+              もう一度チームを組むための、新しい分かれ道になります。
+            </p>
+          </article>
+        </li>
+
+        <li class="timeline-item" data-reveal>
+          <span class="timeline-marker" aria-hidden="true">03</span>
+          <article class="timeline-card">
+            <span class="timeline-era">Reunion</span>
+            <h3>再結成、キアラが加わる</h3>
+            <p>
+              チームを組み直す時にキアラが加入。キアラのスキンを決める中で、メンバーの姿を動物系にそろえる方針になりました。
+              3人が動物になった理由の細部は記憶が曖昧なため、今も無理に物語を足していません。
+            </p>
+          </article>
+        </li>
+
+        <li class="timeline-item" data-reveal>
+          <span class="timeline-marker" aria-hidden="true">04</span>
+          <article class="timeline-card">
+            <span class="timeline-era">Four Companions</span>
+            <h3>「森の仲間たち」の時代</h3>
+            <p>
+              その後は旧リーダーを含む4人で、イラストと合わせて「（リーダー名）と森の仲間たち」という形の名前で活動しました。
+              旧リーダーの名前は、この記録では掲載していません。
+            </p>
+          </article>
+        </li>
+
+        <li class="timeline-item" data-reveal>
+          <span class="timeline-marker" aria-hidden="true">05</span>
+          <article class="timeline-card">
+            <span class="timeline-era">Three Remain</span>
+            <h3>3人で続けると決めた</h3>
+            <p>
+              旧リーダーが離れた後、残ったYOSHI・ウォルフィ・キアラの3人で活動を続けることになりました。
+              ここから、リーダー名に頼らない新しいチーム名が必要になります。
+            </p>
+          </article>
+        </li>
+
+        <li class="timeline-item" data-reveal>
+          <span class="timeline-marker" aria-hidden="true">06</span>
+          <article class="timeline-card">
+            <span class="timeline-era">ForestSol</span>
+            <h3>「太陽の森」が生まれる</h3>
+            <p>
+              旧チーム名に残っていた「森」を受け継ぎ、そこへ「太陽」を加えてフォレストソルへ。
+              3人はフォレストソルでは全員が同期で、加入順による先輩・後輩はありません。
+            </p>
+          </article>
+        </li>
+      </ol>
+
+      <div class="name-origin" data-reveal>
+        <p class="section-kicker">How the Name Was Born</p>
+        <div class="formula">
+          <span>森</span>
+          <span class="operator">＋</span>
+          <span>太陽</span>
+          <span class="operator">＝</span>
+          <span>ForestSol</span>
+        </div>
+        <p>名前の意味は「太陽の森」。過去の森を残しながら、3人で進む新しい光を加えた名前です。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="forestsol-now" data-reveal>
+      <div class="chapter-heading">
+        <span class="chapter-number" aria-hidden="true">03</span>
+        <div>
+          <p class="section-kicker">The Forest Today</p>
+          <h2>そして、今のフォレストソルへ</h2>
+          <p>決めすぎない自由な掛け合いと、それぞれの歩き方。</p>
+        </div>
+      </div>
+
+      <div class="member-history-grid">
+        <article class="member-history-card">
+          <img src="images/members/yoshi.png" alt="YOSHI" loading="lazy">
+          <div>
+            <h3>YOSHI</h3>
+            <p>普段は落ち着きながら、活動の動きは大胆。配信参加が多く、ゲームやコラボの幅を広げる存在。</p>
+          </div>
+        </article>
+
+        <article class="member-history-card">
+          <img src="images/members/wolfy.png" alt="ウォルフィ" loading="lazy">
+          <div>
+            <h3>ウォルフィ</h3>
+            <p>イタズラを仕掛けることが多い狼。配信だけでなく、公式サイトも自ら作り、管理している。</p>
+          </div>
+        </article>
+
+        <article class="member-history-card">
+          <img src="images/members/kiara.png" alt="キアラ" loading="lazy">
+          <div>
+            <h3>キアラ</h3>
+            <p>コーヒー好きで負けず嫌いな白黒熊。ゲーム面では3人の中で、おそらく一番上手い。</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="activity-card">
+        <ul class="activity-points" aria-label="現在の活動スタイル">
+          <li class="activity-point">配信中心</li>
+          <li class="activity-point">会話はフリー</li>
+          <li class="activity-point">役割を固定しすぎない</li>
+        </ul>
+        <div class="activity-copy">
+          <h3>台本に縛られない、今の活動。</h3>
+          <p>
+            細かな台本や定型の会話は作らず、ゲームの中で起こる動きや、その場の掛け合いを大切にしています。
+            現在は通常動画より配信が中心。主にウォルフィとYOSHIが活動し、同じアカウントから2つの配信を同時に行うこともあります。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <aside class="record-note" aria-label="記録について">
+      <strong>記録の読み方</strong>
+      <p>
+        正確な年が残っていない時期には、推測で年代を置いていません。このページの旧画像は「当時の姿」を見るための歴史資料で、現在のキャラクターデザインの基準ではありません。
+      </p>
+    </aside>
+
+    <section class="closing-card" data-reveal>
+      <p class="section-kicker">The Path Continues</p>
+      <h2>森の道は、まだ続いていく。</h2>
+      <p>
+        ここまでが、現在確認できているフォレストソルの足跡です。
+        次の一歩は、配信や新しい企画の中で少しずつ増えていきます。
+      </p>
+      <div class="closing-actions">
+        <a class="button" href="https://www.youtube.com/@Forest-Sol" target="_blank" rel="noopener noreferrer">YouTubeを見る</a>
+        <a class="button secondary" href="index.html">3人の紹介へ</a>
+        <a class="button secondary" href="#history-story">森の入口へ戻る</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © Forestsol / ウォルフィ<br>
+    無断転載・無断使用・AI学習・自作発言・二次配布・商用利用禁止
+  </footer>
+
+  <dialog id="historyLightbox" aria-labelledby="lightboxCaption">
+    <button class="dialog-close" type="button" aria-label="拡大画像を閉じる">×</button>
+    <img id="lightboxImage" src="images/history/wolfy-origin.webp" alt="歴史資料の拡大画像">
+    <p id="lightboxCaption"></p>
+  </dialog>
+
+  <script>
+    (function() {
+      "use strict";
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var revealItems = document.querySelectorAll("[data-reveal]");
+
+      if (reduceMotion || !("IntersectionObserver" in window)) {
+        revealItems.forEach(function(item) {
+          item.classList.add("is-visible");
+        });
+      } else {
+        var revealObserver = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: "0px 0px -30px" });
+
+        revealItems.forEach(function(item) {
+          revealObserver.observe(item);
+        });
+      }
+
+      var lightbox = document.getElementById("historyLightbox");
+      var lightboxImage = document.getElementById("lightboxImage");
+      var lightboxCaption = document.getElementById("lightboxCaption");
+      var closeButton = lightbox.querySelector(".dialog-close");
+
+      document.querySelectorAll("[data-lightbox]").forEach(function(button) {
+        button.addEventListener("click", function() {
+          var preview = button.querySelector("img");
+          lightboxImage.src = button.dataset.lightbox;
+          lightboxImage.alt = preview ? preview.alt : "歴史資料の拡大画像";
+          lightboxCaption.textContent = button.dataset.caption || "";
+          lightbox.showModal();
+        });
+      });
+
+      closeButton.addEventListener("click", function() {
+        lightbox.close();
+      });
+
+      lightbox.addEventListener("click", function(event) {
+        if (event.target === lightbox) {
+          lightbox.close();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
