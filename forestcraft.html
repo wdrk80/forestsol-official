@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forest Craft Studio | Forestsol Official</title>
+  <meta name="description" content="Forest Craft Studioは、Minecraft向けスキン・アイテム・ブロック・3Dモデルのテクスチャ制作をまとめて行えるForest Sol製Windowsツールです。作品ギャラリーも公開しています。">
+  <meta name="keywords" content="Forest Craft Studio, Forest Sol, Minecraft, スキンエディタ, bbmodel, Blockbench, テクスチャ, 3Dモデル">
+  <meta name="author" content="Forestsol / ウォルフィ">
+  <meta property="og:title" content="Forest Craft Studio | Forestsol Official">
+  <meta property="og:description" content="Minecraft向けスキン・アイテム・ブロック・3Dモデル制作ツール。作品ギャラリーも公開中。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://forestsol.jp/forestcraft.html">
+  <meta property="og:image" content="https://forestsol.jp/images/logos/main-header.png">
+  <link rel="canonical" href="https://forestsol.jp/forestcraft.html">
+  <script src="assets/page-transition.js" defer></script>
+
+  <style>
+    :root {
+      --bg: #07110f;
+      --panel: rgba(13, 24, 21, 0.92);
+      --panel-2: rgba(18, 34, 29, 0.92);
+      --line: #31594d;
+      --green: #94d7bc;
+      --green-2: #58b892;
+      --gold: #ffd46b;
+      --text: #f4f7f5;
+      --muted: #b8c9c1;
+      --danger: #ff8d8d;
+      --shadow: 0 16px 44px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(5, 15, 12, 0.63), rgba(4, 9, 8, 0.92)),
+        url("images/backgrounds/main-bg.png");
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; }
+
+    header {
+      padding: 0;
+      overflow: hidden;
+      background: #07100e;
+    }
+
+    .header-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.98;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      text-align: center;
+      padding: 14px 10px;
+      background: rgba(5, 8, 8, 0.96);
+      border-bottom: 1px solid #24463c;
+      backdrop-filter: blur(10px);
+    }
+
+    nav a {
+      display: inline-block;
+      margin: 4px 9px;
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    nav a:hover,
+    nav a[aria-current="page"] { color: var(--green); }
+
+    main {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 34px 0 70px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 30px;
+      align-items: center;
+      padding: 46px;
+      border: 1px solid rgba(112, 196, 160, 0.42);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(55, 169, 255, 0.17), transparent 28%),
+        radial-gradient(circle at 14% 20%, rgba(255, 202, 72, 0.13), transparent 30%),
+        linear-gradient(135deg, rgba(17, 39, 32, 0.98), rgba(6, 14, 13, 0.97));
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -120px;
+      bottom: -180px;
+      border-radius: 50%;
+      background: rgba(86, 211, 162, 0.08);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--gold);
+      letter-spacing: 0.14em;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(38px, 5vw, 66px);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-copy {
+      margin: 0;
+      max-width: 720px;
+      color: #d7e5df;
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      padding: 13px 20px;
+      font: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .button:hover:not(:disabled) { transform: translateY(-2px); }
+
+    .button.primary {
+      color: #062018;
+      background: linear-gradient(135deg, #a8e7ca, #66c69e);
+      box-shadow: 0 7px 22px rgba(83, 195, 149, 0.2);
+    }
+
+    .button.secondary {
+      color: #eef7f3;
+      background: rgba(255,255,255,0.055);
+      border-color: #3b6659;
+    }
+
+    .button:disabled {
+      cursor: not-allowed;
+      opacity: 0.56;
+    }
+
+    .download-note {
+      margin: 11px 0 0;
+      color: #9fb3aa;
+      font-size: 12px;
+    }
+
+    .hero-mark {
+      display: grid;
+      place-items: center;
+      min-height: 280px;
+    }
+
+    .craft-emblem {
+      position: relative;
+      width: min(290px, 76vw);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 32%;
+      transform: rotate(-5deg);
+      border: 1px solid rgba(137, 219, 186, 0.48);
+      background:
+        linear-gradient(145deg, rgba(71, 145, 109, 0.33), rgba(7, 20, 17, 0.9)),
+        repeating-linear-gradient(0deg, transparent 0 19px, rgba(255,255,255,0.035) 20px),
+        repeating-linear-gradient(90deg, transparent 0 19px, rgba(255,255,255,0.035) 20px);
+      box-shadow:
+        inset 0 0 0 12px rgba(0,0,0,0.12),
+        0 28px 60px rgba(0,0,0,0.35),
+        0 0 55px rgba(62, 190, 139, 0.09);
+    }
+
+    .craft-emblem .paw {
+      transform: rotate(5deg);
+      font-size: 104px;
+      filter: drop-shadow(0 8px 15px rgba(0,0,0,0.36));
+    }
+
+    .craft-emblem .brush {
+      position: absolute;
+      right: 18px;
+      bottom: 30px;
+      transform: rotate(-38deg);
+      font-size: 62px;
+    }
+
+    .section {
+      margin-top: 34px;
+      padding: 34px;
+      border-radius: 24px;
+      border: 1px solid rgba(72, 116, 101, 0.7);
+      background: var(--panel);
+      box-shadow: 0 12px 34px rgba(0,0,0,0.24);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .feature-card {
+      padding: 20px;
+      border: 1px solid #2e5548;
+      border-radius: 17px;
+      background: rgba(7, 19, 16, 0.78);
+    }
+
+    .feature-card b {
+      display: block;
+      margin-bottom: 8px;
+      color: #b9ecd7;
+      font-size: 16px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #b7c8c0;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .gallery-toolbar {
+      display: grid;
+      grid-template-columns: minmax(200px, 1fr) auto auto;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 11px;
+      border: 1px solid #395d51;
+      background: #091411;
+      color: #f4f7f5;
+      padding: 0 13px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus { border-color: #78c8a8; }
+
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .category-tab {
+      border: 1px solid #395d51;
+      background: #0a1713;
+      color: #dce8e3;
+      border-radius: 999px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .category-tab.active {
+      color: #071a13;
+      border-color: #8bd6b7;
+      background: #8bd6b7;
+    }
+
+    .gallery-status {
+      min-height: 30px;
+      padding: 8px 0 14px;
+      color: #b7c8c0;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .post-card {
+      overflow: hidden;
+      border: 1px solid #31574b;
+      border-radius: 18px;
+      background: #081410;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-3px);
+      border-color: #78c8a8;
+    }
+
+    .post-preview {
+      position: relative;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        linear-gradient(45deg, #17211e 25%, transparent 25%, transparent 75%, #17211e 75%),
+        linear-gradient(45deg, #17211e 25%, #0d1513 25%, #0d1513 75%, #17211e 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+    }
+
+    .post-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .post-placeholder {
+      padding: 22px;
+      text-align: center;
+      color: #789186;
+      font-size: 42px;
+    }
+
+    .post-category {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(5, 12, 10, 0.84);
+      border: 1px solid rgba(139, 214, 183, 0.35);
+      color: #c7efdd;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .post-body { padding: 14px; }
+
+    .post-title {
+      margin: 0 0 7px;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .post-author,
+    .post-meta {
+      margin: 0;
+      color: #9db1a8;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .post-meta { margin-top: 8px; }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 54px 20px;
+      text-align: center;
+      color: #9fb3aa;
+      border: 1px dashed #365c50;
+      border-radius: 17px;
+      background: rgba(4, 12, 10, 0.52);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.76);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.open { display: grid; }
+
+    .modal-card {
+      width: min(920px, 100%);
+      max-height: min(860px, calc(100vh - 30px));
+      overflow: auto;
+      border-radius: 24px;
+      border: 1px solid #416e5e;
+      background: #0b1714;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.56);
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px;
+      background: rgba(11, 23, 20, 0.95);
+      border-bottom: 1px solid #28483e;
+    }
+
+    .modal-close {
+      width: 42px;
+      height: 42px;
+      border: 1px solid #41675b;
+      border-radius: 11px;
+      color: #fff;
+      background: #14241f;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .modal-content { padding: 0 26px 30px; }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+      gap: 26px;
+    }
+
+    .detail-preview {
+      min-height: 340px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid #32584c;
+      background: #06100d;
+    }
+
+    .detail-preview img {
+      width: 100%;
+      height: 100%;
+      max-height: 520px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .detail-copy h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .detail-description {
+      white-space: pre-wrap;
+      color: #c9d8d2;
+      line-height: 1.9;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 16px 0;
+    }
+
+    .tag {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #142a23;
+      color: #aee2cc;
+      font-size: 11px;
+    }
+
+    .file-list {
+      margin-top: 20px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 12px;
+      border: 1px solid #2e5046;
+      border-radius: 11px;
+      background: #09130f;
+    }
+
+    .file-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #d9e6e1;
+      font-size: 12px;
+    }
+
+    .download-link {
+      flex: none;
+      padding: 8px 11px;
+      border-radius: 9px;
+      text-decoration: none;
+      color: #082018;
+      background: #8bd6b7;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .community-coming {
+      margin-top: 22px;
+      padding: 15px;
+      border-radius: 13px;
+      border: 1px solid #5c5630;
+      background: rgba(92, 79, 22, 0.2);
+      color: #e7dda8;
+      line-height: 1.7;
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #030505;
+      color: #ccc;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 950px) {
+      .hero { grid-template-columns: 1fr; padding: 34px; }
+      .hero-mark { min-height: 230px; }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      body { background-attachment: scroll; }
+      main { width: min(100% - 16px, 1180px); padding-top: 16px; }
+      nav { padding: 9px 4px; }
+      nav a { margin: 4px 5px; font-size: 11px; }
+      .hero { padding: 25px 20px; border-radius: 20px; }
+      .hero-mark { min-height: 190px; }
+      .craft-emblem { width: 205px; }
+      .craft-emblem .paw { font-size: 76px; }
+      .craft-emblem .brush { font-size: 44px; }
+      .section { margin-top: 18px; padding: 21px 14px; border-radius: 18px; }
+      .section-title { display: block; }
+      .section-title p { margin-top: 8px; }
+      .feature-grid { grid-template-columns: 1fr 1fr; gap: 9px; }
+      .feature-card { padding: 14px; }
+      .gallery-toolbar { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 9px; }
+      .post-body { padding: 10px; }
+      .modal { padding: 7px; }
+      .modal-card { max-height: calc(100vh - 14px); border-radius: 16px; }
+      .modal-content { padding: 0 14px 20px; }
+      .detail-preview { min-height: 250px; }
+      footer { padding: 22px 12px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="header-image" src="images/logos/main-header.png" alt="Forestsol Official">
+  </header>
+
+  <nav>
+    <a href="index.html">メンバー紹介</a>
+    <a href="history.html">森の歴史</a>
+    <a href="forestfarm.html">ForestFarm</a>
+    <a href="forestcraft.html" aria-current="page">Forest Craft Studio</a>
+    <a href="thumbnails.html">サムネ置き場</a>
+    <a href="illustrations.html">イラスト</a>
+    <a href="terms.html">利用規約</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">FOREST SOL CREATION TOOL</p>
+        <h1>Forest Craft Studio</h1>
+        <p class="hero-copy">
+          Minecraft向けのスキン、アイテム、ブロック、3Dモデルをひとつの制作環境で扱うWindowsツール。
+          3D上への直接ペイント、編集レイヤ、比較レイヤ、Auto Tone、アニメーションテクスチャ、.bbmodel読み込みに対応します。
+        </p>
+        <div class="hero-actions">
+          <button class="button primary" type="button" disabled>Windows版 v1.1.0</button>
+          <a class="button secondary" href="#gallery">作品ギャラリーを見る</a>
+        </div>
+        <p class="download-note">Windows版インストーラーはサイト直配布の準備中です。</p>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <div class="craft-emblem">
+          <span class="paw">🐾</span>
+          <span class="brush">🖌️</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="section-title">
+        <div>
+          <h2 id="features-title">できること</h2>
+          <p>スキン制作からモデルのテクスチャ調整まで、同じ操作感でまとめて編集。</p>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <b>Skin Editor</b>
+          <p>Classic / Slim、Body / Outer layer、部位表示切替、2種類のミラー、比較レイヤに対応。</p>
+        </article>
+        <article class="feature-card">
+          <b>3D Model Paint</b>
+          <p>.bbmodelを読み込み、UVを保ったままモデル表面へ直接ペイント。MOB・武器・装備にも対応。</p>
+        </article>
+        <article class="feature-card">
+          <b>Item & Block</b>
+          <p>16〜256pxのテクスチャ制作、ブロック6面編集、複数フレームと.mcmeta書き出しに対応。</p>
+        </article>
+        <article class="feature-card">
+          <b>Layer & Brush</b>
+          <p>複数編集レイヤ、透明度、統合、Auto Tone、ブラシサイズ・形状、選択・色置換を搭載。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery" class="section" aria-labelledby="gallery-title">
+      <div class="section-title">
+        <div>
+          <h2 id="gallery-title">作品ギャラリー</h2>
+          <p>Forest Craft Studioから投稿された作品を、Forest Craft APIから直接読み込みます。</p>
+        </div>
+      </div>
+
+      <div class="category-tabs" role="tablist" aria-label="作品カテゴリ">
+        <button class="category-tab active" type="button" data-category="">すべて</button>
+        <button class="category-tab" type="button" data-category="skin">Skin</button>
+        <button class="category-tab" type="button" data-category="item">Item</button>
+        <button class="category-tab" type="button" data-category="block">Block</button>
+        <button class="category-tab" type="button" data-category="model">3D Model</button>
+      </div>
+
+      <div class="gallery-toolbar">
+        <input id="searchInput" type="search" placeholder="タイトル・作者・タグを検索">
+        <select id="sortSelect" aria-label="並び順">
+          <option value="new">新着順</option>
+          <option value="rating">評価順</option>
+          <option value="download">ダウンロード順</option>
+        </select>
+        <button id="reloadButton" class="button secondary" type="button">再読み込み</button>
+      </div>
+
+      <div id="galleryStatus" class="gallery-status">作品を読み込み中...</div>
+      <div id="galleryGrid" class="gallery-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div id="postModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <button id="modalClose" class="modal-close" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div id="modalContent" class="modal-content"></div>
+    </div>
+  </div>
+
+  <footer>
+    © Forestsol / ウォルフィ<br>
+    Forest Craft Studio is an unofficial Minecraft creation tool and is not affiliated with Mojang or Microsoft.<br>
+    無断転載・無断使用・AI学習・自作発言・二次配布・商用利用禁止
+  </footer>
+
+  <script>
+    const API_BASE = "https://forest-craft-api.wdrk80.workers.dev";
+    const galleryGrid = document.getElementById("galleryGrid");
+    const galleryStatus = document.getElementById("galleryStatus");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const reloadButton = document.getElementById("reloadButton");
+    const modal = document.getElementById("postModal");
+    const modalClose = document.getElementById("modalClose");
+    const modalContent = document.getElementById("modalContent");
+
+    let activeCategory = "";
+    let posts = [];
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function categoryLabel(category) {
+      return ({ skin: "Skin", item: "Item", block: "Block", model: "3D Model" })[category] || category;
+    }
+
+    function placeholderIcon(category) {
+      return ({ skin: "🐺", item: "⚔️", block: "🧊", model: "🐉" })[category] || "🎨";
+    }
+
+    function formatDate(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      return new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "short", day: "numeric" }).format(date);
+    }
+
+    function tagsOf(post) {
+      if (Array.isArray(post.tags)) return post.tags;
+      try { return JSON.parse(post.tags_json || "[]"); } catch { return []; }
+    }
+
+    function filteredPosts() {
+      const query = searchInput.value.trim().toLowerCase();
+      let result = posts.filter((post) => {
+        if (!query) return true;
+        const haystack = [
+          post.title,
+          post.username,
+          post.display_name,
+          ...tagsOf(post)
+        ].join(" ").toLowerCase();
+        return haystack.includes(query);
+      });
+
+      const mode = sortSelect.value;
+      result = [...result].sort((a, b) => {
+        if (mode === "rating") return Number(b.rating_average || 0) - Number(a.rating_average || 0);
+        if (mode === "download") return Number(b.download_count || 0) - Number(a.download_count || 0);
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      });
+      return result;
+    }
+
+    function renderGallery() {
+      const items = filteredPosts();
+      galleryGrid.innerHTML = "";
+
+      if (!items.length) {
+        galleryGrid.innerHTML = '<div class="empty-state">条件に合う作品はまだありません。</div>';
+        return;
+      }
+
+      items.forEach((post) => {
+        const card = document.createElement("article");
+        card.className = "post-card";
+        card.tabIndex = 0;
+        const preview = post.preview_file_id
+          ? `<img src="${API_BASE}/files/${encodeURIComponent(post.preview_file_id)}" alt="${escapeHtml(post.title)}">`
+          : `<div class="post-placeholder">${placeholderIcon(post.category)}</div>`;
+
+        card.innerHTML = `
+          <div class="post-preview">
+            ${preview}
+            <span class="post-category">${escapeHtml(categoryLabel(post.category))}</span>
+          </div>
+          <div class="post-body">
+            <h3 class="post-title">${escapeHtml(post.title)}</h3>
+            <p class="post-author">by ${escapeHtml(post.display_name || post.username || "Unknown")}</p>
+            <p class="post-meta">★ ${Number(post.rating_average || 0).toFixed(1)} ・ ↓ ${Number(post.download_count || 0)} ・ ${escapeHtml(formatDate(post.created_at))}</p>
+          </div>`;
+
+        const open = () => openPost(post.id);
+        card.addEventListener("click", open);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            open();
+          }
+        });
+        galleryGrid.appendChild(card);
+      });
+    }
+
+    async function loadPosts() {
+      galleryStatus.textContent = "作品を読み込み中...";
+      galleryGrid.innerHTML = "";
+      try {
+        const params = new URLSearchParams({ limit: "50" });
+        if (activeCategory) params.set("category", activeCategory);
+        const response = await fetch(`${API_BASE}/posts?${params}`);
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "作品を取得できませんでした");
+        posts = data.posts || [];
+        galleryStatus.textContent = `${posts.length}件の作品を読み込みました。`;
+        renderGallery();
+      } catch (error) {
+        galleryStatus.textContent = "ギャラリーの読み込みに失敗しました。API接続を確認してください。";
+        galleryGrid.innerHTML = `<div class="empty-state">${escapeHtml(error.message || error)}</div>`;
+      }
+    }
+
+    async function openPost(postId) {
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      modalContent.innerHTML = '<div class="empty-state">作品情報を読み込み中...</div>';
+
+      try {
+        const response = await fetch(`${API_BASE}/posts/${encodeURIComponent(postId)}`);
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "作品を取得できませんでした");
+
+        const post = data.post;
+        const files = Array.isArray(post.files) ? post.files : [];
+        const previewFile = files.find((file) => file.file_role === "preview" || file.file_role === "thumbnail")
+          || files.find((file) => file.mime_type && file.mime_type.startsWith("image/"));
+        const preview = previewFile
+          ? `<img src="${API_BASE}/files/${encodeURIComponent(previewFile.id)}" alt="${escapeHtml(post.title)}">`
+          : `<div class="post-placeholder">${placeholderIcon(post.category)}</div>`;
+
+        const tags = tagsOf(post).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+        const fileRows = files.length
+          ? files.map((file) => `
+              <div class="file-row">
+                <span class="file-name">${escapeHtml(file.file_role)} ・ ${escapeHtml(file.original_filename)}</span>
+                <a class="download-link" href="${API_BASE}/download/${encodeURIComponent(file.id)}" data-no-transition>DL</a>
+              </div>`).join("")
+          : '<div class="empty-state">ダウンロード可能なファイルはありません。</div>';
+
+        modalContent.innerHTML = `
+          <div class="detail-grid">
+            <div class="detail-preview">${preview}</div>
+            <div class="detail-copy">
+              <p class="eyebrow">${escapeHtml(categoryLabel(post.category))}</p>
+              <h2 id="detailTitle">${escapeHtml(post.title)}</h2>
+              <p class="post-author">by ${escapeHtml(post.display_name || post.username || "Unknown")}</p>
+              <p class="post-meta">★ ${Number(post.rating_average || 0).toFixed(1)} (${Number(post.rating_count || 0)}件) ・ ↓ ${Number(post.download_count || 0)} ・ 👁 ${Number(post.view_count || 0)}</p>
+              <div class="tag-list">${tags}</div>
+              <p class="detail-description">${escapeHtml(post.description || "説明はありません。")}</p>
+              <div class="file-list">${fileRows}</div>
+              <div class="community-coming">★評価の投稿とコメント機能は、forestsol.jpのアカウント・ログイン機能と接続後に利用できるようになります。</div>
+            </div>
+          </div>`;
+      } catch (error) {
+        modalContent.innerHTML = `<div class="empty-state">${escapeHtml(error.message || error)}</div>`;
+      }
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".category-tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".category-tab").forEach((tab) => tab.classList.remove("active"));
+        button.classList.add("active");
+        activeCategory = button.dataset.category || "";
+        loadPosts();
+      });
+    });
+
+    searchInput.addEventListener("input", renderGallery);
+    sortSelect.addEventListener("change", renderGallery);
+    reloadButton.addEventListener("click", loadPosts);
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+
+    loadPosts();
+  </script>
+</body>
+</html>
