@@ -25,5 +25,14 @@ CREATE TABLE IF NOT EXISTS sessions (
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
 
+-- 以前の動作確認用投稿をD1から削除。
+-- R2の test.png はD1とは別なので、Cloudflare R2画面から1回だけ削除してください。
+DELETE FROM ratings WHERE post_id='post_test_001';
+DELETE FROM comments WHERE post_id='post_test_001';
+DELETE FROM download_daily WHERE post_id='post_test_001';
+DELETE FROM post_files WHERE post_id='post_test_001';
+DELETE FROM post_stats WHERE post_id='post_test_001';
+DELETE FROM posts WHERE id='post_test_001';
+
 -- Existing admin/test users may have no password_hash. They cannot log in with password
 -- until a password is explicitly set. This is intentional.
