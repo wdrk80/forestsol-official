@@ -1,6 +1,31 @@
 (function() {
   "use strict";
 
+  function ensureForestCraftNav() {
+    var navs = document.querySelectorAll("nav");
+    navs.forEach(function(nav) {
+      if (nav.querySelector('a[href="forestcraft.html"], a[href$="/forestcraft.html"]')) {
+        return;
+      }
+
+      var link = document.createElement("a");
+      link.href = "forestcraft.html";
+      link.textContent = "Forest Craft Studio";
+      link.className = "forestcraft-nav-link";
+
+      var farmLink = nav.querySelector('a[href="forestfarm.html"], a[href$="/forestfarm.html"]');
+      if (farmLink && farmLink.nextSibling) {
+        nav.insertBefore(link, farmLink.nextSibling);
+      } else if (farmLink) {
+        nav.appendChild(link);
+      } else {
+        nav.appendChild(link);
+      }
+    });
+  }
+
+  ensureForestCraftNav();
+
   var TRANSITION_DURATION = 920;
   var REDUCED_MOTION_DURATION = 180;
   var isLeaving = false;
@@ -8,6 +33,8 @@
 
   var style = document.createElement("style");
   style.textContent = [
+    ".forestcraft-nav-link { color: #9fe7c6 !important; }",
+    ".forestcraft-nav-link:hover { color: #ffd36b !important; }",
     ".paw-page-transition {",
     "  position: fixed;",
     "  inset: 0;",
@@ -213,5 +240,6 @@
     isLeaving = false;
     document.documentElement.classList.remove("paw-transition-leaving");
     overlay.classList.remove("is-active");
+    ensureForestCraftNav();
   });
 })();
