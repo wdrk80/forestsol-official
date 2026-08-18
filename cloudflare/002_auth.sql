@@ -1,13 +1,12 @@
 -- Forestsol account/auth migration
 -- Run once against D1 database: forest-craft-db
+-- Current users table already contains created_at / updated_at.
 
 ALTER TABLE users ADD COLUMN password_hash TEXT;
 ALTER TABLE users ADD COLUMN password_salt TEXT;
 ALTER TABLE users ADD COLUMN bio TEXT NOT NULL DEFAULT '';
-ALTER TABLE users ADD COLUMN created_at TEXT;
-ALTER TABLE users ADD COLUMN updated_at TEXT;
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username_unique ON users(username);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username_unique_ci ON users(lower(username));
 CREATE INDEX IF NOT EXISTS idx_posts_user_id ON posts(user_id);
 CREATE INDEX IF NOT EXISTS idx_posts_visibility_status ON posts(visibility,status);
 
@@ -25,8 +24,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
 
--- 以前の動作確認用投稿をD1から削除。
--- R2の test.png はD1とは別なので、Cloudflare R2画面から1回だけ削除してください。
+-- Remove the old test post from D1.
+-- R2 test.png is separate and should be deleted once from the R2 dashboard.
 DELETE FROM ratings WHERE post_id='post_test_001';
 DELETE FROM comments WHERE post_id='post_test_001';
 DELETE FROM download_daily WHERE post_id='post_test_001';
