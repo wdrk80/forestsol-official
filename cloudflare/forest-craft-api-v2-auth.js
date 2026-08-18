@@ -11,7 +11,7 @@ export default {
       const res=await route(request,env,url);
       const h=new Headers(res.headers);Object.entries(cors).forEach(([k,v])=>h.set(k,v));
       return new Response(res.body,{status:res.status,statusText:res.statusText,headers:h});
-    }catch(err){console.error(err);return json({ok:false,error:err.message||'Internal error'},500,cors)}
+    }catch(err){console.error(err);return json({ok:false,error:err.message||'Internal error'},Number(err&&err.status)||500,cors)}
   }
 };
 
