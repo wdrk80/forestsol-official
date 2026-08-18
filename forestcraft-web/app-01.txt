@@ -1,0 +1,62 @@
+'use strict';
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const SKIN_SCALE=14;
+const MODEL_SCALE=11;
+
+const state={
+ mode:'skin',tool:'brush',brushSize:1,brushShape:'square',color:'#8b5a3c',hsv:{h:24,s:.57,v:.55},autoTone:false,autoToneStrength:10,alphaLock:false,
+ partMirror:false,axisMirror:false,fillMode:'faceConnected',replaceScope:'face',
+ selection:null,selectionClipboard:null,
+ skin:{surface:'body',armModel:'classic',showBody:true,showOuter:true,grid:true,partVisibility:{head:true,body:true,rightArm:true,leftArm:true,rightLeg:true,leftLeg:true},layers:[],activeLayer:0,compare:null,compareVisible:true,compareOpacity:.35,view:{rx:-10,ry:28,zoom:1,panX:0,panY:0},previewView:{rx:0,ry:0,zoom:1,panX:0,panY:0}},
+ model:{bb:null,w:64,h:64,frames:[],frame:0,previewFrame:0,activeLayer:0,view:{rx:-12,ry:30,zoom:1,panX:0,panY:0},grid:true,playing:false,fps:5,timer:null},
+ item:{size:16,frames:[],frame:0,previewFrame:0,activeLayer:0,playing:false,fps:5,timer:null},
+ block:{size:16,face:'front',faces:{},frame:0,previewFrame:0,activeLayer:0,playing:false,fps:5,timer:null,view:{rx:-18,ry:32,zoom:1,panX:0,panY:0}},
+ undo:[],redo:[],maxHistory:50,recentColors:['#8b5a3c','#f0c9a2','#ffffff','#111111','#6f7680','#c44536']
+};
+
+function makeCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.imageSmoothingEnabled=false;return c;}
+function makeLayer(name,w,h){const canvas=makeCanvas(w,h);return {name,visible:true,opacity:1,canvas,ctx:canvas.getContext('2d',{willReadFrequently:true})};}
+function makeFrame(w,h,name='Base'){return {layers:[makeLayer(name,w,h)],activeLayer:0};}
+function initDocs(){state.skin.layers=[makeLayer('Base',64,64)];state.skin.activeLayer=0;state.item.frames=[makeFrame(16,16)];for(const f of ['front','back','left','right','top','bottom'])state.block.faces[f]={frames:[makeFrame(16,16)]};state.model.frames=[makeFrame(64,64)];}
+function activeFrame(){if(state.mode==='model')return state.model.frames[state.model.frame];if(state.mode==='item')return state.item.frames[state.item.frame];if(state.mode==='block')return state.block.faces[state.block.face].frames[state.block.frame];return null;}
+function getLayers(){if(state.mode==='skin')return state.skin.layers;return activeFrame().layers;}
+function getActiveLayerIndex(){if(state.mode==='skin')return state.skin.activeLayer;return activeFrame().activeLayer;}
+function setActiveLayerIndex(i){if(state.mode==='skin')state.skin.activeLayer=i;else activeFrame().activeLayer=i;}
+function dimsForMode(){if(state.mode==='skin')return [64,64];if(state.mode==='model')return [state.model.w,state.model.h];if(state.mode==='item')return [state.item.size,state.item.size];return [state.block.size,state.block.size];}
+function compositeLayers(layers,w,h){const c=makeCanvas(w,h),x=c.getContext('2d');for(const l of layers){if(!l.visible)continue;x.globalAlpha=l.opacity;x.drawImage(l.canvas,0,0);}x.globalAlpha=1;return c;}
+function activeComposite(){const [w,h]=dimsForMode();return compositeLayers(getLayers(),w,h);}
+function skinComposite(includeCompare=true){const c=compositeLayers(state.skin.layers,64,64),x=c.getContext('2d');if(includeCompare&&state.skin.compare&&state.skin.compareVisible){x.globalAlpha=state.skin.compareOpacity;x.drawImage(state.skin.compare,0,0);x.globalAlpha=1;}return c;}
+function modelComposite(frameIndex=state.model.frame){const f=state.model.frames[clamp(frameIndex,0,state.model.frames.length-1)];return compositeLayers(f.layers,state.model.w,state.model.h);}
+function itemComposite(frameIndex=state.item.frame){const f=state.item.frames[clamp(frameIndex,0,state.item.frames.length-1)];return compositeLayers(f.layers,state.item.size,state.item.size);}
+function blockComposite(face=state.block.face,frameIndex=state.block.frame){const d=state.block.faces[face],f=d.frames[clamp(frameIndex,0,d.frames.length-1)];return compositeLayers(f.layers,state.block.size,state.block.size);}
+
+const classicUV={
+ head:{body:{top:[8,0,8,8],bottom:[16,0,8,8],right:[0,8,8,8],front:[8,8,8,8],left:[16,8,8,8],back:[24,8,8,8]},outer:{top:[40,0,8,8],bottom:[48,0,8,8],right:[32,8,8,8],front:[40,8,8,8],left:[48,8,8,8],back:[56,8,8,8]}},
+ body:{body:{top:[20,16,8,4],bottom:[28,16,8,4],right:[16,20,4,12],front:[20,20,8,12],left:[28,20,4,12],back:[32,20,8,12]},outer:{top:[20,32,8,4],bottom:[28,32,8,4],right:[16,36,4,12],front:[20,36,8,12],left:[28,36,4,12],back:[32,36,8,12]}},
+ rightArm:{body:{top:[44,16,4,4],bottom:[48,16,4,4],right:[40,20,4,12],front:[44,20,4,12],left:[48,20,4,12],back:[52,20,4,12]},outer:{top:[44,32,4,4],bottom:[48,32,4,4],right:[40,36,4,12],front:[44,36,4,12],left:[48,36,4,12],back:[52,36,4,12]}},
+ rightLeg:{body:{top:[4,16,4,4],bottom:[8,16,4,4],right:[0,20,4,12],front:[4,20,4,12],left:[8,20,4,12],back:[12,20,4,12]},outer:{top:[4,32,4,4],bottom:[8,32,4,4],right:[0,36,4,12],front:[4,36,4,12],left:[8,36,4,12],back:[12,36,4,12]}},
+ leftLeg:{body:{top:[20,48,4,4],bottom:[24,48,4,4],right:[16,52,4,12],front:[20,52,4,12],left:[24,52,4,12],back:[28,52,4,12]},outer:{top:[4,48,4,4],bottom:[8,48,4,4],right:[0,52,4,12],front:[4,52,4,12],left:[8,52,4,12],back:[12,52,4,12]}},
+ leftArm:{body:{top:[36,48,4,4],bottom:[40,48,4,4],right:[32,52,4,12],front:[36,52,4,12],left:[40,52,4,12],back:[44,52,4,12]},outer:{top:[52,48,4,4],bottom:[56,48,4,4],right:[48,52,4,12],front:[52,52,4,12],left:[56,52,4,12],back:[60,52,4,12]}}
+};
+const slimUV=JSON.parse(JSON.stringify(classicUV));
+Object.assign(slimUV.rightArm.body,{top:[44,16,3,4],bottom:[47,16,3,4],right:[40,20,4,12],front:[44,20,3,12],left:[47,20,4,12],back:[51,20,3,12]});
+Object.assign(slimUV.rightArm.outer,{top:[44,32,3,4],bottom:[47,32,3,4],right:[40,36,4,12],front:[44,36,3,12],left:[47,36,4,12],back:[51,36,3,12]});
+Object.assign(slimUV.leftArm.body,{top:[36,48,3,4],bottom:[39,48,3,4],right:[32,52,4,12],front:[36,52,3,12],left:[39,52,4,12],back:[43,52,3,12]});
+Object.assign(slimUV.leftArm.outer,{top:[52,48,3,4],bottom:[55,48,3,4],right:[48,52,4,12],front:[52,52,3,12],left:[55,52,4,12],back:[59,52,3,12]});
+function skinUV(){return state.skin.armModel==='slim'?slimUV:classicUV}
+function partDims(name){const aw=state.skin.armModel==='slim'?3:4;return {head:[8,8,8],body:[8,12,4],rightArm:[aw,12,4],leftArm:[aw,12,4],rightLeg:[4,12,4],leftLeg:[4,12,4]}[name]}
+function partPos(name){const aw=state.skin.armModel==='slim'?3:4;return {head:[0,-10,0],body:[0,0,0],rightArm:[-(4+aw/2),0,0],leftArm:[(4+aw/2),0,0],rightLeg:[-2,12,0],leftLeg:[2,12,0]}[name]}
+function faceTransform(face,W,H,D){switch(face){case'front':return`translate(-50%,-50%) translateZ(${D/2}px)`;case'back':return`translate(-50%,-50%) rotateY(180deg) translateZ(${D/2}px)`;case'right':return`translate(-50%,-50%) rotateY(-90deg) translateZ(${W/2}px)`;case'left':return`translate(-50%,-50%) rotateY(90deg) translateZ(${W/2}px)`;case'top':return`translate(-50%,-50%) rotateX(90deg) translateZ(${H/2}px)`;case'bottom':return`translate(-50%,-50%) rotateX(-90deg) translateZ(${H/2}px)`;}}
+function createSkinFace(part,surface,face,uv,wpx,hpx,preview=false){const c=makeCanvas(uv[2],uv[3]);c.className=`skin-face ${preview?'preview-face ':''}${surface==='outer'?'outer-face':''}`;c.dataset.part=part;c.dataset.surface=surface;c.dataset.face=face;c.dataset.uv=uv.join(',');c.style.width=wpx+'px';c.style.height=hpx+'px';return c;}
+function makeFaceGridOverlay(cv,cellW,cellH,kind='skin'){const g=document.createElement('div');g.className=`face-grid-overlay ${kind}-grid-overlay ${cv.classList.contains('outer-face')?'outer-grid-overlay':''}`;g.dataset.part=cv.dataset.part||'';g.dataset.surface=cv.dataset.surface||'';g.style.width=cv.style.width;g.style.height=cv.style.height;g.style.transform=cv.style.transform;g.style.setProperty('--grid-x',Math.max(2,cellW)+'px');g.style.setProperty('--grid-y',Math.max(2,cellH)+'px');return g;}
+function buildSkinModelInto(root,interactive=true,preview=false){root.innerHTML='';const uv=skinUV();for(const name of ['head','body','rightArm','leftArm','rightLeg','leftLeg']){const [w,h,d]=partDims(name),[px,py,pz]=partPos(name);const part=document.createElement('div');part.className='part';part.dataset.part=name;part.style.transform=`translate3d(${px*SKIN_SCALE}px,${py*SKIN_SCALE}px,${pz*SKIN_SCALE}px)`;for(const surface of ['body','outer']){const inf=surface==='outer'?1.06:1,W=w*SKIN_SCALE*inf,H=h*SKIN_SCALE*inf,D=d*SKIN_SCALE*inf;for(const face of ['front','back','left','right','top','bottom']){const u=uv[name][surface][face],fw=(face==='left'||face==='right'?d:w)*SKIN_SCALE*inf,fh=(face==='top'||face==='bottom'?d:h)*SKIN_SCALE*inf;const cv=createSkinFace(name,surface,face,u,fw,fh,preview);cv.style.transform=faceTransform(face,W,H,D);if(interactive)bindSkinFace(cv);part.appendChild(cv);if(!preview){const grid=makeFaceGridOverlay(cv,fw/u[2],fh/u[3],'skin');part.appendChild(grid);}}}root.appendChild(part);}}
+function buildSkinPreviewModel(){const root=$('#previewRoot');if(!root)return;buildSkinModelInto(root,false,true);refreshSkin();updateSkinVisibility();}
+function buildSkinModel(){buildSkinModelInto($('#modelRoot'),true,false);buildSkinPreviewModel();updateSkinView();refreshSkin();updateSkinVisibility();}
+function refreshSkin(){const editComp=skinComposite(true),previewComp=skinComposite(false);$$('.skin-face').forEach(cv=>{const [x,y,w,h]=cv.dataset.uv.split(',').map(Number),ctx=cv.getContext('2d'),comp=cv.classList.contains('preview-face')?previewComp:editComp;ctx.clearRect(0,0,cv.width,cv.height);ctx.drawImage(comp,x,y,w,h,0,0,w,h)});const uv=$('#uvCanvas');const x=uv.getContext('2d');x.clearRect(0,0,64,64);x.drawImage(editComp,0,0);}
+function updateSkinVisibility(){$$('#modelRoot .part[data-part]').forEach(p=>p.style.display=state.skin.partVisibility[p.dataset.part]?'block':'none');$$('#previewRoot .part[data-part]').forEach(p=>p.style.display='block');$$('.skin-face').forEach(cv=>{const s=cv.dataset.surface;if(cv.classList.contains('preview-face')){cv.style.visibility='visible';cv.style.pointerEvents='none';cv.style.filter='none'}else{cv.style.visibility=(s==='body'?state.skin.showBody:state.skin.showOuter)?'visible':'hidden';cv.style.pointerEvents=s===state.skin.surface?'auto':'none';cv.style.filter=s===state.skin.surface?'none':'brightness(.92)'}});$$('.skin-grid-overlay').forEach(g=>{const s=g.dataset.surface,shown=(s==='body'?state.skin.showBody:state.skin.showOuter);g.style.visibility=(shown&&s===state.skin.surface)?'visible':'hidden'});$('#bodyModeBtn').classList.toggle('active',state.skin.surface==='body');$('#outerModeBtn').classList.toggle('active',state.skin.surface==='outer');$('#targetLayerLabel').textContent=state.skin.surface==='body'?'Body':'Outer layer';}
+function updateSkinView(){$('#modelRoot').style.transform=`rotateX(${state.skin.view.rx}deg) rotateY(${state.skin.view.ry}deg)`;$('#cameraPan').style.transform=`translate(${state.skin.view.panX}px,${state.skin.view.panY}px) scale(${state.skin.view.zoom})`;}
+function skinPoint(e,cv){const uv=cv.dataset.uv.split(',').map(Number),r=cv.getBoundingClientRect(),lx=clamp(Math.floor((e.clientX-r.left)/r.width*cv.width),0,cv.width-1),ly=clamp(Math.floor((e.clientY-r.top)/r.height*cv.height),0,cv.height-1);return {x:uv[0]+lx,y:uv[1]+ly,lx,ly};}
+function mirroredSkinTargets(cv,p){const out=[{part:cv.dataset.part,surface:cv.dataset.surface,face:cv.dataset.face,lx:p.lx,ly:p.ly}],part=cv.dataset.part,surface=cv.dataset.surface,face=cv.dataset.face;if(state.axisMirror){const u=skinUV()[part][surface][face];let mf=face,mlx=p.lx;if(face==='left')mf='right';else if(face==='right')mf='left';else mlx=u[2]-1-p.lx;out.push({part,surface,face:mf,lx:mlx,ly:p.ly});}if(state.partMirror&&(/Arm|Leg/.test(part))){const other=part.startsWith('right')?'left'+part.slice(5):'right'+part.slice(4);for(const t of [...out])out.push({...t,part:other});}const uniq=new Map();for(const t of out){const u=skinUV()[t.part]?.[t.surface]?.[t.face];if(!u)continue;const key=[t.part,t.face,t.lx,t.ly].join(':');uniq.set(key,{x:u[0]+clamp(t.lx,0,u[2]-1),y:u[1]+clamp(t.ly,0,u[3]-1),part:t.part,face:t.face});}return [...uniq.values()];}
