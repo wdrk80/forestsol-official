@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061511"/>
+      <stop offset="0.45" stop-color="#0c2f25"/>
+      <stop offset="1" stop-color="#071816"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff8c7" stop-opacity="0.98"/>
+      <stop offset="0.38" stop-color="#ffd66a" stop-opacity="0.76"/>
+      <stop offset="1" stop-color="#ffc44a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gridFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#84e0bb" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#84e0bb" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <pattern id="pixels" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#a5ecd0" stroke-opacity="0.08" stroke-width="1"/>
+      <rect x="3" y="3" width="4" height="4" fill="#ffd86f" fill-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="360" fill="url(#sky)"/>
+  <rect width="1600" height="360" fill="url(#pixels)"/>
+
+  <circle cx="1270" cy="92" r="138" fill="url(#sun)" filter="url(#softGlow)"/>
+  <circle cx="1270" cy="92" r="43" fill="#ffd976" fill-opacity="0.93"/>
+
+  <g opacity="0.48" fill="#0d392c">
+    <path d="M0 286L90 205l55 42 94-106 72 82 65-67 93 112 83-76 74 73 72-63 82 60 93-98 91 106 84-77 92 75 87-112 103 127 89-82 91 67 104-120 108 141v71H0Z"/>
+  </g>
+  <g opacity="0.72" fill="#08261e">
+    <path d="M0 310l70-64 52 36 58-79 57 71 69-53 62 61 64-89 69 97 75-55 59 53 74-83 76 91 63-41 67 49 71-105 85 113 85-60 78 65 77-96 75 95 68-55 71 57 75-82 75 87 69-48 71 63 76-96 93 116v78H0Z"/>
+  </g>
+  <g fill="#061a15">
+    <path d="M0 328l72-48 58 35 61-65 60 60 62-40 68 58 68-58 65 44 72-72 76 74 69-38 67 45 76-66 74 70 76-42 72 48 77-72 77 78 77-47 74 54 78-67 78 72 74-45 83 49 77-56 91 73v66H0Z"/>
+  </g>
+
+  <g transform="translate(1050 170)" opacity="0.82">
+    <path d="M0 70 70 30l72 40-72 40Z" fill="#72cfa8" fill-opacity="0.18" stroke="#9fe7c6" stroke-opacity="0.42"/>
+    <path d="M70 30v80" stroke="#9fe7c6" stroke-opacity="0.34"/>
+    <path d="m142 70-72 40L0 70" fill="none" stroke="#9fe7c6" stroke-opacity="0.34"/>
+    <path d="M168 33 216 6l50 27-50 28Z" fill="#ffd36b" fill-opacity="0.12" stroke="#ffd36b" stroke-opacity="0.35"/>
+    <path d="M216 6v55" stroke="#ffd36b" stroke-opacity="0.3"/>
+  </g>
+
+  <g transform="translate(113 68) rotate(-8)" fill="none" stroke-linecap="round">
+    <path d="M0 92C42 45 91 17 145 0" stroke="#7dd3b0" stroke-opacity="0.18" stroke-width="22"/>
+    <path d="M28 130C72 83 119 58 178 42" stroke="#ffd36b" stroke-opacity="0.12" stroke-width="13"/>
+  </g>
+
+  <g transform="translate(264 77)" fill="#b4f0d5" fill-opacity="0.24">
+    <ellipse cx="34" cy="56" rx="27" ry="22"/>
+    <ellipse cx="8" cy="28" rx="10" ry="14" transform="rotate(-24 8 28)"/>
+    <ellipse cx="27" cy="14" rx="10" ry="14" transform="rotate(-8 27 14)"/>
+    <ellipse cx="50" cy="14" rx="10" ry="14" transform="rotate(8 50 14)"/>
+    <ellipse cx="69" cy="28" rx="10" ry="14" transform="rotate(24 69 28)"/>
+  </g>
+
+  <g opacity="0.16" stroke="#d4f8e8" stroke-width="2" stroke-linecap="round">
+    <path d="M147 245 223 169"/><path d="M167 267 248 186"/><path d="M190 286 271 205"/>
+  </g>
+
+  <rect x="0" y="290" width="1600" height="70" fill="url(#gridFade)"/>
+  <path d="M0 322H1600" stroke="#94e0c1" stroke-opacity="0.18"/>
+</svg>
