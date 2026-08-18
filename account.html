@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ログイン・新規登録 | Forestsol</title><meta name="robots" content="noindex"><link rel="stylesheet" href="assets/account.css"><script src="assets/forest-auth.js" defer></script><script src="assets/page-transition.js" defer></script></head>
+<body>
+<header class="account-head"><div class="kicker">FORESTSOL ACCOUNT</div><h1>ログイン・新規登録</h1><p>Forest Craft Studioへの作品投稿は登録済みユーザーだけ利用できます。</p></header>
+<nav><a href="index.html">メンバー紹介</a><a href="history.html">森の歴史</a><a href="forestfarm.html">ForestFarm</a><a href="forestcraft.html">Forest Craft Studio</a><a class="account-current" href="account.html">ログイン</a></nav>
+<main>
+<div class="grid">
+<section class="panel"><h2>ログイン</h2><p>登録したユーザー名とパスワードでログインします。</p><form id="loginForm" class="form"><label class="field"><span>ユーザー名</span><input id="loginName" autocomplete="username" required maxlength="24"></label><label class="field"><span>パスワード</span><input id="loginPassword" type="password" autocomplete="current-password" required maxlength="128"></label><button class="primary" type="submit">ログイン</button></form><div id="loginStatus" class="status"></div></section>
+<section class="panel"><h2>新規登録</h2><p>登録後は作品投稿、マイページ、自分の作品管理、公開プロフィールを利用できます。</p><form id="registerForm" class="form"><label class="field"><span>ユーザー名</span><input id="regUsername" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" placeholder="3〜24文字 / 英数字 _ -"></label><label class="field"><span>表示名</span><input id="regDisplayName" required maxlength="40" placeholder="サイトに表示する名前"></label><label class="field"><span>パスワード</span><input id="regPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="8文字以上"></label><label class="field"><span>パスワード確認</span><input id="regPassword2" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label><button class="primary" type="submit">アカウントを作成</button></form><div id="registerStatus" class="status"></div></section>
+</div>
+<section class="panel" style="margin-top:18px"><h3>投稿について</h3><div class="notice">未登録・未ログインの状態では作品の閲覧とダウンロードのみ利用できます。作品投稿、編集、削除、非公開作品の管理はログイン中の本人だけが行えます。</div></section>
+</main>
+<script>
+window.addEventListener('DOMContentLoaded',async()=>{
+ const next=new URLSearchParams(location.search).get('next');
+ const safeNext=next&&/^[a-zA-Z0-9_./?-]+$/.test(next)?next:'mypage.html';
+ const existing=await ForestAuth.me(false);if(existing){location.replace(safeNext);return}
+ const set=(id,msg,kind='')=>{const el=document.getElementById(id);el.textContent=msg;el.className='status '+kind};
+ document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;set('loginStatus','ログイン中…');try{await ForestAuth.login(document.getElementById('loginName').value.trim(),document.getElementById('loginPassword').value);set('loginStatus','ログインしました。','good');location.href=safeNext}catch(err){set('loginStatus',err.message,'bad')}finally{b.disabled=false}});
+ document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPassword').value,p2=document.getElementById('regPassword2').value;if(p!==p2){set('registerStatus','パスワードが一致しません。','bad');return}const b=e.submitter;b.disabled=true;set('registerStatus','アカウント作成中…');try{await ForestAuth.register({username:document.getElementById('regUsername').value.trim(),display_name:document.getElementById('regDisplayName').value.trim(),password:p});set('registerStatus','登録しました。','good');location.href=safeNext}catch(err){set('registerStatus',err.message,'bad')}finally{b.disabled=false}});
+});
+</script></body></html>
