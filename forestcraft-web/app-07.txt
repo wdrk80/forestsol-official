@@ -1,0 +1,43 @@
+ublishApiBase()+path,options);let data;try{data=await res.json()}catch{data={ok:false,error:`HTTP ${res.status}`}};if(!res.ok||data.ok===false)throw new Error(data.error||`HTTP ${res.status}`);return data;
+}
+async function testPublishApi(){
+  setPublishProgress('APIへ接続中…');
+  try{const a=await apiJson('/');const b=await apiJson('/db-test');setPublishProgress(`${a.name||'API'} v${a.version||'?'} / DB投稿数 ${b.post_count ?? '?'}`,'good')}
+  catch(err){setPublishProgress(`接続失敗: ${err.message}`,'bad')}
+}
+async function submitPublish(){
+  if(publishState.busy)return;
+  const title=$('#publishTitle').value.trim(),description=$('#publishDescription').value,tags=$('#publishTags').value.split(',').map(x=>x.trim()).filter(Boolean),visibility=$('#publishVisibility').value,userId=$('#publishUserId').value.trim(),secret=$('#publishSecret').value;
+  if(!title)return setPublishProgress('タイトルを入力してください。','bad');
+  if(!userId)return setPublishProgress('投稿ユーザーIDを入力してください。','bad');
+  if(!secret)return setPublishProgress('管理キー（UPLOAD_SECRET）を入力してください。','bad');
+  if(!publishState.files.length)return setPublishProgress('投稿できるファイルがありません。','bad');
+  publishState.busy=true;$('#publishSubmitBtn').disabled=true;$('#publishCancelBtn').disabled=true;$('#publishCloseBtn').disabled=true;
+  const info=publishModeInfo(publishState.mode),headers={'Authorization':`Bearer ${secret}`,'Content-Type':'application/json'};
+  try{
+    setPublishProgress('作品情報をD1へ登録中…');
+    const body={user_id:userId,title,description,category:info.category,tags,visibility};
+    if(info.category==='skin')body.classic_slim=state.skin.armModel;
+    const postData=await apiJson('/posts',{method:'POST',headers,body:JSON.stringify(body)});
+    const postId=postData.post.id;
+    for(let i=0;i<publishState.files.length;i++){
+      const f=publishState.files[i];
+      setPublishProgress(`ファイル ${i+1}/${publishState.files.length} をR2へ送信中… ${f.filename}`);
+      const path=`/posts/${encodeURIComponent(postId)}/files?type=${encodeURIComponent(f.storage)}&role=${encodeURIComponent(f.role)}&filename=${encodeURIComponent(f.filename)}`;
+      await apiJson(path,{method:'POST',headers:{'Authorization':`Bearer ${secret}`,'Content-Type':f.mime},body:f.blob});
+    }
+    setPublishProgress(`投稿完了！ 作品ID: ${postId}`,'good');
+    $('#publishSecret').value='';
+    setStatus(`サイト投稿完了: ${title}`);
+  }catch(err){setPublishProgress(`投稿失敗: ${err.message}`,'bad')}
+  finally{publishState.busy=false;$('#publishSubmitBtn').disabled=false;$('#publishCancelBtn').disabled=false;$('#publishCloseBtn').disabled=false;}
+}
+function bindPublishUI(){
+  $$('.publish-btn').forEach(b=>b.addEventListener('click',()=>openPublishModal(b.dataset.publishMode)));
+  $('#publishCloseBtn').onclick=closePublishModal;$('#publishCancelBtn').onclick=closePublishModal;$('#publishTestBtn').onclick=testPublishApi;$('#publishSubmitBtn').onclick=submitPublish;
+  $('#publishModal').addEventListener('pointerdown',e=>{if(e.target.id==='publishModal')closePublishModal()});
+  window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#publishModal').classList.contains('hidden'))closePublishModal()});
+}
+
+function init(){initDocs();bindUI();bindPublishUI();setColor(state.color,false);renderRecentColors();initBlockTabs();buildBlockCube();buildSkinModel();resizePixelCanvas($('#itemCanvas'),16);resizePixelCanvas($('#itemPreviewCanvas'),16);resizePixelCanvas($('#blockCanvas'),16);refreshItem();refreshBlock();renderLayers();updateFrameLabels();updateUndoButtons();updateSkinPreviewView();updateBlockView();updateSelectionUI();setStatus('準備完了')}
+init();
