@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forest Craft Studio Web v1.1.0 | Forestsol</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon-emoji" aria-hidden="true">🐾</span> Forest Craft Studio <span class="version">Web v1.1.0</span></div>
+    <nav class="mode-tabs">
+      <button class="mode-tab active" data-mode="skin">Skin</button>
+      <button class="mode-tab" data-mode="model">3D Model</button>
+      <button class="mode-tab" data-mode="item">Item</button>
+      <button class="mode-tab" data-mode="block">Block</button>
+    </nav>
+    <a class="site-return" href="../forestcraft.html">← Forestsolへ戻る</a>
+    <div id="saveState" class="save-state">Ready</div>
+  </header>
+
+  <main class="workspace">
+    <aside class="toolbar panel scroll-panel">
+      <section>
+        <h3>ツール</h3>
+        <div class="tool-grid">
+          <button class="tool active" data-tool="brush" title="ブラシ (B)">✏️<span>ブラシ</span></button>
+          <button class="tool" data-tool="eraser" title="消しゴム (E)">⌫<span>消し</span></button>
+          <button class="tool" data-tool="fill" title="塗りつぶし (G)">🪣<span>塗潰</span></button>
+          <button class="tool" data-tool="eyedropper" title="スポイト (I / Alt)">💧<span>スポイト</span></button>
+          <button class="tool" data-tool="select" title="範囲選択 (M)">▧<span>選択</span></button>
+          <button class="tool" data-tool="replace" title="色置換">⇄<span>色置換</span></button>
+        </div>
+      </section>
+
+      <section>
+        <h3>ブラシ</h3>
+        <div class="row-between"><label>サイズ</label><span id="brushSizeLabel" class="value-label">1 px</span></div>
+        <input id="brushSize" type="range" min="1" max="8" value="1" />
+        <div class="shape-row">
+          <button class="brush-shape active" data-shape="square" title="四角">■</button>
+          <button class="brush-shape" data-shape="circle" title="丸">●</button>
+          <button class="brush-shape" data-shape="diamond" title="ダイヤ">◆</button>
+          <button class="brush-shape" data-shape="cross" title="クロス">✚</button>
+        </div>
+        <label class="toggle-line"><input id="autoTone" type="checkbox" /> Auto Tone</label>
+        <label>Auto Tone 強度</label>
+        <select id="autoToneStrength">
+          <option value="5">弱</option><option value="10" selected>標準</option><option value="18">強</option>
+        </select>
+      </section>
+
+      <section>
+        <h3>ツールオプション</h3>
+        <label>塗りつぶし範囲</label>
+        <select id="fillMode" class="full-select">
+          <option value="faceConnected" selected>面内の連続領域</option>
+          <option value="faceAll">面全体</option>
+          <option value="textureConnected">テクスチャ全体の連続領域</option>
+        </select>
+        <label>色置換範囲</label>
+        <select id="replaceScope" class="full-select">
+          <option value="face" selected>クリックした面だけ</option>
+          <option value="layer">現在の編集レイヤ全体</option>
+        </select>
+        <p class="small-note tool-help">色置換：置換後の色を選び、⇄ 色置換ツールで「変えたい色」をクリック。</p>
+        <div class="selection-box">
+          <div class="row-between"><strong class="mini-title">選択範囲</strong><span id="selectionInfo" class="value-label">なし</span></div>
+          <div class="selection-actions">
+            <button id="selectionCopyBtn">コピー</button><button id="selectionPasteBtn">貼付</button>
+            <button id="selectionFlipHBtn">左右反転</button><button id="selectionFlipVBtn">上下反転</button>
+            <button id="selectionDeleteBtn" class="danger-lite">削除</button><button id="selectionClearBtn">解除</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>カラー</h3>
+        <div class="color-pad-wrap">
+          <canvas id="svPad" width="184" height="154" aria-label="彩度・明度"></canvas>
+          <canvas id="huePad" width="22" height="154" aria-label="色相"></canvas>
+        </div>
+        <div class="color-pad-footer">
+          <div id="colorPreview" class="color-preview"></div>
+          <input id="colorHex" type="text" value="#8b5a3c" maxlength="7" />
+        </div>
+        <div id="recentColors" class="recent-colors"></div>
+      </section>
+
+      <section class="skin-only">
+        <h3>ミラー</h3>
+        <label class="toggle-line"><input id="partMirror" type="checkbox" /> 両手・両足ミラー</label>
+        <label class="toggle-line"><input id="axisMirror" type="checkbox" /> 部位内左右ミラー</label>
+      </section>
+
+      <section>
+        <h3>編集</h3>
+        <div class="edit-row"><button id="undoBtn">↶ Undo</button><button id="redoBtn">↷ Redo</button></div>
+        <label class="toggle-line"><input id="alphaLock" type="checkbox" /> 透明部分を保護</label>
+      </section>
+
+      <section class="shortcuts">
+        <h3>一時ショートカット</h3>
+        <div><kbd>Shift</kbd> + 左：消しゴム</div>
+        <div><kbd>Alt</kbd> + 左：スポイト</div>
+        <div>右ドラッグ：回転</div>
+        <div>ホイールドラッグ：移動</div>
+        <div>ホイール：ズーム</div>
+      </section>
+    </aside>
+
+    <section class="center-stage">
+      <div id="skinEditor" class="editor-pane active">
+        <div class="pagebar panel">
+          <strong>Skin</strong>
+          <div class="page-actions">
+            <button id="skinNewBtn">新規</button>
+            <button id="skinOpenBtn">スキン読込</button>
+            <button id="skinPreviewBtn">プレビュー</button>
+            <button id="skinExportBtn">PNG書出し</button>
+            <button id="skinProjectSaveBtn">Project保存</button>
+            <button id="skinProjectOpenBtn">Project読込</button>
+            <button class="publish-btn web-publish-disabled" data-publish-mode="skin" disabled title="サイト投稿はログイン機能完成後に有効になります">🌐 投稿（準備中）</button>
+          </div>
+        </div>
+        <div class="stage-body">
+          <div class="view-toolbar panel floating">
+            <div class="segment"><button id="bodyModeBtn" class="active">Body</button><button id="outerModeBtn">Outer layer</button></div>
+            <div class="segment"><button id="gridBtn" class="active" title="グリッド ON/OFF">Grid</button><button id="resetViewBtn">⟳</button><button id="toggleUVBtn">UV</button></div>
+          </div>
+          <div id="viewport" class="viewport skin-viewport grid-on">
+            <div id="cameraPan" class="camera-pan"><div id="modelRoot" class="model-root"></div></div>
+            <div class="hint">左: 描画　Shift+左: 消去　Alt+左: スポイト　右: 回転　ホイールドラッグ: 移動　ホイール: ズーム</div>
+          </div>
+          <div id="uvPanel" class="uv-panel panel hidden"><div class="uv-head"><strong>64×64 UV</strong><button id="closeUVBtn">×</button></div><canvas id="uvCanvas" width="64" height="64"></canvas></div>
+          <div id="skinPreview" class="skin-preview hidden">
+            <div class="preview-top-controls">
+              <button id="resetSkinPreviewBtn">⟳ 視点リセット</button>
+              <button id="closeSkinPreviewBtn">× 閉じる</button>
+            </div>
+            <div class="preview-world">
+              <div class="preview-sun"></div>
+              <div class="preview-cloud cloud-a"></div><div class="preview-cloud cloud-b"></div>
+              <div class="preview-ground"></div>
+              <div class="preview-shadow"></div>
+              <div id="previewCamera" class="preview-camera"><div id="previewRoot" class="model-root preview-root"></div></div>
+            </div>
+            <div class="preview-caption">右ドラッグ：回転　ホイールドラッグ：移動　ホイール：ズーム</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modelEditor" class="editor-pane">
+        <div class="pagebar panel">
+          <strong>3D Model Texture</strong>
+          <div class="page-actions">
+            <button id="bbOpenBtn">.bbmodel読込</button>
+            <button id="modelTextureOpenBtn">Texture PNG読込</button>
+            <button id="modelTextureExportBtn">Texture書出し</button>
+            <button id="modelMcmetaExportBtn">.mcmeta書出し</button>
+            <button class="publish-btn web-publish-disabled" data-publish-mode="model" disabled title="サイト投稿はログイン機能完成後に有効になります">🌐 投稿（準備中）</button>
+          </div>
+        </div>
+        <div class="stage-body">
+          <div class="model-empty" id="modelEmpty">
+            <div class="empty-card"><div class="empty-icon">◫</div><strong>.bbmodel を読み込んで開始</strong><span>MOB、剣、弓、装備などのCubeモデルを3D上で直接ペイント</span></div>
+          </div>
+          <div id="modelViewport" class="viewport model-viewport hidden">
+            <div id="bbCameraPan" class="camera-pan"><div id="bbRoot" class="model-root"></div></div>
+            <div class="hint">左: モデルへ直接描画　Shift+左: 消去　Alt+左: スポイト　右: 回転　ホイールドラッグ: 移動</div>
+          </div>
+          <div class="floating model-animation-bar panel hidden" id="modelAnimBar">
+            <button id="modelPrevFrame">◀</button><span id="modelFrameLabel">Frame 1 / 1</span><button id="modelNextFrame">▶</button>
+            <button id="modelAddFrame">＋Frame</button><button id="modelDupFrame">複製</button><button id="modelDelFrame">削除</button>
+            <button id="modelPlayBtn">▶ 再生</button><label>FPS <input id="modelFps" type="number" min="1" max="20" value="5" /></label>
+          </div>
+        </div>
+      </div>
+
+      <div id="itemEditor" class="editor-pane">
+        <div class="pagebar panel">
+          <strong>Item Texture</strong>
+          <div class="page-actions">
+            <label class="inline-field">サイズ <select id="itemSize"><option>16</option><option>32</option><option>64</option><option>128</option><option>256</option></select></label>
+            <button id="itemNewBtn">新規</button><button id="itemOpenBtn">PNG読込</button><button id="itemExportBtn">PNG書出し</button><button id="itemMcmetaBtn">.mcmeta書出し</button><button class="publish-btn web-publish-disabled" data-publish-mode="item" disabled title="サイト投稿はログイン機能完成後に有効になります">🌐 投稿（準備中）</button>
+          </div>
+        </div>
+        <div class="pixel-workspace">
+          <div class="panel pixel-editor-card">
+            <div class="frame-toolbar"><button id="itemPrevFrame">◀</button><span id="itemFrameLabel">Frame 1 / 1</span><button id="itemNextFrame">▶</button><button id="itemAddFrame">＋</button><button id="itemDupFrame">複製</button><button id="itemDelFrame">削除</button></div>
+            <canvas id="itemCanvas" width="16" height="16" class="pixel-canvas"></canvas>
+          </div>
+          <div class="panel anim-preview-card">
+            <h3>Animation Preview</h3>
+            <canvas id="itemPreviewCanvas" width="16" height="16" class="anim-preview"></canvas>
+            <button id="itemPlayBtn" class="full">▶ 再生</button>
+            <label>FPS <input id="itemFps" type="number" min="1" max="20" value="5" /></label>
+            <p class="small-note">縦長フレームPNGとして書き出し。Minecraft用 .mcmeta も生成できます。</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="blockEditor" class="editor-pane">
+        <div class="pagebar panel">
+          <strong>Block Texture</strong>
+          <div class="page-actions">
+            <label class="inline-field">サイズ <select id="blockSize"><option>16</option><option>32</option><option>64</option><option>128</option><option>256</option></select></label>
+            <button id="blockNewBtn">新規</button><button id="blockOpenBtn">PNG読込</button><button id="blockExportBtn">現在面PNG</button><button id="blockMcmetaBtn">.mcmeta書出し</button><button class="publish-btn web-publish-disabled" data-publish-mode="block" disabled title="サイト投稿はログイン機能完成後に有効になります">🌐 投稿（準備中）</button>
+          </div>
+        </div>
+        <div class="pixel-workspace block-workspace">
+          <div class="panel pixel-editor-card">
+            <div id="blockFaceTabs" class="block-face-tabs"></div>
+            <div class="frame-toolbar"><button id="blockPrevFrame">◀</button><span id="blockFrameLabel">Frame 1 / 1</span><button id="blockNextFrame">▶</button><button id="blockAddFrame">＋</button><button id="blockDupFrame">複製</button><button id="blockDelFrame">削除</button></div>
+            <canvas id="blockCanvas" width="16" height="16" class="pixel-canvas"></canvas>
+          </div>
+          <div class="panel anim-preview-card">
+            <div class="row-between block-preview-head"><h3>Animated Block Preview</h3><button id="blockResetViewBtn">⟳</button></div>
+            <div id="blockPreviewScene" class="mini-scene block-preview-scene"><div id="blockCube" class="block-cube"></div><div class="mini-view-hint">右：回転　ホイールドラッグ：移動　ホイール：ズーム</div></div>
+            <button id="blockPlayBtn" class="full">▶ テクスチャ再生</button>
+            <label>FPS <input id="blockFps" type="number" min="1" max="20" value="5" /></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="rightbar panel scroll-panel">
+      <section id="skinDisplaySection" class="skin-only">
+        <h3>表示 / 非表示</h3>
+        <div class="layer-target-note">編集中: <strong id="targetLayerLabel">Body</strong></div>
+        <div class="parts-diagram">
+          <button class="part-toggle active" data-part="head" title="頭"></button>
+          <button class="part-toggle active arm left" data-part="leftArm" title="左腕"></button>
+          <button class="part-toggle active body" data-part="body" title="胴体"></button>
+          <button class="part-toggle active arm right" data-part="rightArm" title="右腕"></button>
+          <button class="part-toggle active leg left" data-part="leftLeg" title="左脚"></button>
+          <button class="part-toggle active leg right" data-part="rightLeg" title="右脚"></button>
+        </div>
+        <label class="toggle-line"><input id="showBody" type="checkbox" checked /> Body表示</label>
+        <label class="toggle-line"><input id="showOuter" type="checkbox" checked /> Outer表示</label>
+        <label>腕モデル</label><select id="armModel"><option value="classic">Classic / Steve</option><option value="slim">Slim / Alex</option></select>
+      </section>
+
+      <section id="modelInfoSection" class="model-only hidden-mode">
+        <h3>3D Model</h3>
+        <div id="modelInfo" class="small-note">未読込</div>
+        <label class="toggle-line"><input id="modelGrid" type="checkbox" checked /> 面グリッド</label>
+        <button id="modelResetViewBtn" class="full">視点リセット</button>
+      </section>
+
+      <section class="layers-section">
+        <div class="section-head"><h3>編集レイヤ</h3><button id="addLayerBtn" title="レイヤ追加">＋</button></div>
+        <div id="layerContext" class="small-note">Skin / Frame 1</div>
+        <div id="layerList" class="layer-list"></div>
+        <div class="layer-buttons">
+          <button id="duplicateLayerBtn">複製</button><button id="moveLayerUpBtn">▲</button><button id="moveLayerDownBtn">▼</button><button id="mergeDownBtn">下と統合</button><button id="deleteLayerBtn">削除</button>
+        </div>
+      </section>
+
+      <section id="compareSection" class="skin-only">
+        <div class="section-head"><h3>比較レイヤ</h3><button id="loadCompareBtn">読込</button></div>
+        <label class="toggle-line"><input id="compareVisible" type="checkbox" checked /> 表示</label>
+        <div class="row-between"><label>透明度</label><span id="compareOpacityLabel" class="value-label">35%</span></div>
+        <input id="compareOpacity" class="wide-range" type="range" min="0" max="100" value="35" />
+        <button id="clearCompareBtn" class="full">比較画像を外す</button>
+        <p class="small-note">🔒 比較専用。編集・PNG書出しには含みません。</p>
+      </section>
+
+      <section>
+        <h3>ステータス</h3>
+        <div id="statusText" class="status">準備完了</div>
+        <div class="autosave">自動保存: <span>ON</span></div>
+      </section>
+    </aside>
+  </main>
+</div>
+
+<input id="skinFileInput" type="file" accept="image/png" hidden />
+<input id="compareFileInput" type="file" accept="image/png" hidden />
+<input id="skinProjectInput" type="file" accept=".json,.wcsproj" hidden />
+<input id="bbFileInput" type="file" accept=".bbmodel,.json" hidden />
+<input id="modelTextureInput" type="file" accept="image/png" hidden />
+<input id="itemFileInput" type="file" accept="image/png" hidden />
+<input id="blockFileInput" type="file" accept="image/png" hidden />
+
+<div id="publishModal" class="modal-backdrop hidden">
+  <div class="publish-modal panel" role="dialog" aria-modal="true" aria-labelledby="publishTitleHeading">
+    <div class="publish-head">
+      <div>
+        <h2 id="publishTitleHeading">Forest Craft Studio に投稿</h2>
+        <div id="publishKindLabel" class="small-note">Skin</div>
+      </div>
+      <button id="publishCloseBtn" class="icon-close">×</button>
+    </div>
+    <div class="publish-grid">
+      <label>タイトル<input id="publishTitle" type="text" maxlength="120" placeholder="作品タイトル" /></label>
+      <label>タグ<input id="publishTags" type="text" placeholder="狼, 青, ファンタジー" /></label>
+      <label class="publish-span">説明<textarea id="publishDescription" rows="5" maxlength="10000" placeholder="作品の説明"></textarea></label>
+      <label>公開範囲<select id="publishVisibility"><option value="public" selected>公開</option><option value="unlisted">限定公開</option><option value="private">非公開</option></select></label>
+      <label>投稿ユーザーID<input id="publishUserId" type="text" value="user_admin_001" /></label>
+      <label class="publish-span">API<input id="publishApiUrl" type="text" value="https://forest-craft-api.wdrk80.workers.dev" /></label>
+      <label class="publish-span">管理キー（UPLOAD_SECRET）<input id="publishSecret" type="password" autocomplete="off" placeholder="Cloudflareの現在のUPLOAD_SECRETを貼り付け" /></label>
+    </div>
+    <div class="publish-note">🔒 現在はサイトログイン完成前の管理投稿モードです。管理キーはアプリ内に保存しません。後で forestsol.jp のログイン認証に置き換えます。</div>
+    <div id="publishFilesPreview" class="publish-files-preview"></div>
+    <div id="publishProgress" class="publish-progress">待機中</div>
+    <div class="publish-actions">
+      <button id="publishTestBtn">API接続確認</button>
+      <button id="publishCancelBtn">キャンセル</button>
+      <button id="publishSubmitBtn" class="primary">投稿する</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
