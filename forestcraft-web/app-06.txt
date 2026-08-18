@@ -1,0 +1,92 @@
+ase);refreshSkin()}}
+
+function bindModelFace(cv){let down=false,selStart=null;cv.addEventListener('pointerdown',e=>{if(e.button!==0||state.model.playing)return;e.stopPropagation();cv.setPointerCapture?.(e.pointerId);if(state.tool==='select'){down=true;selStart=modelPointDetailed(e,cv);beginSelectionVisual(e);return}if(state.tool==='eyedropper'||e.altKey){paintModelFace(e,cv);return}pushUndo();paintModelFace(e,cv);if(state.tool==='fill'||state.tool==='replace'){markChanged(state.tool==='fill'?'Model塗りつぶし':'Model色置換');down=false}else down=true});cv.addEventListener('pointermove',e=>{if(!down)return;if(state.tool==='select'){updateSelectionVisual(e);return}paintModelFace(e,cv)});cv.addEventListener('pointerup',e=>{if(state.tool==='select'&&down&&selStart){updateSelectionVisual(e);selectionFromModel(cv,selStart,modelPointDetailed(e,cv));down=false;return}if(down){down=false;markChanged('3D Texture編集')}});cv.addEventListener('pointercancel',()=>{down=false;selStart=null})}
+function paintModelFace(e,cv){const p=modelPointDetailed(e,cv),f=state.model.frames[state.model.frame],l=f.layers[f.activeLayer],bounds=modelFaceBounds(cv);if(state.tool==='eyedropper'||e.altKey){sampleAt(l.ctx,p.x,p.y);return}if(state.tool==='replace'){replaceExactColor(l.ctx,p.x,p.y,bounds);refreshModel();return}if(state.tool==='fill'){applyFill(l.ctx,p.x,p.y,bounds,e.shiftKey);refreshModel();return}const erase=state.tool==='eraser'||e.shiftKey;for(const [dx,dy] of brushOffsets(state.brushSize,state.brushShape))putPixel(l.ctx,p.x+dx,p.y+dy,state.model.w,state.model.h,erase);refreshModel()}
+
+function bindPixelCanvas(canvas,kind){let down=false,selStart=null;const point=e=>{const r=canvas.getBoundingClientRect(),size=kind==='item'?state.item.size:state.block.size;return{x:clamp(Math.floor((e.clientX-r.left)/r.width*size),0,size-1),y:clamp(Math.floor((e.clientY-r.top)/r.height*size),0,size-1)}};canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.setPointerCapture?.(e.pointerId);if(state.tool==='select'){down=true;selStart=point(e);beginSelectionVisual(e);return}if(state.tool==='eyedropper'||e.altKey){paintPixel(e,canvas,kind);return}pushUndo();paintPixel(e,canvas,kind);if(state.tool==='fill'||state.tool==='replace'){markChanged(kind+(state.tool==='fill'?'塗りつぶし':'色置換'));down=false}else down=true});canvas.addEventListener('pointermove',e=>{if(!down)return;if(state.tool==='select'){updateSelectionVisual(e);return}paintPixel(e,canvas,kind)});canvas.addEventListener('pointerup',e=>{if(state.tool==='select'&&down&&selStart){const b=point(e);updateSelectionVisual(e);setSelectionRect(Math.min(selStart.x,b.x),Math.min(selStart.y,b.y),Math.abs(selStart.x-b.x)+1,Math.abs(selStart.y-b.y)+1);down=false;return}if(down){down=false;markChanged(kind+'編集')}});canvas.addEventListener('pointercancel',()=>{down=false;selStart=null})}
+function paintPixel(e,canvas,kind){const r=canvas.getBoundingClientRect(),size=kind==='item'?state.item.size:state.block.size,x=clamp(Math.floor((e.clientX-r.left)/r.width*size),0,size-1),y=clamp(Math.floor((e.clientY-r.top)/r.height*size),0,size-1),f=kind==='item'?state.item.frames[state.item.frame]:state.block.faces[state.block.face].frames[state.block.frame],l=f.layers[f.activeLayer],bounds={x:0,y:0,w:size,h:size};if(state.tool==='eyedropper'||e.altKey){sampleAt(l.ctx,x,y);return}if(state.tool==='replace'){replaceExactColor(l.ctx,x,y,bounds);kind==='item'?refreshItem():refreshBlock();return}if(state.tool==='fill'){applyFill(l.ctx,x,y,bounds,e.shiftKey);kind==='item'?refreshItem():refreshBlock();return}const erase=state.tool==='eraser'||e.shiftKey;for(const [dx,dy] of brushOffsets(state.brushSize,state.brushShape))putPixel(l.ctx,x+dx,y+dy,size,size,erase);kind==='item'?refreshItem():refreshBlock()}
+function bindUVCanvas(){const c=$('#uvCanvas');let down=false,selStart=null;const point=e=>{const r=c.getBoundingClientRect();return{x:clamp(Math.floor((e.clientX-r.left)/r.width*64),0,63),y:clamp(Math.floor((e.clientY-r.top)/r.height*64),0,63)}};c.addEventListener('pointerdown',e=>{if(e.button!==0)return;c.setPointerCapture?.(e.pointerId);if(state.tool==='select'){down=true;selStart=point(e);beginSelectionVisual(e);return}if(state.tool==='eyedropper'||e.altKey){paintUV(e);return}pushUndo();paintUV(e);if(state.tool==='fill'||state.tool==='replace'){markChanged(state.tool==='fill'?'UV塗りつぶし':'UV色置換');down=false}else down=true});c.addEventListener('pointermove',e=>{if(!down)return;if(state.tool==='select'){updateSelectionVisual(e);return}paintUV(e)});c.addEventListener('pointerup',e=>{if(state.tool==='select'&&down&&selStart){const b=point(e);updateSelectionVisual(e);setSelectionRect(Math.min(selStart.x,b.x),Math.min(selStart.y,b.y),Math.abs(selStart.x-b.x)+1,Math.abs(selStart.y-b.y)+1);down=false;return}if(down){down=false;markChanged('UV編集')}});c.addEventListener('pointercancel',()=>{down=false;selStart=null})}
+function paintUV(e){const c=$('#uvCanvas'),r=c.getBoundingClientRect(),x=clamp(Math.floor((e.clientX-r.left)/r.width*64),0,63),y=clamp(Math.floor((e.clientY-r.top)/r.height*64),0,63),l=state.skin.layers[state.skin.activeLayer],bounds={x:0,y:0,w:64,h:64};if(state.tool==='eyedropper'||e.altKey){sampleAt(l.ctx,x,y);return}if(state.tool==='replace'){replaceExactColor(l.ctx,x,y,bounds);refreshSkin();return}if(state.tool==='fill'){applyFill(l.ctx,x,y,bounds,e.shiftKey);refreshSkin();return}const erase=state.tool==='eraser'||e.shiftKey;for(const [dx,dy] of brushOffsets(state.brushSize,state.brushShape))putPixel(l.ctx,x+dx,y+dy,64,64,erase);refreshSkin()}
+
+const SKIN_PREVIEW_PERSPECTIVE=12000;
+function updateSkinPreviewView(){const v=state.skin.previewView,c=$('#previewCamera'),r=$('#previewRoot');if(!c||!r)return;/* Real camera-style dolly zoom: move the 3D model toward/away from the camera on Z. Never scale the model geometry itself. The large perspective distance keeps Steve/Alex proportions stable even at strong zoom. */const zoom=clamp(v.zoom,.25,4),z=SKIN_PREVIEW_PERSPECTIVE*(1-1/zoom);c.style.transform=`translate3d(${v.panX}px,${v.panY}px,${z}px)`;r.style.transform=`translateY(-252px) rotateX(${v.rx}deg) rotateY(${v.ry}deg)`}
+function updateBlockView(){const v=state.block.view,root=$('#blockCube');if(root)root.style.transform=`translate(${v.panX}px,${v.panY}px) scale(${v.zoom}) rotateX(${v.rx}deg) rotateY(${v.ry}deg)`}
+
+
+
+// =============================================================
+// v1.1.0: Forest Craft Studio site publishing
+// Temporary admin publishing flow. UPLOAD_SECRET is never persisted.
+// This will later be replaced by forestsol.jp account authentication.
+// =============================================================
+const publishState={mode:'skin',files:[],busy:false};
+
+function publishModeInfo(mode){
+  return {
+    skin:{label:'Skin',category:'skin',storage:'skin'},
+    model:{label:'3D Model',category:'model',storage:'model'},
+    item:{label:'Item',category:'item',storage:'asset'},
+    block:{label:'Block',category:'block',storage:'asset'}
+  }[mode]||{label:mode,category:mode,storage:'asset'};
+}
+function niceBytes(n){n=Number(n)||0;if(n<1024)return `${n} B`;if(n<1024*1024)return `${(n/1024).toFixed(1)} KB`;return `${(n/1024/1024).toFixed(2)} MB`}
+function cleanBaseName(name){return String(name||'forest_craft').trim().replace(/[^a-zA-Z0-9._-]+/g,'_').replace(/^_+|_+$/g,'').slice(0,80)||'forest_craft'}
+function mcmetaBlobFor(fps){const frametime=Math.max(1,Math.round(20/Math.max(1,Number(fps)||5)));return new Blob([JSON.stringify({animation:{frametime,interpolate:false}},null,2)],{type:'application/json'})}
+async function animatedBlob(frames,size){const out=makeCanvas(size,size*frames.length),x=out.getContext('2d');frames.forEach((f,i)=>x.drawImage(compositeLayers(f.layers,size,size),0,i*size));return await canvasToBlob(out)}
+async function modelAnimatedBlob(){const out=makeCanvas(state.model.w,state.model.h*state.model.frames.length),x=out.getContext('2d');state.model.frames.forEach((f,i)=>x.drawImage(compositeLayers(f.layers,state.model.w,state.model.h),0,i*state.model.h));return await canvasToBlob(out)}
+
+async function buildPublishFiles(mode){
+  const files=[];
+  if(mode==='skin'){
+    const main=await canvasToBlob(skinComposite(false));
+    files.push({role:'main',storage:'skin',filename:'minecraft_skin.png',mime:'image/png',blob:main});
+    // Tiny duplicate preview is intentional: gallery can use /files/:id without counting a download.
+    files.push({role:'preview',storage:'skin',filename:'minecraft_skin_preview.png',mime:'image/png',blob:main});
+  }else if(mode==='item'){
+    const main=await animatedBlob(state.item.frames,state.item.size);
+    files.push({role:'main',storage:'asset',filename:'item_texture.png',mime:'image/png',blob:main});
+    const preview=await canvasToBlob(itemComposite(0));
+    files.push({role:'preview',storage:'asset',filename:'item_preview.png',mime:'image/png',blob:preview});
+    if(state.item.frames.length>1)files.push({role:'mcmeta',storage:'asset',filename:'item_texture.png.mcmeta',mime:'application/json',blob:mcmetaBlobFor(state.item.fps)});
+  }else if(mode==='block'){
+    for(const face of ['front','back','left','right','top','bottom']){
+      const d=state.block.faces[face];
+      const main=await animatedBlob(d.frames,state.block.size);
+      files.push({role:'texture',storage:'asset',filename:`block_${face}.png`,mime:'image/png',blob:main});
+      if(d.frames.length>1)files.push({role:'mcmeta',storage:'asset',filename:`block_${face}.png.mcmeta`,mime:'application/json',blob:mcmetaBlobFor(state.block.fps)});
+    }
+    const preview=await canvasToBlob(blockComposite('front',0));
+    files.push({role:'preview',storage:'asset',filename:'block_preview.png',mime:'image/png',blob:preview});
+  }else if(mode==='model'){
+    if(!state.model.bb)throw new Error('先に .bbmodel を読み込んでください。');
+    const bbBlob=new Blob([JSON.stringify(state.model.bb,null,2)],{type:'application/json'});
+    files.push({role:'bbmodel',storage:'model',filename:'model.bbmodel',mime:'application/json',blob:bbBlob});
+    const tex=await modelAnimatedBlob();
+    files.push({role:'texture',storage:'model',filename:'model_texture.png',mime:'image/png',blob:tex});
+    const preview=await canvasToBlob(modelComposite(0));
+    files.push({role:'preview',storage:'model',filename:'model_preview.png',mime:'image/png',blob:preview});
+    if(state.model.frames.length>1)files.push({role:'mcmeta',storage:'model',filename:'model_texture.png.mcmeta',mime:'application/json',blob:mcmetaBlobFor(state.model.fps)});
+  }
+  return files;
+}
+function setPublishProgress(text,kind=''){
+  const el=$('#publishProgress');if(!el)return;el.textContent=text;el.classList.remove('good','bad');if(kind)el.classList.add(kind);
+}
+function renderPublishFiles(){
+  const box=$('#publishFilesPreview');if(!box)return;
+  box.innerHTML=publishState.files.map(f=>`<div class="publish-file-row"><span class="publish-file-role">${f.role}</span><span class="publish-file-name">${f.filename}</span><span class="publish-file-size">${niceBytes(f.blob.size)}</span></div>`).join('')||'<div class="publish-file-row"><span>ファイルなし</span></div>';
+}
+async function openPublishModal(mode){
+  publishState.mode=mode;
+  const info=publishModeInfo(mode);
+  $('#publishKindLabel').textContent=`${info.label} → ${info.category}`;
+  if(!$('#publishTitle').value.trim())$('#publishTitle').value=`Untitled ${info.label}`;
+  $('#publishModal').classList.remove('hidden');
+  setPublishProgress('投稿ファイルを準備中…');
+  try{publishState.files=await buildPublishFiles(mode);renderPublishFiles();setPublishProgress(`${publishState.files.length}ファイルを投稿できます。`,'good')}
+  catch(err){publishState.files=[];renderPublishFiles();setPublishProgress(err.message||String(err),'bad')}
+}
+function closePublishModal(){if(publishState.busy)return;$('#publishModal').classList.add('hidden');$('#publishSecret').value='';}
+function publishApiBase(){return $('#publishApiUrl').value.trim().replace(/\/+$/,'')}
+async function apiJson(path,options={}){
+  const res=await fetch(p
