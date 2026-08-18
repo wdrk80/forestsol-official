@@ -2,9 +2,26 @@
   const styleParts=['style-01.txt','style-02.txt'];
   const appParts=['app-01.txt','app-02.txt','app-03.txt','app-04.txt','app-05.txt','app-06.txt','app-07.txt'];
   try{
-    const css=(await Promise.all(styleParts.map(async p=>{const r=await fetch(p,{cache:'no-store'});if(!r.ok)throw new Error(p+' '+r.status);return r.text()}))).join('');
-    const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
-    const js=(await Promise.all(appParts.map(async p=>{const r=await fetch(p,{cache:'no-store'});if(!r.ok)throw new Error(p+' '+r.status);return r.text()}))).join('');
+    const css=(await Promise.all(styleParts.map(async p=>{
+      const r=await fetch(p,{cache:'no-store'});
+      if(!r.ok)throw new Error(p+' '+r.status);
+      return r.text();
+    }))).join('');
+    const style=document.createElement('style');
+    style.textContent=css;
+    document.head.appendChild(style);
+
+    const chunks=await Promise.all(appParts.map(async p=>{
+      const r=await fetch(p,{cache:'no-store'});
+      if(!r.ok)throw new Error(p+' '+r.status);
+      return r.text();
+    }));
+
+    // app-01 は mirroredSkinTargets() の完全な修正版で終わっている。
+    // 旧分割時の残りが app-02 冒頭に重複していたため、その断片だけ除去する。
+    chunks[1]=chunks[1].replace(/^[\s\S]*?(?=function bindSkinFace\(cv\))/, '');
+
+    const js=chunks.join('');
     (0,eval)(js);
   }catch(err){
     console.error(err);
