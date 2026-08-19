@@ -3,243 +3,819 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ログイン・新規登録 | Forestsol</title>
+<title>アカウント作成 | Forest Sol</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="assets/account.css">
+
 <script src="assets/forest-auth.js" defer></script>
 <script src="assets/page-transition.js" defer></script>
+
 <style>
-body.auth-page{
+:root{
+  --paper:#f8e5bd;
+  --paper-light:#fff3d7;
+  --paper-dark:#d8b478;
+  --ink:#4a2e17;
+  --ink-soft:#745238;
+  --green:#496b2a;
+  --green-dark:#30491c;
+  --green-light:#72964a;
+  --gold:#c4974c;
+  --danger:#a54334;
+  --good:#446b2c;
+  --shadow:rgba(34,19,8,.32);
+}
+
+*{box-sizing:border-box}
+
+html{
+  min-height:100%;
+  background:#21160d;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
   background:
-    linear-gradient(rgba(1,12,8,.45),rgba(1,9,7,.82)),
-    url("images/forestcraft/back-image.png") center top/cover fixed no-repeat,
-    #03100b;
+    linear-gradient(rgba(34,22,12,.10),rgba(34,22,12,.30)),
+    url("images/backgrounds/login-background.png") center/cover fixed no-repeat;
 }
-.auth-page .account-head{
-  padding:34px 20px 30px;
-  background:linear-gradient(180deg,rgba(2,18,12,.48),rgba(2,14,10,.90));
+
+/* ===== Header ===== */
+.site-header{
+  width:100%;
+  background:#26180d;
+  border-bottom:1px solid rgba(255,232,184,.28);
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
 }
-.auth-page .account-head:before{
-  background:url("images/forestcraft/forestcraft-header-menu.png") center/cover no-repeat;
-  opacity:.26;
-}
-.auth-page .account-brand-icon{
-  width:82px;
-  height:82px;
-  margin-bottom:8px;
-}
-.auth-page main{
-  width:min(820px,calc(100% - 28px));
-  padding-top:42px;
-}
-.auth-page .account-stage{
+
+.header-art{
   display:block;
+  width:100%;
+  height:auto;
+  margin:0;
 }
-.auth-page .form-panel{
-  position:relative;
-  min-height:0;
-  padding:34px;
-  border-radius:30px;
-  border:1px solid rgba(124,239,183,.58);
+
+.site-nav{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:10px 14px 12px;
   background:
-    radial-gradient(circle at 8% 0,rgba(255,211,107,.10),transparent 28%),
-    radial-gradient(circle at 92% 5%,rgba(85,216,255,.12),transparent 30%),
-    linear-gradient(145deg,rgba(5,34,24,.96),rgba(3,18,14,.97));
-  box-shadow:0 28px 80px rgba(0,0,0,.50),0 0 0 1px rgba(126,238,183,.05) inset;
+    linear-gradient(180deg,rgba(31,20,10,.97),rgba(21,14,8,.98));
 }
-.auth-page .form-panel:before{
-  content:"";
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(162,255,207,.08);
+
+.site-nav a{
+  color:#f4dfb6;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:700;
+  padding:9px 14px;
+  border-radius:999px;
+  transition:.18s ease;
+}
+
+.site-nav a:hover{
+  color:#fff5da;
+  background:rgba(125,157,73,.18);
+}
+
+.site-nav a.current{
+  color:#fff8dd;
+  background:linear-gradient(180deg,#617f3c,#405c28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+/* ===== Main ===== */
+.account-main{
+  width:min(1120px,calc(100% - 28px));
+  margin:0 auto;
+  padding:44px 0 64px;
+}
+
+.account-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(380px,.95fr);
+  gap:28px;
+  align-items:start;
+}
+
+/* ===== Welcome panel ===== */
+.welcome-panel{
+  padding:28px;
+  border:1px solid rgba(255,238,198,.50);
   border-radius:22px;
-  pointer-events:none;
-  background:none;
+  background:
+    linear-gradient(180deg,rgba(44,29,15,.78),rgba(31,20,11,.88));
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+  color:#f7e7c5;
+  backdrop-filter:blur(5px);
 }
-.auth-page .form-panel:after{
+
+.welcome-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+  color:#d7c08e;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+
+.welcome-kicker::before{
   content:"";
-  position:absolute;
-  left:34px;
-  right:34px;
-  top:0;
-  height:3px;
-  border-radius:0 0 999px 999px;
-  background:linear-gradient(90deg,transparent,#ffd36b,#73efa8,#55d8ff,transparent);
-  opacity:.9;
+  width:9px;
+  height:9px;
+  border-radius:50% 0 50% 50%;
+  transform:rotate(-45deg);
+  background:#7c9f4c;
 }
-.auth-gate-head{
-  position:relative;
-  z-index:1;
-  text-align:center;
-  margin-bottom:22px;
+
+.welcome-panel h1{
+  margin:0 0 12px;
+  font-size:clamp(30px,5vw,48px);
+  line-height:1.18;
+  font-weight:800;
+  letter-spacing:-.03em;
 }
-.auth-gate-emblem{
-  width:92px;
-  height:92px;
-  margin:0 auto 10px;
+
+.welcome-panel>p{
+  margin:0;
+  color:#dfceb0;
+  line-height:1.9;
+  font-size:15px;
+}
+
+.benefit-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:24px;
+}
+
+.benefit{
+  min-height:118px;
+  padding:17px 16px;
+  border:1px solid rgba(222,194,141,.24);
+  border-radius:16px;
+  background:
+    linear-gradient(180deg,rgba(255,244,216,.08),rgba(255,244,216,.03));
+}
+
+.benefit-icon{
   display:grid;
   place-items:center;
-  border-radius:26px;
-  border:1px solid rgba(117,239,177,.34);
-  background:linear-gradient(145deg,rgba(15,62,43,.82),rgba(4,22,16,.92));
-  box-shadow:0 14px 34px rgba(0,0,0,.35),0 0 32px rgba(73,221,139,.10);
-  transform:rotate(-2deg);
+  width:34px;
+  height:34px;
+  margin-bottom:9px;
+  border-radius:50%;
+  background:#637f40;
+  color:#fff4d6;
+  font-family:Arial,sans-serif;
+  font-size:16px;
+  font-weight:900;
 }
-.auth-gate-emblem img{
-  width:78px;
-  height:78px;
-  object-fit:contain;
-  filter:drop-shadow(0 10px 16px rgba(0,0,0,.4));
+
+.benefit h3{
+  margin:0 0 5px;
+  color:#fff1d0;
+  font-size:15px;
 }
-.auth-gate-head h2{
-  margin:8px 0 7px;
-  font-size:clamp(27px,4vw,38px);
-  letter-spacing:-.035em;
+
+.benefit p{
+  margin:0;
+  color:#cbbda5;
+  font-size:12px;
+  line-height:1.65;
 }
-.auth-gate-head p{
-  max-width:620px;
-  margin:0 auto;
-  color:#bcd3c9;
-  line-height:1.75;
+
+/* ===== Account card ===== */
+.account-card{
+  position:relative;
+  overflow:hidden;
+  padding:30px;
+  border:1px solid rgba(112,72,34,.24);
+  border-radius:22px;
+  background:
+    linear-gradient(180deg,rgba(255,245,220,.97),rgba(238,210,159,.97));
+  box-shadow:
+    0 28px 70px var(--shadow),
+    inset 0 0 0 1px rgba(255,255,255,.42);
 }
-.craft-chips{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
+
+.account-card::before,
+.account-card::after{
+  content:"";
+  position:absolute;
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(112,145,66,.16),transparent 68%);
+}
+
+.account-card::before{top:-58px;left:-48px}
+.account-card::after{right:-55px;bottom:-62px}
+
+.card-brand,
+.tabs,
+.pane{
+  position:relative;
+  z-index:1;
+}
+
+.card-brand{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.leaf-mark{
+  display:inline-block;
+  width:22px;
+  height:13px;
+  margin-bottom:4px;
+  border-radius:100% 0 100% 0;
+  transform:rotate(-18deg);
+  background:linear-gradient(135deg,#779a4d,#496b2a);
+  box-shadow:0 2px 5px rgba(47,70,25,.22);
+}
+
+.card-brand strong{
+  display:block;
+  font-size:31px;
+  line-height:1.1;
+  letter-spacing:-.025em;
+}
+
+.card-brand small{
+  display:block;
+  margin-top:7px;
+  color:var(--ink-soft);
+  font-size:12px;
+  letter-spacing:.08em;
+}
+
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  padding:5px;
+  margin-bottom:23px;
+  border-radius:14px;
+  background:rgba(85,56,29,.10);
+}
+
+.tabs button{
+  min-height:43px;
+  border:0;
+  border-radius:10px;
+  color:#765434;
+  background:transparent;
+  font:inherit;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.tabs button.active{
+  color:#fff7de;
+  background:linear-gradient(180deg,#688744,#47652d);
+  box-shadow:0 5px 14px rgba(52,75,31,.18);
+}
+
+.pane[hidden]{display:none}
+
+.pane h2{
+  margin:0 0 6px;
+  font-size:24px;
+  letter-spacing:-.02em;
+}
+
+.pane>.lead{
+  margin:0 0 20px;
+  color:var(--ink-soft);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.form{
+  display:grid;
+  gap:15px;
+}
+
+.field{
+  display:grid;
   gap:7px;
-  margin-top:15px;
 }
-.craft-chips span{
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid rgba(126,221,180,.22);
-  background:rgba(255,255,255,.035);
-  color:#cfe6dc;
-  font-size:10px;
-  font-weight:850;
-  letter-spacing:.06em;
+
+.field span{
+  font-size:13px;
+  font-weight:800;
 }
-.auth-page .account-tabs{
+
+.field input{
+  width:100%;
+  height:48px;
+  padding:0 13px;
+  border:1px solid rgba(90,59,29,.26);
+  border-radius:10px;
+  outline:none;
+  color:var(--ink);
+  background:rgba(255,252,242,.82);
+  font:inherit;
+  transition:.18s ease;
+}
+
+.field input:focus{
+  border-color:#66843f;
+  background:#fffdf6;
+  box-shadow:0 0 0 3px rgba(93,126,55,.14);
+}
+
+.form-hint{
+  margin-top:-7px;
+  color:#87684c;
+  font-size:11px;
+  line-height:1.55;
+}
+
+.password-row{
   position:relative;
-  z-index:1;
-  padding:6px;
-  margin:0 0 24px;
-  border-radius:18px;
-  background:rgba(0,0,0,.22);
 }
-.auth-page .account-tabs button{
-  min-height:46px;
-  border-radius:13px;
-  transition:transform .15s,background .15s,border-color .15s;
+
+.password-row input{
+  padding-right:64px;
 }
-.auth-page .account-tabs button.active{
-  background:linear-gradient(135deg,rgba(159,231,198,.18),rgba(85,216,255,.08));
-  border-color:rgba(159,231,198,.42);
-  box-shadow:0 8px 24px rgba(0,0,0,.18);
+
+.password-toggle{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  border-radius:7px;
+  padding:6px 8px;
+  color:#4a682e;
+  background:transparent;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
 }
-.auth-page #loginPane,
-.auth-page #registerPane{
-  position:relative;
-  z-index:1;
-  max-width:640px;
-  margin:0 auto;
+
+.primary{
+  min-height:50px;
+  margin-top:3px;
+  border:1px solid #365021;
+  border-radius:11px;
+  color:#fff7df;
+  background:
+    linear-gradient(180deg,#708e48,#49682f);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 8px 20px rgba(50,73,29,.20);
+  font:inherit;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.04em;
+  cursor:pointer;
 }
-.auth-page #loginPane>h2,
-.auth-page #registerPane>h2{
-  font-size:25px;
-  margin-bottom:6px;
+
+.primary:hover{
+  filter:brightness(1.05);
 }
-.auth-page .field input{
-  min-height:52px;
-  border-radius:14px;
-  background:rgba(3,18,13,.82);
+
+.primary:disabled{
+  opacity:.6;
+  cursor:wait;
 }
-.auth-page .primary{
-  min-height:52px;
-  margin-top:4px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#b8f0d4,#69d0a5 58%,#55d8ff);
-  color:#052016;
-  box-shadow:0 12px 28px rgba(75,208,158,.18);
+
+.status{
+  min-height:20px;
+  margin-top:13px;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
 }
-.auth-page .legal-note{
-  margin-top:18px;
-  padding:16px 18px 0;
+
+.status.good{color:var(--good)}
+.status.bad{color:var(--danger)}
+
+.legal-note{
+  margin-top:17px;
+  padding-top:15px;
+  border-top:1px solid rgba(91,59,29,.18);
+  color:#826146;
+  font-size:11px;
+  line-height:1.7;
   text-align:center;
 }
-@media(max-width:620px){
-  .auth-page .form-panel{padding:24px 18px;border-radius:22px}
-  .auth-page .form-panel:after{left:20px;right:20px}
-  .auth-gate-emblem{width:76px;height:76px;border-radius:21px}
-  .auth-gate-emblem img{width:64px;height:64px}
-  .craft-chips{gap:5px}
-  .craft-chips span{font-size:9px;padding:5px 8px}
+
+.back-home{
+  display:block;
+  width:max-content;
+  margin:26px auto 0;
+  color:#fff0c9;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:800;
+  text-shadow:0 2px 4px rgba(0,0,0,.32);
+}
+
+/* ===== Responsive ===== */
+@media(max-width:850px){
+  .account-layout{
+    grid-template-columns:1fr;
+  }
+
+  .welcome-panel{
+    order:2;
+  }
+
+  .account-card{
+    order:1;
+  }
+}
+
+@media(max-width:580px){
+  body{
+    background-attachment:scroll;
+  }
+
+  .account-main{
+    width:min(100% - 20px,1120px);
+    padding:22px 0 42px;
+  }
+
+  .account-card,
+  .welcome-panel{
+    border-radius:17px;
+  }
+
+  .account-card{
+    padding:23px 18px;
+  }
+
+  .welcome-panel{
+    padding:22px 18px;
+  }
+
+  .benefit-grid{
+    grid-template-columns:1fr;
+  }
+
+  .site-nav{
+    justify-content:flex-start;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
+
+  .site-nav a{
+    flex:0 0 auto;
+  }
 }
 </style>
 </head>
-<body class="auth-page">
-<header class="account-head">
-  <img class="account-brand-icon" src="images/forestcraft/icon.png" alt="Forest Craft Studio">
-  <div class="kicker">FORESTSOL CREATOR ACCOUNT</div>
-  <h1>制作を、自分の森に残そう。</h1>
-  <p>Forest Craft Studioの投稿、マイページ、作品管理をひとつのアカウントにまとめます。</p>
+
+<body>
+
+<header class="site-header">
+  <img
+    class="header-art"
+    src="images/headers/forest-sol-header.png"
+    alt="Forest Sol"
+  >
+
+  <nav class="site-nav" aria-label="メインメニュー">
+    <a href="index.html">メンバー紹介</a>
+    <a href="history.html">森の歴史</a>
+    <a href="forestfarm.html">Forest Farm</a>
+    <a href="forestcraft.html">Forest Craft Studio</a>
+    <a class="current" href="account.html">アカウント</a>
+  </nav>
 </header>
-<nav>
-  <a href="index.html">メンバー紹介</a>
-  <a href="history.html">森の歴史</a>
-  <a href="forestfarm.html">ForestFarm</a>
-  <a href="forestcraft.html">Forest Craft Studio</a>
-  <a class="account-current" href="account.html">ログイン</a>
-</nav>
-<main>
-  <div class="account-stage">
-    <section class="panel form-panel">
-      <div class="auth-gate-head">
-        <div class="auth-gate-emblem"><img src="images/forestcraft/icon.png" alt=""></div>
-        <span class="account-badge">✦ FOREST CRAFT CREATOR GATE</span>
-        <h2>森の工房へようこそ</h2>
-        <p>作ったものを保存して、公開して、また続きを作る。ここがあなたの制作入口です。</p>
-        <div class="craft-chips" aria-hidden="true">
-          <span>SKIN</span><span>ITEM</span><span>BLOCK</span><span>3D MODEL</span>
+
+<main class="account-main">
+  <div class="account-layout">
+
+    <section class="welcome-panel">
+      <div class="welcome-kicker">FOREST SOL ACCOUNT</div>
+      <h1>ひとつのアカウントで、<br>森をもっと楽しもう。</h1>
+      <p>
+        Forest Solの各サービスをひとつのアカウントにつなげます。
+        制作した作品やプロフィールを管理して、いつでも続きを楽しめます。
+      </p>
+
+      <div class="benefit-grid">
+        <article class="benefit">
+          <div class="benefit-icon">✓</div>
+          <h3>安全に管理</h3>
+          <p>作品やプロフィール情報を自分のアカウントにまとめて管理。</p>
+        </article>
+
+        <article class="benefit">
+          <div class="benefit-icon">∞</div>
+          <h3>つながる</h3>
+          <p>Forest Solのサービスを同じアカウントで利用できます。</p>
+        </article>
+
+        <article class="benefit">
+          <div class="benefit-icon">◆</div>
+          <h3>作品を残す</h3>
+          <p>Forest Craft Studioで作った作品を保存・公開できます。</p>
+        </article>
+
+        <article class="benefit">
+          <div class="benefit-icon">★</div>
+          <h3>自由に楽しむ</h3>
+          <p>ゲーム、クリエイティブ、コミュニティを自分のペースで。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="account-card">
+      <div class="card-brand">
+        <span class="leaf-mark" aria-hidden="true"></span>
+        <strong>Forest Sol</strong>
+        <small>つくる。つながる。ひろがる。</small>
+      </div>
+
+      <div class="tabs">
+        <button id="showRegister" class="active" type="button">新規登録</button>
+        <button id="showLogin" type="button">ログイン</button>
+      </div>
+
+      <div id="registerPane" class="pane">
+        <h2>アカウント作成</h2>
+        <p class="lead">
+          必要な情報を入力して、Forest Solアカウントを作成します。
+        </p>
+
+        <form id="registerForm" class="form">
+          <label class="field">
+            <span>メールアドレス</span>
+            <input
+              id="regEmail"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength="254"
+              placeholder="you@example.com"
+            >
+          </label>
+
+          <label class="field">
+            <span>ユーザー名</span>
+            <input
+              id="regUsername"
+              autocomplete="username"
+              required
+              minlength="3"
+              maxlength="24"
+              pattern="[A-Za-z0-9_-]+"
+              placeholder="3〜24文字 / 英数字 _ -"
+            >
+          </label>
+          <div class="form-hint">
+            公開プロフィールURLや作者名の識別に使います。
+          </div>
+
+          <label class="field">
+            <span>表示名</span>
+            <input
+              id="regDisplayName"
+              required
+              maxlength="40"
+              placeholder="サイトに表示する名前"
+            >
+          </label>
+
+          <label class="field">
+            <span>パスワード</span>
+            <div class="password-row">
+              <input
+                id="regPassword"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="8"
+                maxlength="128"
+                placeholder="8文字以上"
+              >
+              <button class="password-toggle" data-target="regPassword" type="button">
+                表示
+              </button>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>パスワード確認</span>
+            <div class="password-row">
+              <input
+                id="regPassword2"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="8"
+                maxlength="128"
+                placeholder="もう一度入力"
+              >
+              <button class="password-toggle" data-target="regPassword2" type="button">
+                表示
+              </button>
+            </div>
+          </label>
+
+          <button class="primary" type="submit">アカウントを作成</button>
+        </form>
+
+        <div id="registerStatus" class="status" aria-live="polite"></div>
+
+        <div class="legal-note">
+          メールアドレスはログインに使用し、他のユーザーには公開しません。
         </div>
       </div>
 
-      <div class="account-tabs">
-        <button id="showLogin" class="active" type="button">ログイン</button>
-        <button id="showRegister" type="button">新規登録</button>
-      </div>
-
-      <div id="loginPane">
+      <div id="loginPane" class="pane" hidden>
         <h2>おかえりなさい</h2>
-        <p>登録したメールアドレスとパスワードでログインします。</p>
+        <p class="lead">
+          登録済みのメールアドレスとパスワードでログインします。
+        </p>
+
         <form id="loginForm" class="form">
-          <label class="field"><span>メールアドレス</span><input id="loginName" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
-          <label class="field"><span>パスワード</span><input id="loginPassword" type="password" autocomplete="current-password" required maxlength="128"></label>
+          <label class="field">
+            <span>メールアドレス</span>
+            <input
+              id="loginName"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength="254"
+              placeholder="you@example.com"
+            >
+          </label>
+
+          <label class="field">
+            <span>パスワード</span>
+            <div class="password-row">
+              <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                required
+                maxlength="128"
+              >
+              <button class="password-toggle" data-target="loginPassword" type="button">
+                表示
+              </button>
+            </div>
+          </label>
+
           <button class="primary" type="submit">ログイン</button>
         </form>
-        <div id="loginStatus" class="status"></div>
-      </div>
 
-      <div id="registerPane" hidden>
-        <h2>クリエイター登録</h2>
-        <p>メールアドレスはログイン用です。公開ページには表示されません。</p>
-        <form id="registerForm" class="form">
-          <label class="field"><span>メールアドレス</span><input id="regEmail" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
-          <label class="field"><span>ユーザー名</span><input id="regUsername" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" placeholder="3〜24文字 / 英数字 _ -"></label>
-          <div class="form-hint">公開プロフィールURLや作者名の識別に使います。</div>
-          <label class="field"><span>表示名</span><input id="regDisplayName" required maxlength="40" placeholder="サイトに表示する名前"></label>
-          <label class="field"><span>パスワード</span><input id="regPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="8文字以上"></label>
-          <label class="field"><span>パスワード確認</span><input id="regPassword2" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
-          <button class="primary" type="submit">アカウントを作成</button>
-        </form>
-        <div id="registerStatus" class="status"></div>
-        <div class="legal-note">登録すると、Forest Craft Studioから作品投稿・マイページ・公開プロフィールを利用できます。メールアドレスは他ユーザーには公開しません。</div>
+        <div id="loginStatus" class="status" aria-live="polite"></div>
       </div>
     </section>
   </div>
+
+  <a class="back-home" href="index.html">← Forest Sol トップへ戻る</a>
 </main>
+
 <script>
-window.addEventListener('DOMContentLoaded',async()=>{const next=new URLSearchParams(location.search).get('next');const safeNext=next&&/^[a-zA-Z0-9_./?-]+$/.test(next)?next:'mypage.html';const existing=await ForestAuth.me(false);if(existing){location.replace(safeNext);return}const loginPane=document.getElementById('loginPane'),registerPane=document.getElementById('registerPane'),showLogin=document.getElementById('showLogin'),showRegister=document.getElementById('showRegister');function tab(mode){const isLogin=mode==='login';loginPane.hidden=!isLogin;registerPane.hidden=isLogin;showLogin.classList.toggle('active',isLogin);showRegister.classList.toggle('active',!isLogin)}showLogin.onclick=()=>tab('login');showRegister.onclick=()=>tab('register');const set=(id,msg,kind='')=>{const el=document.getElementById(id);el.textContent=msg;el.className='status '+kind};document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;set('loginStatus','ログイン中…');try{await ForestAuth.login(document.getElementById('loginName').value.trim(),document.getElementById('loginPassword').value);set('loginStatus','ログインしました。','good');location.href=safeNext}catch(err){set('loginStatus',err.message,'bad')}finally{b.disabled=false}});document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPassword').value,p2=document.getElementById('regPassword2').value;if(p!==p2){set('registerStatus','パスワードが一致しません。','bad');return}const b=e.submitter;b.disabled=true;set('registerStatus','アカウント作成中…');try{await ForestAuth.register({email:document.getElementById('regEmail').value.trim(),username:document.getElementById('regUsername').value.trim(),display_name:document.getElementById('regDisplayName').value.trim(),password:p});set('registerStatus','登録しました。','good');location.href=safeNext}catch(err){set('registerStatus',err.message,'bad')}finally{b.disabled=false}})});
+window.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(location.search);
+  const next = params.get("next");
+  const safeNext =
+    next && /^[a-zA-Z0-9_./?-]+$/.test(next)
+      ? next
+      : "mypage.html";
+
+  const registerPane = document.getElementById("registerPane");
+  const loginPane = document.getElementById("loginPane");
+  const showRegister = document.getElementById("showRegister");
+  const showLogin = document.getElementById("showLogin");
+
+  function setTab(mode) {
+    const register = mode === "register";
+
+    registerPane.hidden = !register;
+    loginPane.hidden = register;
+
+    showRegister.classList.toggle("active", register);
+    showLogin.classList.toggle("active", !register);
+  }
+
+  showRegister.addEventListener("click", () => setTab("register"));
+  showLogin.addEventListener("click", () => setTab("login"));
+
+  document.querySelectorAll(".password-toggle").forEach(button => {
+    button.addEventListener("click", () => {
+      const input = document.getElementById(button.dataset.target);
+      const visible = input.type === "text";
+
+      input.type = visible ? "password" : "text";
+      button.textContent = visible ? "表示" : "隠す";
+    });
+  });
+
+  function setStatus(id, message, kind = "") {
+    const el = document.getElementById(id);
+    el.textContent = message;
+    el.className = "status " + kind;
+  }
+
+  try {
+    const existing = await ForestAuth.me(false);
+    if (existing) {
+      location.replace(safeNext);
+      return;
+    }
+  } catch (_) {
+    // 未ログイン状態ならそのまま画面を表示
+  }
+
+  document
+    .getElementById("registerForm")
+    .addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const password = document.getElementById("regPassword").value;
+      const password2 = document.getElementById("regPassword2").value;
+
+      if (password !== password2) {
+        setStatus(
+          "registerStatus",
+          "パスワードが一致しません。",
+          "bad"
+        );
+        return;
+      }
+
+      const button = event.submitter;
+      button.disabled = true;
+
+      setStatus("registerStatus", "アカウント作成中…");
+
+      try {
+        await ForestAuth.register({
+          email: document.getElementById("regEmail").value.trim(),
+          username: document.getElementById("regUsername").value.trim(),
+          display_name: document.getElementById("regDisplayName").value.trim(),
+          password
+        });
+
+        setStatus(
+          "registerStatus",
+          "アカウントを作成しました。",
+          "good"
+        );
+
+        location.href = safeNext;
+      } catch (error) {
+        setStatus(
+          "registerStatus",
+          error.message || "アカウントを作成できませんでした。",
+          "bad"
+        );
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+  document
+    .getElementById("loginForm")
+    .addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const button = event.submitter;
+      button.disabled = true;
+
+      setStatus("loginStatus", "ログイン中…");
+
+      try {
+        await ForestAuth.login(
+          document.getElementById("loginName").value.trim(),
+          document.getElementById("loginPassword").value
+        );
+
+        setStatus("loginStatus", "ログインしました。", "good");
+        location.href = safeNext;
+      } catch (error) {
+        setStatus(
+          "loginStatus",
+          error.message || "ログインできませんでした。",
+          "bad"
+        );
+      } finally {
+        button.disabled = false;
+      }
+    });
+});
 </script>
+
 </body>
 </html>
