@@ -56,7 +56,7 @@ body{
   min-height:330px;
   overflow:hidden;
   background:
-    url("images/headers/mypage-home-header.png")
+    url("images/headers/mypage-header-base.png")
     center top / 100% auto no-repeat;
   box-shadow:0 14px 38px rgba(0,0,0,.42);
 }
@@ -116,32 +116,48 @@ body{
   font-size:clamp(10px,.9vw,14px);
 }
 
-/* 画像に描かれている木製メニューを実際にクリックできるようにする */
-.hero-hotspots{
+/* 承認済み木製ボタン */
+.hero-button-nav{
   position:absolute;
-  z-index:5;
+  z-index:8;
   left:0;
   right:0;
-  bottom:0;
-  height:10.2%;
+  bottom:8px;
   display:grid;
-  grid-template-columns:repeat(6,1fr);
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  align-items:end;
+  gap:8px;
+  padding:0 12px;
 }
 
-.hero-hotspots a{
-  position:relative;
+.hero-button-nav a{
   display:block;
+  min-width:0;
   text-decoration:none;
-  border-right:1px solid transparent;
+  transition:transform .14s ease, filter .14s ease;
+  filter:drop-shadow(0 7px 8px rgba(0,0,0,.34));
 }
 
-.hero-hotspots a:focus-visible{
-  outline:3px solid #ffd77e;
-  outline-offset:-4px;
+.hero-button-nav a:hover{
+  transform:translateY(-4px);
+  filter:brightness(1.06) drop-shadow(0 10px 10px rgba(0,0,0,.42));
 }
 
-.hero-hotspots a:hover{
-  background:rgba(255,231,170,.055);
+.hero-button-nav a:active{
+  transform:translateY(1px);
+}
+
+.hero-button-nav a:focus-visible{
+  outline:3px solid #ffe093;
+  outline-offset:2px;
+  border-radius:14px;
+}
+
+.hero-button-nav img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
 }
 
 /* =========================================================
@@ -576,6 +592,21 @@ body{
 @media(max-width:760px){
   body{background-attachment:scroll}
 
+  .hero-button-nav{
+    display:flex;
+    overflow-x:auto;
+    gap:5px;
+    padding:0 8px 5px;
+    scrollbar-width:none;
+  }
+
+  .hero-button-nav::-webkit-scrollbar{display:none}
+
+  .hero-button-nav a{
+    flex:0 0 190px;
+  }
+
+
   .mypage-hero{
     min-height:0;
   }
@@ -641,13 +672,25 @@ body{
     </div>
   </div>
 
-  <nav class="hero-hotspots" aria-label="マイページヘッダーメニュー">
-    <a href="mypage.html" aria-label="マイページ"></a>
-    <a id="headerProfileLink" href="profile.html" aria-label="プロフィール"></a>
-    <a href="#myWorks" aria-label="プレイ履歴・作品"></a>
-    <a href="index.html" aria-label="フレンド・コミュニティ"></a>
-    <a href="#notices" aria-label="お知らせ"></a>
-    <a href="#profileEdit" aria-label="設定"></a>
+  <nav class="hero-button-nav" aria-label="マイページメニュー">
+    <a href="index.html" aria-label="ホーム">
+      <img src="images/buttons/mypage/home.png" alt="ホーム">
+    </a>
+    <a id="headerProfileLink" href="profile.html" aria-label="プロフィール">
+      <img src="images/buttons/mypage/profile.png" alt="プロフィール">
+    </a>
+    <a href="#myWorks" aria-label="プレイ履歴">
+      <img src="images/buttons/mypage/play-history.png" alt="プレイ履歴">
+    </a>
+    <a href="index.html#community" aria-label="フレンド">
+      <img src="images/buttons/mypage/friends.png" alt="フレンド">
+    </a>
+    <a href="#notices" aria-label="お知らせ">
+      <img src="images/buttons/mypage/notices.png" alt="お知らせ">
+    </a>
+    <a href="#profileEdit" aria-label="設定">
+      <img src="images/buttons/mypage/settings.png" alt="設定">
+    </a>
   </nav>
 </header>
 
