@@ -1,1 +1,0 @@
-Forest Craft Studio image assets. Keep only the three original PNG files in this folder.
