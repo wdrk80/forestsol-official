@@ -1,29 +1,1147 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>マイページ | Forestsol</title><meta name="robots" content="noindex"><link rel="stylesheet" href="assets/account.css"><script src="assets/forest-auth.js" defer></script><script src="assets/page-transition.js" defer></script></head>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>マイページ | Forest Sol</title>
+<meta name="robots" content="noindex">
+
+<script src="assets/forest-auth.js" defer></script>
+<script src="assets/page-transition.js" defer></script>
+
+<style>
+:root{
+  --wood-1:#2a170b;
+  --wood-2:#4a2a12;
+  --wood-3:#6f4724;
+  --wood-4:#8e6537;
+  --paper:#f3dfb8;
+  --paper-2:#fff0cf;
+  --ink:#432813;
+  --ink-soft:#76573a;
+  --green:#516c2e;
+  --green-2:#718e46;
+  --gold:#d2a95d;
+  --red:#9e4a32;
+  --shadow:rgba(24,13,7,.45);
+  --line:rgba(75,44,20,.28);
+}
+
+*{box-sizing:border-box}
+html{min-height:100%;background:#1e130b}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
+  background:
+    linear-gradient(rgba(26,14,7,.10),rgba(26,14,7,.38)),
+    url("images/backgrounds/mypage-home-interior.png") center top/cover fixed no-repeat;
+}
+
+/* ===== 上部：家をイメージしたヘッダー ===== */
+.home-header{
+  position:relative;
+  overflow:hidden;
+  min-height:300px;
+  border-bottom:5px solid #4f2d13;
+  background:
+    linear-gradient(90deg,rgba(32,18,9,.96) 0 34%,rgba(32,18,9,.26) 53%,rgba(32,18,9,.08) 100%),
+    url("images/backgrounds/login-background.png") center/cover no-repeat;
+  box-shadow:0 14px 35px rgba(0,0,0,.38);
+}
+.home-header::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:min(46vw,690px);
+  background:
+    linear-gradient(90deg,rgba(255,202,105,.10),transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.018) 0 2px,
+      transparent 2px 7px
+    );
+  pointer-events:none;
+}
+.home-header::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:18px;
+  background:
+    linear-gradient(#7e522a,#3d210e),
+    repeating-linear-gradient(90deg,transparent 0 130px,rgba(24,12,5,.45) 130px 133px);
+  box-shadow:0 -2px 0 rgba(255,219,144,.16) inset;
+}
+
+.header-inner{
+  position:relative;
+  z-index:1;
+  width:min(1320px,calc(100% - 32px));
+  min-height:300px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  padding:34px 0 38px;
+}
+
+.brand-house{
+  position:relative;
+  width:min(520px,62vw);
+  padding:30px 32px 28px;
+  border:2px solid rgba(224,180,102,.35);
+  border-radius:28px 28px 18px 18px;
+  color:#f6e6bd;
+  background:
+    linear-gradient(rgba(61,35,16,.95),rgba(42,23,11,.98)),
+    repeating-linear-gradient(0deg,transparent 0 38px,rgba(20,10,4,.28) 39px 41px);
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.38),
+    inset 0 0 0 5px rgba(128,84,39,.12);
+}
+.brand-house::before{
+  content:"";
+  position:absolute;
+  left:36px;right:36px;top:-18px;
+  height:24px;
+  border-radius:80% 80% 0 0;
+  background:
+    repeating-linear-gradient(90deg,#603719 0 34px,#3b2110 34px 39px);
+  transform:skewX(-20deg);
+  box-shadow:0 3px 0 rgba(0,0,0,.28);
+}
+.brand-house h1{
+  margin:0;
+  font-size:clamp(38px,5vw,66px);
+  line-height:1;
+  letter-spacing:-.045em;
+  text-shadow:0 3px 0 rgba(0,0,0,.34);
+}
+.brand-house p{
+  margin:13px 0 0;
+  color:#d8c396;
+  font-size:14px;
+  letter-spacing:.08em;
+}
+.brand-leaf{
+  display:inline-block;
+  margin-right:10px;
+  color:#89a755;
+}
+
+.user-plaque{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:290px;
+  padding:14px 18px;
+  border:2px solid rgba(232,191,113,.34);
+  border-radius:16px;
+  color:#f7e7c0;
+  background:linear-gradient(180deg,rgba(74,43,20,.96),rgba(42,23,10,.98));
+  box-shadow:0 12px 28px rgba(0,0,0,.34);
+}
+.user-plaque .mini-avatar{
+  width:62px;
+  height:62px;
+  flex:0 0 62px;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:3px solid #d4ad62;
+  background:#ead9b4;
+  font-size:28px;
+}
+.user-plaque .mini-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.user-plaque strong{
+  display:block;
+  margin-bottom:4px;
+  font-size:17px;
+}
+.user-plaque small{
+  color:#cdbb97;
+}
+
+/* ===== 木製ナビ ===== */
+.wood-nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  justify-content:center;
+  overflow-x:auto;
+  padding:0 12px;
+  border-bottom:2px solid #2b1709;
+  background:
+    linear-gradient(180deg,#5a3418,#3c210f);
+  box-shadow:0 8px 18px rgba(0,0,0,.28);
+}
+.wood-nav a,
+.wood-nav button{
+  flex:0 0 auto;
+  min-width:128px;
+  min-height:58px;
+  padding:9px 14px;
+  border:0;
+  border-left:1px solid rgba(255,227,174,.10);
+  border-right:1px solid rgba(22,11,5,.38);
+  color:#f7e6bf;
+  background:transparent;
+  text-decoration:none;
+  text-align:center;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+.wood-nav a:hover,
+.wood-nav button:hover{
+  background:rgba(139,173,76,.15);
+}
+.wood-nav .current{
+  background:linear-gradient(180deg,#607d3c,#3f5928);
+  box-shadow:inset 0 0 0 1px rgba(183,220,111,.22);
+}
+.nav-icon{
+  display:block;
+  margin-bottom:2px;
+  font-family:Arial,sans-serif;
+  font-size:20px;
+}
+
+/* ===== メイン ===== */
+.page-wrap{
+  width:min(1380px,calc(100% - 28px));
+  margin:0 auto;
+  padding:34px 0 70px;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:280px minmax(0,1fr) 310px;
+  gap:20px;
+  align-items:start;
+}
+
+.wood-card,
+.parchment-card{
+  position:relative;
+  border-radius:16px;
+  box-shadow:0 16px 38px var(--shadow);
+}
+.wood-card{
+  border:2px solid rgba(205,158,84,.23);
+  color:#f4e3bc;
+  background:
+    linear-gradient(180deg,rgba(70,40,18,.96),rgba(43,23,10,.97));
+}
+.parchment-card{
+  border:2px solid rgba(83,51,23,.28);
+  color:var(--ink);
+  background:
+    linear-gradient(180deg,rgba(255,242,211,.97),rgba(231,203,153,.97));
+}
+.parchment-card::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px solid rgba(106,74,38,.14);
+  border-radius:11px;
+  pointer-events:none;
+}
+
+/* ===== 左：プロフィール ===== */
+.profile-card{
+  overflow:hidden;
+  padding:20px 16px 18px;
+  text-align:center;
+}
+.profile-title{
+  margin:-2px -2px 18px;
+  padding:10px 8px;
+  border-radius:12px 12px 8px 8px;
+  color:#f9e7ba;
+  background:linear-gradient(180deg,#68401f,#42230f);
+  font-size:18px;
+  font-weight:900;
+}
+.avatar-large{
+  width:138px;
+  height:138px;
+  margin:0 auto 12px;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:5px solid #d2a75b;
+  outline:3px solid rgba(70,39,15,.8);
+  background:#e9d7b4;
+  font-size:54px;
+}
+.avatar-large img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.profile-name{
+  font-size:22px;
+  font-weight:900;
+}
+.profile-user{
+  margin-top:3px;
+  color:#cbb78f;
+  font-size:12px;
+}
+.profile-bio{
+  margin:13px 0 15px;
+  color:#d8c8a8;
+  font-size:12px;
+  line-height:1.7;
+}
+.profile-actions{
+  display:grid;
+  gap:8px;
+}
+.house-btn,
+.danger-btn{
+  min-height:42px;
+  border-radius:9px;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.house-btn{
+  border:1px solid #4c672e;
+  color:#fff2ce;
+  background:linear-gradient(180deg,#6d8846,#4b652f);
+}
+.house-btn.secondary{
+  border-color:#8e6536;
+  background:linear-gradient(180deg,#6f4724,#4d2c14);
+}
+.danger-btn{
+  border:1px solid #7d3425;
+  color:#ffe9dc;
+  background:linear-gradient(180deg,#a4563e,#743423);
+}
+
+.side-menu{
+  margin-top:14px;
+  overflow:hidden;
+}
+.side-menu a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-bottom:1px solid rgba(255,231,181,.09);
+  color:#f2deb5;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:800;
+}
+.side-menu a:hover{
+  background:rgba(112,145,66,.13);
+}
+
+/* ===== 中央 ===== */
+.center-stack{
+  display:grid;
+  gap:18px;
+}
+.welcome-card{
+  overflow:hidden;
+  padding:24px 26px;
+}
+.welcome-card h2{
+  position:relative;
+  z-index:1;
+  margin:0 0 8px;
+  font-size:26px;
+}
+.welcome-card p{
+  position:relative;
+  z-index:1;
+  margin:0;
+  color:var(--ink-soft);
+  line-height:1.8;
+}
+.welcome-card::after{
+  content:"";
+  position:absolute;
+  right:-18px;
+  bottom:-24px;
+  width:150px;
+  height:150px;
+  background:url("images/animals/golden-retriever-resting.png") center/contain no-repeat;
+  opacity:.46;
+  filter:saturate(.9);
+}
+
+.notice-card{
+  overflow:hidden;
+  padding:20px 22px 22px;
+}
+.section-head{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+.section-head h2{
+  margin:0;
+  font-size:20px;
+}
+.section-head a,
+.section-head button{
+  border:0;
+  color:#5f432a;
+  background:transparent;
+  font:inherit;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.notice-list{
+  position:relative;
+  z-index:1;
+  display:grid;
+  gap:8px;
+}
+.notice-item{
+  display:grid;
+  grid-template-columns:86px 1fr;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:9px;
+  background:rgba(255,250,236,.44);
+}
+.notice-item time{
+  color:#866b50;
+  font-size:11px;
+}
+.notice-item span{
+  font-size:12px;
+  font-weight:700;
+}
+.notice-decoration{
+  position:absolute;
+  right:8px;
+  bottom:6px;
+  width:124px;
+  height:124px;
+  background:url("images/ui/notice-board.png") center/contain no-repeat;
+  opacity:.14;
+}
+
+.works-card{
+  padding:20px 20px 22px;
+}
+.works{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.work-card{
+  overflow:hidden;
+  border:1px solid rgba(82,52,25,.27);
+  border-radius:12px;
+  background:rgba(255,249,231,.72);
+}
+.work-preview{
+  height:160px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(103,131,68,.16),rgba(121,77,41,.12));
+}
+.work-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.work-body{
+  padding:12px;
+}
+.work-title{
+  margin-bottom:5px;
+  font-size:14px;
+  font-weight:900;
+}
+.work-meta{
+  color:#7f6349;
+  font-size:10px;
+}
+.work-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+.mini-btn{
+  min-height:30px;
+  padding:0 9px;
+  border:1px solid #86613a;
+  border-radius:7px;
+  color:#55371f;
+  background:#ead0a0;
+  font:inherit;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+.mini-btn.delete{
+  color:#fff1e7;
+  border-color:#713222;
+  background:#91452f;
+}
+.empty{
+  grid-column:1/-1;
+  padding:28px;
+  border:1px dashed rgba(88,57,28,.28);
+  border-radius:10px;
+  text-align:center;
+  color:#795d43;
+}
+
+/* ===== 右 ===== */
+.right-stack{
+  display:grid;
+  gap:16px;
+}
+.stats-card{
+  padding:18px;
+}
+.stats-card h2,
+.friends-card h2,
+.edit-card h2{
+  position:relative;
+  z-index:1;
+  margin:0 0 14px;
+  font-size:19px;
+}
+.stats-grid{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.stat-box{
+  padding:12px 8px;
+  border:1px solid rgba(86,57,27,.18);
+  border-radius:10px;
+  text-align:center;
+  background:rgba(255,248,230,.48);
+}
+.stat-num{
+  display:block;
+  font-size:23px;
+  font-weight:900;
+}
+.stat-label{
+  color:#80654a;
+  font-size:10px;
+}
+
+.friends-card{
+  overflow:hidden;
+  padding:18px;
+}
+.friend-strip{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.friend-photo{
+  overflow:hidden;
+  aspect-ratio:1/1;
+  border:2px solid rgba(89,55,25,.22);
+  border-radius:12px;
+  background:#2f1d10;
+}
+.friend-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.friend-photo.slime{
+  grid-column:1/-1;
+  aspect-ratio:2.2/1;
+}
+.friend-caption{
+  position:relative;
+  z-index:1;
+  margin:10px 0 0;
+  color:#74573d;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.edit-card{
+  padding:18px;
+}
+.edit-card details{
+  position:relative;
+  z-index:1;
+}
+.edit-card summary{
+  cursor:pointer;
+  font-weight:900;
+}
+.form{
+  display:grid;
+  gap:12px;
+  margin-top:14px;
+}
+.field{
+  display:grid;
+  gap:6px;
+}
+.field span{
+  font-size:11px;
+  font-weight:800;
+}
+.field input,
+.field textarea{
+  width:100%;
+  border:1px solid rgba(83,52,25,.25);
+  border-radius:8px;
+  padding:10px 11px;
+  color:var(--ink);
+  background:rgba(255,252,241,.75);
+  font:inherit;
+  font-size:12px;
+}
+.field textarea{
+  min-height:90px;
+  resize:vertical;
+}
+.status{
+  min-height:18px;
+  margin-top:9px;
+  text-align:center;
+  font-size:11px;
+  font-weight:800;
+}
+.status.good{color:#496c2d}
+.status.bad{color:#9a3e31}
+
+/* ===== 下部装飾 ===== */
+.floor-decor{
+  position:relative;
+  height:150px;
+  margin-top:20px;
+  pointer-events:none;
+}
+.floor-decor img{
+  position:absolute;
+  bottom:0;
+  width:150px;
+  max-height:150px;
+  object-fit:contain;
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.28));
+}
+.floor-decor .dog{left:4%}
+.floor-decor .cat{right:5%;width:135px}
+
+@media(max-width:1100px){
+  .dashboard{
+    grid-template-columns:250px minmax(0,1fr);
+  }
+  .right-stack{
+    grid-column:1/-1;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media(max-width:800px){
+  body{background-attachment:scroll}
+  .home-header{min-height:260px}
+  .header-inner{
+    min-height:260px;
+    align-items:flex-end;
+    padding-bottom:30px;
+  }
+  .user-plaque{
+    position:absolute;
+    right:0;
+    top:18px;
+    min-width:0;
+    max-width:58%;
+  }
+  .brand-house{
+    width:min(520px,82vw);
+  }
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+  .right-stack{
+    grid-column:auto;
+    grid-template-columns:1fr;
+  }
+  .works{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:560px){
+  .page-wrap{width:calc(100% - 18px);padding-top:18px}
+  .home-header{min-height:230px}
+  .header-inner{
+    width:calc(100% - 20px);
+    min-height:230px;
+  }
+  .brand-house{
+    width:100%;
+    padding:24px 20px 20px;
+  }
+  .brand-house h1{font-size:38px}
+  .brand-house p{font-size:11px}
+  .user-plaque{
+    top:10px;
+    right:0;
+    padding:8px 10px;
+  }
+  .user-plaque .mini-avatar{
+    width:42px;height:42px;flex-basis:42px;
+  }
+  .user-plaque small{display:none}
+  .wood-nav{justify-content:flex-start}
+  .wood-nav a,.wood-nav button{min-width:106px;min-height:52px;font-size:11px}
+}
+</style>
+</head>
+
 <body>
-<header class="account-head"><div class="kicker">MY FORESTSOL</div><h1>マイページ</h1><p>プロフィールと自分の作品をここで管理できます。</p></header>
-<nav><a href="index.html">メンバー紹介</a><a href="forestcraft.html">Forest Craft Studio</a><a href="forestcraft-web/">Web版</a><a class="account-current" href="mypage.html">マイページ</a></nav>
-<main>
-<section class="panel"><div id="profileView" class="profile-card"><div class="avatar">🐾</div><div><div class="profile-name">読み込み中…</div><div class="profile-user"></div></div></div><div class="row" style="margin-top:18px"><a id="publicProfileLink" class="button secondary" href="profile.html">公開プロフィールを見る</a><a class="button primary" href="forestcraft-web/">Forest Craft Studioを開く</a><button id="logoutBtn" class="danger" type="button">ログアウト</button></div></section>
-<div class="grid" style="margin-top:18px">
-<section class="panel"><h2>プロフィール編集</h2><form id="profileForm" class="form"><label class="field"><span>表示名</span><input id="displayName" maxlength="40"></label><label class="field"><span>自己紹介</span><textarea id="bio" maxlength="500" placeholder="500文字まで"></textarea></label><label class="field"><span>アイコン画像URL</span><input id="avatarUrl" type="url" maxlength="500" placeholder="https://..."></label><button class="primary" type="submit">プロフィールを保存</button></form><div id="profileStatus" class="status"></div></section>
-<section class="panel"><h2>アカウント</h2><div class="notice">投稿はこのログイン中アカウントに自動で紐づきます。UPLOAD_SECRETやユーザーIDを入力する必要はありません。</div><div class="stats" id="accountStats"></div></section>
-</div>
-<section class="panel" style="margin-top:18px"><div class="split"><div><h2 style="margin-bottom:4px">自分の作品</h2><p style="margin:0">公開、非公開、下書きをまとめて管理。</p></div><button id="reloadBtn" class="secondary">再読み込み</button></div><div id="works" class="works" style="margin-top:20px"><div class="empty">作品を読み込み中…</div></div></section>
+
+<header class="home-header">
+  <div class="header-inner">
+    <div class="brand-house">
+      <h1><span class="brand-leaf">❧</span>Forest Sol</h1>
+      <p>つくる。つながる。ひろがる。</p>
+    </div>
+
+    <div class="user-plaque">
+      <div id="headerAvatar" class="mini-avatar">🐾</div>
+      <div>
+        <strong id="headerGreeting">おかえりなさい</strong>
+        <small id="headerUser">@user</small>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="wood-nav" aria-label="マイページメニュー">
+  <a class="current" href="mypage.html"><span class="nav-icon">⌂</span>マイページ</a>
+  <a id="profileNavLink" href="profile.html"><span class="nav-icon">●</span>プロフィール</a>
+  <a href="#myWorks"><span class="nav-icon">▣</span>自分の作品</a>
+  <a href="forestcraft.html"><span class="nav-icon">✎</span>Forest Craft</a>
+  <a href="history.html"><span class="nav-icon">▤</span>森の歴史</a>
+  <a href="index.html"><span class="nav-icon">⌂</span>トップ</a>
+  <button id="navLogout" type="button"><span class="nav-icon">↪</span>ログアウト</button>
+</nav>
+
+<main class="page-wrap">
+  <div class="dashboard">
+
+    <aside>
+      <section class="wood-card profile-card">
+        <div class="profile-title">マイページ</div>
+        <div id="profileView">
+          <div class="avatar-large">🐾</div>
+          <div class="profile-name">読み込み中…</div>
+          <div class="profile-user"></div>
+        </div>
+
+        <div class="profile-actions">
+          <a id="publicProfileLink" class="house-btn secondary" href="profile.html">公開プロフィールを見る</a>
+          <a class="house-btn" href="forestcraft-web/">Forest Craft Studioを開く</a>
+        </div>
+      </section>
+
+      <nav class="wood-card side-menu">
+        <a href="#top">⌂　マイページ</a>
+        <a href="#myWorks">▣　投稿・作品</a>
+        <a href="#profileEdit">✎　プロフィール編集</a>
+        <a href="history.html">▤　森の歴史</a>
+        <a href="illustrations.html">▧　イラスト</a>
+        <a href="index.html">⌂　Forest Solトップ</a>
+      </nav>
+    </aside>
+
+    <section class="center-stack" id="top">
+
+      <section class="parchment-card welcome-card">
+        <h2 id="welcomeTitle">ようこそ。</h2>
+        <p>
+          ここはあなたの森の家。プロフィールや作品を管理しながら、
+          Forest Solでの活動をゆっくり育てていけます。
+        </p>
+      </section>
+
+      <section class="parchment-card notice-card">
+        <div class="section-head">
+          <h2>お知らせ</h2>
+          <a href="index.html">Forest Solへ</a>
+        </div>
+
+        <div class="notice-list">
+          <div class="notice-item">
+            <time>MY PAGE</time>
+            <span>プロフィールと作品管理をひとつの場所にまとめました。</span>
+          </div>
+          <div class="notice-item">
+            <time>STUDIO</time>
+            <span>作品はForest Craft Studioから投稿すると、このページに自動で表示されます。</span>
+          </div>
+          <div class="notice-item">
+            <time>PROFILE</time>
+            <span>表示名、自己紹介、アイコンは右側の「プロフィール編集」から変更できます。</span>
+          </div>
+        </div>
+        <div class="notice-decoration" aria-hidden="true"></div>
+      </section>
+
+      <section id="myWorks" class="parchment-card works-card">
+        <div class="section-head">
+          <h2>自分の作品</h2>
+          <button id="reloadBtn" type="button">再読み込み</button>
+        </div>
+
+        <div id="works" class="works">
+          <div class="empty">作品を読み込み中…</div>
+        </div>
+      </section>
+
+    </section>
+
+    <aside class="right-stack">
+
+      <section class="parchment-card stats-card">
+        <h2>アカウント状況</h2>
+        <div id="accountStats" class="stats-grid">
+          <div class="stat-box"><span class="stat-num">…</span><span class="stat-label">作品</span></div>
+        </div>
+      </section>
+
+      <section class="parchment-card friends-card">
+        <h2>森の仲間たち</h2>
+        <div class="friend-strip">
+          <div class="friend-photo">
+            <img src="images/animals/husky-sleeping-camp.png" alt="">
+          </div>
+          <div class="friend-photo">
+            <img src="images/animals/silver-tabby-cat-stretching.png" alt="">
+          </div>
+          <div class="friend-photo slime">
+            <img src="images/monsters/blue-slime-cube-01.png" alt="">
+          </div>
+        </div>
+        <p class="friend-caption">
+          以前作った動物・モンスター素材を、家の中の写真や飾りみたいに配置しています。
+        </p>
+      </section>
+
+      <section id="profileEdit" class="parchment-card edit-card">
+        <details>
+          <summary>プロフィール編集</summary>
+
+          <form id="profileForm" class="form">
+            <label class="field">
+              <span>表示名</span>
+              <input id="displayName" maxlength="40">
+            </label>
+
+            <label class="field">
+              <span>自己紹介</span>
+              <textarea id="bio" maxlength="500" placeholder="500文字まで"></textarea>
+            </label>
+
+            <label class="field">
+              <span>アイコン画像URL</span>
+              <input id="avatarUrl" type="url" maxlength="500" placeholder="https://...">
+            </label>
+
+            <button class="house-btn" type="submit">プロフィールを保存</button>
+          </form>
+
+          <div id="profileStatus" class="status"></div>
+        </details>
+      </section>
+
+    </aside>
+  </div>
+
+  <div class="floor-decor" aria-hidden="true">
+    <img class="dog" src="images/animals/golden-retriever-lying-01.png" alt="">
+    <img class="cat" src="images/animals/golden-retriever-sitting.png" alt="">
+  </div>
 </main>
+
 <script>
-window.addEventListener('DOMContentLoaded',async()=>{
- const $=s=>document.querySelector(s),status=(msg,kind='')=>{const e=$('#profileStatus');e.textContent=msg;e.className='status '+kind};
- let user=await ForestAuth.me(true);if(!user){location.replace('account.html?next=mypage.html');return}
- function renderUser(){const av=user.avatar_url?`<img src="${esc(user.avatar_url)}" alt="">`:'🐾';$('#profileView').innerHTML=`<div class="avatar">${av}</div><div><div class="profile-name">${esc(user.display_name||user.username)}</div><div class="profile-user">@${esc(user.username)}</div><div class="small">${esc(user.bio||'自己紹介はまだありません。')}</div></div>`;$('#displayName').value=user.display_name||'';$('#bio').value=user.bio||'';$('#avatarUrl').value=user.avatar_url||'';$('#publicProfileLink').href='profile.html?u='+encodeURIComponent(user.username)}
- function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
- function preview(p){return p.preview_file_id&&p.visibility==='public'&&p.status==='published'?`<img src="${ForestAuth.API_BASE}/files/${encodeURIComponent(p.preview_file_id)}" alt="${esc(p.title)}">`:'<span style="font-size:42px">🎨</span>'}
- function renderPosts(posts){$('#accountStats').innerHTML=`<span class="stat">作品 ${posts.length}</span><span class="stat">公開 ${posts.filter(p=>p.visibility==='public'&&p.status==='published').length}</span><span class="stat">非公開 ${posts.filter(p=>p.visibility!=='public').length}</span><span class="stat">下書き ${posts.filter(p=>p.status!=='published').length}</span>`;if(!posts.length){$('#works').innerHTML='<div class="empty">まだ作品がありません。Forest Craft Studioから最初の作品を投稿できます。</div>';return}$('#works').innerHTML=posts.map(p=>`<article class="work-card" data-id="${esc(p.id)}"><div class="work-preview">${preview(p)}</div><div class="work-body"><div class="work-title">${esc(p.title)}</div><div class="work-meta">${esc(p.category)} ・ ${esc(p.visibility)} ・ ${esc(p.status)}</div><div class="work-actions"><button class="secondary visBtn" data-vis="${p.visibility==='public'?'private':'public'}">${p.visibility==='public'?'非公開へ':'公開へ'}</button><button class="secondary statusBtn" data-status="${p.status==='published'?'draft':'published'}">${p.status==='published'?'下書きへ':'公開状態へ'}</button><button class="danger delBtn">削除</button></div></div></article>`).join('');document.querySelectorAll('.visBtn').forEach(b=>b.onclick=()=>changePost(b.closest('.work-card').dataset.id,{visibility:b.dataset.vis}));document.querySelectorAll('.statusBtn').forEach(b=>b.onclick=()=>changePost(b.closest('.work-card').dataset.id,{status:b.dataset.status}));document.querySelectorAll('.delBtn').forEach(b=>b.onclick=()=>removePost(b.closest('.work-card').dataset.id))}
- async function loadPosts(){try{renderPosts(await ForestAuth.myPosts())}catch(err){$('#works').innerHTML=`<div class="empty">${esc(err.message)}</div>`}}
- async function changePost(id,values){try{await ForestAuth.updatePost(id,values);await loadPosts()}catch(err){alert(err.message)}}
- async function removePost(id){if(!confirm('この作品を削除しますか？ R2上の作品ファイルも削除されます。'))return;try{await ForestAuth.deletePost(id);await loadPosts()}catch(err){alert(err.message)}}
- renderUser();await loadPosts();
- $('#reloadBtn').onclick=loadPosts;$('#logoutBtn').onclick=async()=>{await ForestAuth.logout();location.href='account.html'};
- $('#profileForm').addEventListener('submit',async e=>{e.preventDefault();e.submitter.disabled=true;status('保存中…');try{user=await ForestAuth.updateMe({display_name:$('#displayName').value.trim(),bio:$('#bio').value.trim(),avatar_url:$('#avatarUrl').value.trim()});renderUser();status('保存しました。','good')}catch(err){status(err.message,'bad')}finally{e.submitter.disabled=false}});
+window.addEventListener("DOMContentLoaded", async () => {
+  const $ = selector => document.querySelector(selector);
+
+  const esc = value =>
+    String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    })[char]);
+
+  const setStatus = (message, kind = "") => {
+    const el = $("#profileStatus");
+    el.textContent = message;
+    el.className = "status " + kind;
+  };
+
+  let user = await ForestAuth.me(true);
+
+  if (!user) {
+    location.replace("account.html?next=mypage.html");
+    return;
+  }
+
+  function avatarMarkup(className = "") {
+    if (user.avatar_url) {
+      return `<img class="${className}" src="${esc(user.avatar_url)}" alt="">`;
+    }
+    return "🐾";
+  }
+
+  function renderUser() {
+    const name = user.display_name || user.username;
+
+    $("#profileView").innerHTML = `
+      <div class="avatar-large">${avatarMarkup()}</div>
+      <div class="profile-name">${esc(name)}</div>
+      <div class="profile-user">@${esc(user.username)}</div>
+      <div class="profile-bio">${esc(user.bio || "自己紹介はまだありません。")}</div>
+    `;
+
+    $("#headerAvatar").innerHTML = avatarMarkup();
+    $("#headerGreeting").textContent = `おかえり、${name}さん`;
+    $("#headerUser").textContent = `@${user.username}`;
+    $("#welcomeTitle").textContent = `ようこそ、${name}さん。`;
+
+    $("#displayName").value = user.display_name || "";
+    $("#bio").value = user.bio || "";
+    $("#avatarUrl").value = user.avatar_url || "";
+
+    const profileUrl = "profile.html?u=" + encodeURIComponent(user.username);
+    $("#publicProfileLink").href = profileUrl;
+    $("#profileNavLink").href = profileUrl;
+  }
+
+  function preview(post) {
+    if (
+      post.preview_file_id &&
+      post.visibility === "public" &&
+      post.status === "published"
+    ) {
+      return `
+        <img
+          src="${ForestAuth.API_BASE}/files/${encodeURIComponent(post.preview_file_id)}"
+          alt="${esc(post.title)}"
+        >
+      `;
+    }
+
+    return `
+      <img
+        src="images/collections/animal-and-monster-set-01.png"
+        alt=""
+      >
+    `;
+  }
+
+  function renderStats(posts) {
+    const publicCount = posts.filter(
+      post => post.visibility === "public" && post.status === "published"
+    ).length;
+
+    const privateCount = posts.filter(
+      post => post.visibility !== "public"
+    ).length;
+
+    const draftCount = posts.filter(
+      post => post.status !== "published"
+    ).length;
+
+    $("#accountStats").innerHTML = `
+      <div class="stat-box">
+        <span class="stat-num">${posts.length}</span>
+        <span class="stat-label">作品</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">${publicCount}</span>
+        <span class="stat-label">公開</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">${privateCount}</span>
+        <span class="stat-label">非公開</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">${draftCount}</span>
+        <span class="stat-label">下書き</span>
+      </div>
+    `;
+  }
+
+  function renderPosts(posts) {
+    renderStats(posts);
+
+    if (!posts.length) {
+      $("#works").innerHTML = `
+        <div class="empty">
+          まだ作品がありません。Forest Craft Studioから最初の作品を投稿できます。
+        </div>
+      `;
+      return;
+    }
+
+    $("#works").innerHTML = posts.map(post => `
+      <article class="work-card" data-id="${esc(post.id)}">
+        <div class="work-preview">${preview(post)}</div>
+        <div class="work-body">
+          <div class="work-title">${esc(post.title)}</div>
+          <div class="work-meta">
+            ${esc(post.category)} ・ ${esc(post.visibility)} ・ ${esc(post.status)}
+          </div>
+
+          <div class="work-actions">
+            <button
+              class="mini-btn visBtn"
+              data-vis="${post.visibility === "public" ? "private" : "public"}"
+              type="button"
+            >
+              ${post.visibility === "public" ? "非公開へ" : "公開へ"}
+            </button>
+
+            <button
+              class="mini-btn statusBtn"
+              data-status="${post.status === "published" ? "draft" : "published"}"
+              type="button"
+            >
+              ${post.status === "published" ? "下書きへ" : "公開状態へ"}
+            </button>
+
+            <button class="mini-btn delete delBtn" type="button">
+              削除
+            </button>
+          </div>
+        </div>
+      </article>
+    `).join("");
+
+    document.querySelectorAll(".visBtn").forEach(button => {
+      button.onclick = () =>
+        changePost(
+          button.closest(".work-card").dataset.id,
+          { visibility: button.dataset.vis }
+        );
+    });
+
+    document.querySelectorAll(".statusBtn").forEach(button => {
+      button.onclick = () =>
+        changePost(
+          button.closest(".work-card").dataset.id,
+          { status: button.dataset.status }
+        );
+    });
+
+    document.querySelectorAll(".delBtn").forEach(button => {
+      button.onclick = () =>
+        removePost(button.closest(".work-card").dataset.id);
+    });
+  }
+
+  async function loadPosts() {
+    try {
+      renderPosts(await ForestAuth.myPosts());
+    } catch (error) {
+      $("#works").innerHTML = `
+        <div class="empty">${esc(error.message)}</div>
+      `;
+    }
+  }
+
+  async function changePost(id, values) {
+    try {
+      await ForestAuth.updatePost(id, values);
+      await loadPosts();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  async function removePost(id) {
+    if (!confirm("この作品を削除しますか？ R2上の作品ファイルも削除されます。")) {
+      return;
+    }
+
+    try {
+      await ForestAuth.deletePost(id);
+      await loadPosts();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  async function logout() {
+    await ForestAuth.logout();
+    location.href = "account.html";
+  }
+
+  renderUser();
+  await loadPosts();
+
+  $("#reloadBtn").onclick = loadPosts;
+  $("#navLogout").onclick = logout;
+
+  $("#profileForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    event.submitter.disabled = true;
+    setStatus("保存中…");
+
+    try {
+      user = await ForestAuth.updateMe({
+        display_name: $("#displayName").value.trim(),
+        bio: $("#bio").value.trim(),
+        avatar_url: $("#avatarUrl").value.trim()
+      });
+
+      renderUser();
+      setStatus("保存しました。", "good");
+    } catch (error) {
+      setStatus(error.message, "bad");
+    } finally {
+      event.submitter.disabled = false;
+    }
+  });
 });
-</script></body></html>
+</script>
+
+</body>
+</html>
