@@ -15,7 +15,6 @@
   --wood:#4e3018;
   --wood2:#2d1a0e;
   --teal:#0c5c5b;
-  --teal2:#073f42;
   --gold:#d4ab61;
   --shadow:rgba(17,12,7,.42);
 }
@@ -27,16 +26,19 @@ body{
   color:var(--ink);
   font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
   background:
-    linear-gradient(rgba(8,29,24,.18),rgba(9,19,15,.54)),
+    linear-gradient(rgba(8,29,24,.16),rgba(9,19,15,.48)),
     url("images/profile/profile-river-background.png") center top/cover fixed no-repeat;
 }
+
+/* ===== ヘッダー ===== */
 .hero{
   width:100%;
-  aspect-ratio:2048/704;
-  min-height:220px;
+  aspect-ratio:1536/512;
+  min-height:0;
   background:url("images/profile/profile-header.png") center/cover no-repeat;
   box-shadow:0 12px 34px rgba(0,0,0,.42);
 }
+
 .site-nav{
   position:sticky;
   top:0;
@@ -67,17 +69,23 @@ body{
 }
 .site-nav a:hover{transform:translateY(-2px);filter:brightness(1.08)}
 .site-nav a.current{background:linear-gradient(180deg,#1d7773,#0d4e4d);border-color:#4fa8a1}
+.site-nav a[href="mypage.html"] + a[href="mypage.html"]{display:none}
+
 .page{
   width:min(1220px,calc(100% - 28px));
   margin:0 auto;
-  padding:32px 0 72px;
+  padding:28px 0 72px;
 }
-.guild-wrap{position:relative;margin-bottom:28px}
+
+/* ===== ギルドカード ===== */
+.guild-wrap{
+  position:relative;
+  margin-bottom:28px;
+}
 .guild-card{
   position:relative;
   width:100%;
-  aspect-ratio:2048/704;
-  min-height:250px;
+  aspect-ratio:1536/658;
   filter:drop-shadow(0 18px 30px rgba(0,0,0,.42));
 }
 .guild-frame{
@@ -85,95 +93,128 @@ body{
   inset:0;
   width:100%;
   height:100%;
-  object-fit:fill;
+  object-fit:contain;
   pointer-events:none;
   user-select:none;
 }
+
+/* 左の丸い写真欄 */
 .guild-avatar{
   position:absolute;
-  left:4.4%;
-  top:10.8%;
-  width:23.5%;
+  left:5.25%;
+  top:9.7%;
+  width:25.1%;
   aspect-ratio:1;
   overflow:hidden;
   display:grid;
   place-items:center;
   border-radius:50%;
-  color:#275250;
+  color:#2570c8;
   background:radial-gradient(circle at 45% 35%,#fff5da,#ead5aa 72%,#cfa96c);
-  font-size:clamp(24px,6vw,76px);
-  box-shadow:inset 0 0 0 4px rgba(92,55,25,.12);
+  font-size:clamp(26px,6.2vw,82px);
 }
-.guild-avatar img{width:100%;height:100%;object-fit:cover}
+.guild-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* 木の大きな名前欄 */
 .guild-name{
   position:absolute;
-  left:33.5%;
-  top:20.5%;
-  width:34%;
+  left:35.4%;
+  top:19.1%;
+  width:35.6%;
+  height:17%;
+  display:flex;
+  align-items:center;
   overflow:hidden;
-  color:#f6ead1;
-  text-shadow:0 3px 4px rgba(0,0,0,.72);
+  padding:0 1.2%;
+  color:#f7ecd7;
+  text-shadow:0 3px 5px rgba(0,0,0,.78);
   white-space:nowrap;
   text-overflow:ellipsis;
-  font-size:clamp(16px,3vw,44px);
+  font-size:clamp(17px,3vw,43px);
   font-weight:900;
   letter-spacing:.04em;
 }
+
+/* 細い濃緑のID欄 */
 .guild-user{
   position:absolute;
-  left:35.5%;
-  top:47.6%;
-  width:28%;
-  color:#e5d5b7;
-  white-space:nowrap;
+  left:36.2%;
+  top:40.6%;
+  width:31.5%;
+  height:8.8%;
+  display:flex;
+  align-items:center;
   overflow:hidden;
+  padding:0 .8%;
+  color:#eee1c8;
+  text-shadow:0 2px 3px rgba(0,0,0,.65);
+  white-space:nowrap;
   text-overflow:ellipsis;
-  font-size:clamp(9px,1.4vw,20px);
+  font-size:clamp(9px,1.35vw,18px);
   font-weight:800;
 }
+
+/* 羊皮紙の自己紹介欄 */
 .guild-bio{
   position:absolute;
-  left:33.2%;
-  top:61.8%;
-  width:31%;
-  height:16.5%;
+  left:35.3%;
+  top:50.6%;
+  width:32.7%;
+  height:19.2%;
   margin:0;
   overflow:hidden;
   display:flex;
   align-items:center;
-  color:#5f4329;
+  padding:0 1.5%;
+  color:#65472c;
   line-height:1.45;
-  font-size:clamp(8px,1.25vw,18px);
+  font-size:clamp(8px,1.2vw,17px);
   font-weight:700;
 }
+
+/* 右上の布 */
 .guild-crest{
   position:absolute;
-  right:12.2%;
-  top:18%;
-  width:11%;
-  aspect-ratio:1;
+  right:10.2%;
+  top:15.1%;
+  width:13.4%;
+  height:25.5%;
   display:grid;
   place-items:center;
-  color:#d9fff7;
-  font-size:clamp(20px,4.2vw,62px);
-  text-shadow:0 4px 10px rgba(0,0,0,.45);
-  opacity:.9;
+  color:#2374cc;
+  font-size:clamp(22px,4.2vw,60px);
+  text-shadow:0 3px 8px rgba(0,0,0,.36);
 }
+
+/* 右下の公開作品欄 */
 .guild-stat{
   position:absolute;
-  right:12.2%;
-  top:59.4%;
-  width:15.2%;
-  height:19%;
+  right:8.45%;
+  top:48.5%;
+  width:18.3%;
+  height:22.7%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  color:#f4e7c7;
-  text-shadow:0 2px 4px rgba(0,0,0,.65);
+  color:#f6ead0;
+  text-shadow:0 2px 4px rgba(0,0,0,.72);
 }
-.guild-stat span{font-size:clamp(7px,1vw,14px);font-weight:800}
-.guild-stat strong{margin-top:2px;font-size:clamp(15px,2.6vw,38px);line-height:1}
+.guild-stat span{
+  font-size:clamp(7px,1vw,14px);
+  font-weight:900;
+}
+.guild-stat strong{
+  margin-top:3px;
+  font-size:clamp(15px,2.5vw,36px);
+  line-height:1;
+}
+
+/* ===== 公開作品 ===== */
 .section{
   position:relative;
   overflow:hidden;
@@ -281,25 +322,34 @@ body{
   font-size:11px;
   text-shadow:0 2px 5px rgba(0,0,0,.55);
 }
+
 @media(max-width:900px){
+  .page{width:calc(100% - 18px);padding-top:18px}
   .works{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .guild-name{left:33%;width:36%}
 }
-@media(max-width:680px){
+
+@media(max-width:760px){
   body{background-attachment:scroll}
-  .hero{min-height:0}
-  .site-nav{justify-content:flex-start;overflow-x:auto;padding:8px;scrollbar-width:none}
+  .site-nav{
+    justify-content:flex-start;
+    overflow-x:auto;
+    padding:8px;
+    scrollbar-width:none;
+  }
   .site-nav::-webkit-scrollbar{display:none}
-  .site-nav a{flex:0 0 auto;min-width:96px;padding:8px 12px;font-size:11px}
-  .page{width:calc(100% - 14px);padding-top:14px}
-  .guild-card{min-height:0}
-  .guild-avatar{left:4.8%;top:11%;width:23%}
-  .guild-name{left:33%;top:20%;width:36%;font-size:clamp(11px,4vw,22px)}
-  .guild-user{left:35%;top:47%;font-size:clamp(7px,2.3vw,12px)}
-  .guild-bio{left:33%;top:61%;width:31%;font-size:clamp(6px,2vw,10px);line-height:1.25}
-  .guild-crest{font-size:clamp(15px,6vw,32px)}
-  .guild-stat span{font-size:clamp(5px,1.8vw,8px)}
-  .guild-stat strong{font-size:clamp(11px,4vw,20px)}
+  .site-nav a{
+    flex:0 0 auto;
+    min-width:96px;
+    padding:8px 12px;
+    font-size:11px;
+  }
+  .page{width:calc(100% - 12px);padding-top:12px}
+  .guild-name{font-size:clamp(10px,4vw,21px)}
+  .guild-user{font-size:clamp(6px,2.1vw,11px)}
+  .guild-bio{font-size:clamp(6px,1.9vw,10px);line-height:1.25}
+  .guild-crest{font-size:clamp(14px,5.5vw,30px)}
+  .guild-stat span{font-size:clamp(5px,1.7vw,8px)}
+  .guild-stat strong{font-size:clamp(10px,3.8vw,19px)}
   .works-section{padding:18px 14px 20px}
   .section-title{font-size:20px}
   .section-sub{display:none}
@@ -317,6 +367,7 @@ body{
   <a href="forestcraft.html">Forest Craft Studio</a>
   <a href="mypage.html">マイページ</a>
 </nav>
+
 <main class="page">
   <section id="profileCard" class="guild-wrap" aria-label="プロフィールカード">
     <div class="guild-card">
@@ -326,7 +377,10 @@ body{
       <div id="guildUser" class="guild-user"></div>
       <p id="guildBio" class="guild-bio"></p>
       <div class="guild-crest" aria-hidden="true">🐾</div>
-      <div class="guild-stat"><span>公開作品</span><strong id="guildCount">0</strong></div>
+      <div class="guild-stat">
+        <span>公開作品</span>
+        <strong id="guildCount">0</strong>
+      </div>
     </div>
   </section>
 
@@ -336,16 +390,29 @@ body{
       <span id="worksCount" class="section-sub">読み込み中…</span>
     </div>
     <div id="works" class="works">
-      <div class="empty"><div class="empty-inner"><strong>作品を読み込んでいます</strong><span>少しだけお待ちください。</span></div></div>
+      <div class="empty">
+        <div class="empty-inner">
+          <strong>作品を読み込んでいます</strong>
+          <span>少しだけお待ちください。</span>
+        </div>
+      </div>
     </div>
   </section>
 
   <div class="footer-note">Forest Sol Profile</div>
 </main>
+
 <script>
 window.addEventListener('DOMContentLoaded',async()=>{
   const $=s=>document.querySelector(s);
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
+
   const username=new URLSearchParams(location.search).get('u');
 
   if(!username){
@@ -370,7 +437,9 @@ window.addEventListener('DOMContentLoaded',async()=>{
     $('#guildBio').textContent=u.bio||'自己紹介はまだありません。';
     $('#guildCount').textContent=posts.length;
     $('#worksCount').textContent=`公開作品 ${posts.length}件`;
-    $('#guildAvatar').innerHTML=u.avatar_url?`<img src="${esc(u.avatar_url)}" alt="${esc(name)}">`:'🐾';
+    $('#guildAvatar').innerHTML=u.avatar_url
+      ? `<img src="${esc(u.avatar_url)}" alt="${esc(name)}">`
+      : '🐾';
 
     if(!posts.length){
       $('#works').innerHTML='<div class="empty"><div class="empty-inner"><strong>公開作品はまだありません。</strong><span>作品が公開されると、ここに並びます。</span></div></div>';
@@ -381,12 +450,15 @@ window.addEventListener('DOMContentLoaded',async()=>{
       const preview=p.preview_file_id
         ? `<img src="${ForestAuth.API_BASE}/files/${encodeURIComponent(p.preview_file_id)}" alt="${esc(p.title)}">`
         : '<img src="images/collections/animal-and-monster-set-01.png" alt="">';
+
       return `<article class="work-card">
         <div class="work-preview">${preview}</div>
         <div class="work-body">
           <div class="work-title">${esc(p.title)}</div>
           <div class="work-meta">${esc(p.category)} ・ ★ ${Number(p.rating_average||0).toFixed(1)} ・ ↓ ${Number(p.download_count||0)}</div>
-          <div class="work-actions"><a class="gallery-link" href="forestcraft.html#gallery">ギャラリーで見る</a></div>
+          <div class="work-actions">
+            <a class="gallery-link" href="forestcraft.html#gallery">ギャラリーで見る</a>
+          </div>
         </div>
       </article>`;
     }).join('');
