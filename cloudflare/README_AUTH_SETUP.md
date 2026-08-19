@@ -6,49 +6,73 @@
 - R2 bindings: `SKINS` / `ASSETS` / `MODELS`
 - Secret: `UPLOAD_SECRET` は既存のまま残す
 
-## 1. D1を更新
-Cloudflare Dashboard → Workers & Pages → D1 → `forest-craft-db` → Console を開く。
+## 現在使うWorkerコード
 
-`cloudflare/002_auth.sql` のSQLを上から順に1回だけ実行する。
+プロフィール画像アップロード対応版は次のファイルです。
 
-追加されるもの:
-- users: `password_hash`, `password_salt`, `bio`, `created_at`, `updated_at`
-- sessions テーブル
-- username / posts用インデックス
+`cloudflare/forest-craft-api-v2-avatar.js`
+
+この版には以下が含まれます。
+- メールアドレスログイン
+- 既存の作品投稿・ファイル配信
+- プロフィール編集
+- プロフィールアイコン画像アップロード
+- プロフィールアイコン削除
+- R2 `ASSETS` からの公開アイコン配信
+
+## 1. D1
+
+既にアカウント機能が動いている環境では、今回のアイコン対応で追加SQLは不要です。
+
+初回セットアップの場合だけ、既存の `002_auth.sql` と `003_email.sql` を適用してください。
 
 ## 2. Workerコードを置き換え
-Workers & Pages → `forest-craft-api` → Edit code。
 
-現在のWorkerコードを `cloudflare/forest-craft-api-v2-auth.js` の内容で置き換えて Deploy。
+Cloudflare Dashboard → Workers & Pages → `forest-craft-api` → Edit code。
 
-既存Bindingsは変更しない:
+現在のWorkerコードを
+
+`cloudflare/forest-craft-api-v2-avatar.js`
+
+の内容で置き換えて Deploy します。
+
+既存Bindingsは変更しません。
 - `DB` → `forest-craft-db`
 - `SKINS` → `forest-craft-skins`
 - `ASSETS` → `forest-craft-assets`
 - `MODELS` → `forest-craft-models`
 - `UPLOAD_SECRET` → 既存Secret
 
+プロフィール画像は `ASSETS` の `avatars/<user_id>/avatar` に保存されます。
+
 ## 3. 動作確認
-Deploy後に以下を確認。
+
+Deploy後に以下を確認します。
 
 - `https://forest-craft-api.wdrk80.workers.dev/`
-  - `version: "2.0-auth"`
+  - `version: "2.2-avatar-upload"`
 - `https://forest-craft-api.wdrk80.workers.dev/db-test`
   - `ok: true`
 
-その後 `https://forestsol.jp/account.html` からテスト用の一般アカウントを1件作る。
+その後、Forest Solのマイページ → プロフィール編集で確認します。
 
-確認項目:
-1. 新規登録 → 自動ログイン
-2. マイページ表示
-3. Forest Craft Studio Webを開く
-4. 「🔐 ログインして投稿」が「🌐 サイトに投稿」に変わる
-5. 投稿画面にUPLOAD_SECRET/ユーザーID/API URLが表示されない
-6. 投稿後、マイページの「自分の作品」に追加される
-7. 未ログイン状態では投稿ボタンが無効
-8. 他ユーザーの作品は編集・削除できない
+1. アイコンをタップ
+2. JPG / PNG / WebPを選択
+3. プレビューを確認
+4. 「プロフィールを保存」
+5. マイページと公開プロフィールの両方に同じアイコンが表示される
+6. 「アイコンを削除」→保存で肉球表示へ戻る
+
+## アイコン仕様
+
+- ブラウザ側で最大1024px程度まで縮小
+- WebPへ変換して送信
+- API側上限は3MB
+- SVGは受け付けない
+- 公開画像は `/avatars/<user_id>` から配信
 
 ## 仕様
+
 - 投稿は登録済み・ログイン中ユーザーのみ
 - user_idはクライアントから受け取らず、セッションから確定
 - パスワードはPBKDF2-SHA256でハッシュ化
@@ -58,7 +82,3 @@ Deploy後に以下を確認。
 - moderator/adminは管理操作可能
 - 未ログインでも公開作品の閲覧・DLは可能
 - `UPLOAD_SECRET` は一般投稿には使用しない。旧管理用 `/upload` の互換性のためだけ残す
-
-## 既存adminユーザーについて
-既存の `user_admin_001` はpassword_hashを持っていないため、新しいパスワードログインではログインできない。これは安全側の仕様。
-一般ユーザー登録の動作確認後、管理者ログイン方式を別途設定する。
