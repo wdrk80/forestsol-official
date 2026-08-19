@@ -1,6 +1,14 @@
 (function(){
   "use strict";
 
+  if(/(^|\/)mypage\.html$/.test(location.pathname)&&!document.querySelector('script[data-forest-avatar-cropper]')){
+    var cropper=document.createElement("script");
+    cropper.src="assets/avatar-cropper.js";
+    cropper.async=false;
+    cropper.dataset.forestAvatarCropper="1";
+    document.head.appendChild(cropper);
+  }
+
   function ensureSiteNav(){
     document.querySelectorAll("nav").forEach(function(nav){
       if(!nav.querySelector('a[href="forestcraft.html"],a[href$="/forestcraft.html"]')){
