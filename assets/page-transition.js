@@ -24,7 +24,20 @@
     });
   }
 
+  function enableForestCraftDownload(){
+    if(!/(^|\/)forestcraft\.html$/.test(location.pathname)) return;
+    var button=document.querySelector(".hero-actions .button.primary.disabled");
+    if(!button) return;
+    var link=document.createElement("a");
+    link.className=button.className.replace(/\bdisabled\b/g,"").replace(/\s+/g," ").trim();
+    link.href="downloads/forestcraft/ForestCraftStudio_Setup_v1.1.0.exe";
+    link.setAttribute("download","ForestCraftStudio_Setup_v1.1.0.exe");
+    link.textContent="🪟 Windows版をダウンロード";
+    button.replaceWith(link);
+  }
+
   ensureSiteNav();
+  enableForestCraftDownload();
   window.addEventListener("forestsol-auth-change",ensureSiteNav);
 
   var TRANSITION_DURATION=920;
@@ -113,5 +126,6 @@
     overlay.classList.remove("is-active");
     document.querySelectorAll('.forest-account-nav-link').forEach(function(n){n.remove();});
     ensureSiteNav();
+    enableForestCraftDownload();
   });
 })();
