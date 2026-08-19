@@ -22,6 +22,36 @@
   ensureSiteNav();
   window.addEventListener("forestsol-auth-change",ensureSiteNav);
 
+  function applyForestCraftVisualFix(){
+    if(!/\/forestcraft\.html$/i.test(location.pathname))return;
+    var header=document.querySelector(".craft-header");
+    if(header&&!header.querySelector(".forestcraft-header-art")){
+      header.style.background="#06140e";
+      header.style.aspectRatio="1717 / 532";
+      header.style.height="auto";
+      var art=document.createElement("div");
+      art.className="forestcraft-header-art";
+      art.setAttribute("aria-hidden","true");
+      art.style.cssText="position:absolute;inset:0;display:grid;grid-template-columns:572fr 286fr 287fr 286fr 286fr;overflow:hidden;z-index:0";
+      ["header-a.svg","header-2.svg","header-3.svg","header-4.svg","header-5.svg"].forEach(function(name){
+        var img=document.createElement("img");
+        img.src="images/forestcraft/tiles/"+name+"?v=20260819c";
+        img.alt="";
+        img.draggable=false;
+        img.style.cssText="display:block;width:100%;height:100%;object-fit:fill;min-width:0";
+        art.appendChild(img);
+      });
+      header.insertBefore(art,header.firstChild);
+      var hidden=header.querySelector(".header-accessible");if(hidden)hidden.style.zIndex="1";
+    }
+    if(!document.getElementById("forestcraft-native-art-style")){
+      var s=document.createElement("style");s.id="forestcraft-native-art-style";
+      s.textContent="body:has(.craft-header){background-color:#020906!important}.craft-header{background-image:none!important}.craft-header:before,.craft-header:after{display:none!important}.hero-icon-wrap:after{display:none!important}.hero-icon{opacity:1!important;visibility:visible!important;filter:drop-shadow(0 22px 36px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(64,208,255,.26))!important}.forestcraft-header-art img{image-rendering:auto!important}";
+      document.head.appendChild(s);
+    }
+  }
+  applyForestCraftVisualFix();
+
   var TRANSITION_DURATION=920,REDUCED_MOTION_DURATION=180,isLeaving=false;
   var reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var style=document.createElement("style");
@@ -58,5 +88,5 @@
   function shouldTransition(link){if(!link||link.hasAttribute("download")||link.dataset.noTransition!==undefined||(link.target&&link.target.toLowerCase()!=="_self"))return false;var raw=link.getAttribute("href");if(!raw||raw.charAt(0)==="#")return false;var dest;try{dest=new URL(link.href,location.href)}catch(e){return false}if(dest.origin!==location.origin||!/^https?:$/.test(dest.protocol))return false;return dest.href!==location.href}
   function beginTransition(destination){if(isLeaving)return;isLeaving=true;document.documentElement.classList.add("paw-transition-leaving");overlay.classList.add("is-active");setTimeout(function(){location.href=destination},reduceMotion?REDUCED_MOTION_DURATION:TRANSITION_DURATION)}
   document.addEventListener("click",function(event){if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;var link=event.target.closest("a[href]");if(!shouldTransition(link))return;event.preventDefault();beginTransition(link.href)});
-  window.addEventListener("pageshow",function(){isLeaving=false;document.documentElement.classList.remove("paw-transition-leaving");overlay.classList.remove("is-active");document.querySelectorAll('.forest-account-nav-link').forEach(function(n){n.remove()});ensureSiteNav()});
+  window.addEventListener("pageshow",function(){isLeaving=false;document.documentElement.classList.remove("paw-transition-leaving");overlay.classList.remove("is-active");document.querySelectorAll('.forest-account-nav-link').forEach(function(n){n.remove()});ensureSiteNav();applyForestCraftVisualFix()});
 })();
