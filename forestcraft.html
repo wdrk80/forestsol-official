@@ -1,40 +1,2689 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Forest Craft Studio | Forestsol Official</title>
-<meta name="description" content="Forest Craft StudioはMinecraft向けスキン、アイテム、ブロック、3Dモデルの制作をまとめて行えるForest Sol製クリエイティブツールです。">
+
+<meta
+  name="description"
+  content="Forest Craft StudioはMinecraft向けスキン、アイテム、ブロック、3Dモデルの制作をまとめて行えるForest Sol製クリエイティブツールです。"
+>
+
 <link rel="canonical" href="https://forestsol.jp/forestcraft.html">
+
 <script src="assets/page-transition.js" defer></script>
+
 <style>
-:root{--green:#78f0a1;--green2:#c7ffd8;--cyan:#57ddff;--gold:#ffd56c;--text:#f7fff9;--muted:#bad0c5;--panel:rgba(3,25,18,.88)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,rgba(1,12,8,.12),rgba(1,10,7,.55) 70%,#020806),url("images/forestcraft/forestcraft-bg-final.jpg?v=20260819b") center top/cover fixed no-repeat,#020806}a{color:inherit}
-.craft-header{position:relative;width:100%;aspect-ratio:1200/372;overflow:hidden;background:#06140e url("images/forestcraft/forestcraft-header-final.jpg?v=20260819b") center/cover no-repeat;border-bottom:1px solid rgba(117,247,172,.52);box-shadow:0 16px 44px rgba(0,0,0,.42),inset 0 -18px 34px rgba(0,0,0,.20)}.header-accessible{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-nav{position:sticky;top:0;z-index:80;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 22px;padding:13px 18px;background:linear-gradient(180deg,rgba(2,37,25,.97),rgba(1,18,13,.98));border-top:1px solid rgba(255,211,107,.22);border-bottom:1px solid rgba(91,237,163,.50);box-shadow:0 12px 34px rgba(0,0,0,.38);backdrop-filter:blur(15px)}nav:before,nav:after{content:"";position:absolute;left:0;right:0;height:1px;pointer-events:none}nav:before{top:0;background:linear-gradient(90deg,transparent,var(--gold),var(--green),var(--cyan),transparent);opacity:.48}nav:after{bottom:0;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),transparent);opacity:.34}nav a{position:relative;padding:8px 4px;color:#f1fbf5;font-size:14px;font-weight:850;text-decoration:none;border-bottom:2px solid transparent;transition:.16s}nav a:hover{color:#e5ffed;text-shadow:0 0 18px rgba(99,239,157,.62)}nav a[aria-current=page]{color:var(--green2);border-bottom-color:var(--green);text-shadow:0 0 18px rgba(96,242,159,.50)}
-main{width:min(1180px,calc(100% - 28px));margin:auto;padding:36px 0 76px}.hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:28px;align-items:center;min-height:390px;padding:48px 50px;border:1px solid rgba(111,242,171,.72);border-radius:28px;background:radial-gradient(circle at 12% 0,rgba(117,255,168,.19),transparent 31%),radial-gradient(circle at 90% 22%,rgba(63,212,255,.18),transparent 34%),radial-gradient(circle at 70% 100%,rgba(255,203,88,.12),transparent 34%),linear-gradient(110deg,rgba(4,29,20,.94),rgba(3,23,17,.84) 58%,rgba(3,21,16,.72));box-shadow:0 24px 70px rgba(0,0,0,.50),0 0 45px rgba(56,207,126,.08);backdrop-filter:blur(6px)}.hero:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(0,16,10,.58),rgba(0,16,10,.10) 62%,transparent),url("images/forestcraft/forestcraft-bg-final.jpg?v=20260819b") center 58%/cover no-repeat;opacity:.38}.hero:after{content:"";position:absolute;inset:10px;border:1px solid rgba(148,255,195,.09);border-radius:21px;pointer-events:none}.hero-copy-wrap{position:relative;z-index:2;max-width:720px}.eyebrow{margin:0 0 10px;color:#8cf5ad;letter-spacing:.15em;font-size:12px;font-weight:950}.hero h1{margin:0 0 14px;font-size:clamp(32px,4.4vw,55px);line-height:1.08;letter-spacing:-.04em;text-shadow:0 6px 24px rgba(0,0,0,.38)}.hero-copy{margin:0;color:#e2eee8;font-size:16px;line-height:1.92;text-shadow:0 2px 10px rgba(0,0,0,.45)}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}.button{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:12px 19px;border:1px solid transparent;border-radius:12px;color:inherit;font:inherit;font-weight:900;text-decoration:none;cursor:pointer;transition:.16s}.button:hover:not(.disabled){transform:translateY(-2px);filter:brightness(1.07)}.button.primary{color:#052015;background:linear-gradient(135deg,#bcf7ca,#52d27f);box-shadow:0 0 28px rgba(70,225,128,.23),0 9px 25px rgba(0,0,0,.26)}.button.web{color:#f8fff9;border-color:rgba(100,238,163,.68);background:linear-gradient(135deg,rgba(7,68,43,.80),rgba(5,42,34,.72));box-shadow:inset 0 0 20px rgba(61,220,132,.07),0 0 22px rgba(66,216,255,.05)}.button.secondary{color:#e9f4ef;border-color:rgba(130,210,177,.42);background:rgba(255,255,255,.05)}.button.disabled{opacity:.78;cursor:not-allowed}.download-note{margin:11px 0 0;color:#accbbb;font-size:12px;line-height:1.6}
-.hero-icon-wrap{position:relative;z-index:3;display:grid;place-items:center;min-height:330px;padding:8px}.hero-icon-wrap:before{content:"";position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(63,220,255,.30),rgba(84,239,148,.15) 44%,rgba(255,201,83,.07) 62%,transparent 74%);filter:blur(12px);animation:pulseGlow 4.2s ease-in-out infinite}.hero-icon-wrap:after{content:"";position:absolute;width:88%;height:82%;border-radius:44%;background:radial-gradient(circle,rgba(57,213,255,.08),rgba(3,20,14,.08) 55%,transparent 76%);border:1px solid rgba(111,246,174,.12)}.hero-icon{position:relative;z-index:2;width:min(355px,98%);max-height:355px;object-fit:contain;filter:drop-shadow(0 28px 44px rgba(0,0,0,.62)) drop-shadow(0 0 28px rgba(48,209,255,.25));animation:floatIcon 5s ease-in-out infinite}@keyframes floatIcon{50%{transform:translateY(-9px) rotate(1deg)}}@keyframes pulseGlow{50%{transform:scale(1.07);opacity:.82}}
-.section{position:relative;overflow:hidden;margin-top:30px;padding:32px;border:1px solid rgba(111,231,169,.48);border-radius:22px;background:radial-gradient(circle at 100% 0,rgba(70,211,255,.09),transparent 27%),radial-gradient(circle at 0 100%,rgba(255,203,81,.08),transparent 28%),linear-gradient(145deg,rgba(4,29,20,.92),rgba(3,18,14,.85));box-shadow:0 18px 46px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.025);backdrop-filter:blur(10px)}.section-title{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:22px}.section-title h2{margin:0;font-size:28px;text-shadow:0 5px 20px rgba(0,0,0,.35)}.section-title p{margin:0;max-width:650px;color:var(--muted);line-height:1.7}.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.feature-card{position:relative;overflow:hidden;padding:22px;border:1px solid rgba(115,222,169,.37);border-radius:16px;background:linear-gradient(145deg,rgba(10,42,28,.94),rgba(4,21,15,.89));box-shadow:inset 0 1px rgba(255,255,255,.035),0 10px 28px rgba(0,0,0,.18);transition:.16s}.feature-card:hover{transform:translateY(-3px);border-color:rgba(132,246,184,.68)}.feature-card:nth-child(1){box-shadow:inset 0 3px #ffcf5a,0 10px 28px rgba(0,0,0,.18)}.feature-card:nth-child(2){box-shadow:inset 0 3px #54d9ff,0 10px 28px rgba(0,0,0,.18)}.feature-card:nth-child(3){box-shadow:inset 0 3px #77ef9e,0 10px 28px rgba(0,0,0,.18)}.feature-card:nth-child(4){box-shadow:inset 0 3px #b98cff,0 10px 28px rgba(0,0,0,.18)}.feature-card b{display:block;margin-bottom:8px;color:#d1f9dd}.feature-card p{margin:0;color:#b7ccc1;line-height:1.7;font-size:13px}
-.category-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:17px}.category-tab{border:1px solid rgba(118,210,170,.44);background:#071b13;color:#e3eee8;border-radius:999px;padding:9px 14px;cursor:pointer;font-weight:750}.category-tab.active{color:#052015;border-color:var(--green);background:linear-gradient(135deg,#c2f7d0,#6ee39a);box-shadow:0 0 18px rgba(105,238,154,.18)}.gallery-toolbar{display:grid;grid-template-columns:minmax(210px,1fr) auto auto;gap:11px;margin-bottom:16px}input,select{width:100%;min-height:44px;border-radius:10px;border:1px solid rgba(112,205,162,.42);background:#06170f;color:#f4f8f6;padding:0 13px;font:inherit;outline:none}input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 2px rgba(112,237,157,.10)}.gallery-status{min-height:30px;padding:6px 0 13px;color:#abc0b7}.gallery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.post-card{overflow:hidden;border:1px solid rgba(112,201,162,.36);border-radius:17px;background:#06170f;cursor:pointer;transition:.16s}.post-card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 14px 30px rgba(0,0,0,.28)}.post-preview{position:relative;aspect-ratio:1;display:grid;place-items:center;overflow:hidden;background:linear-gradient(45deg,#18231f 25%,transparent 25%,transparent 75%,#18231f 75%),linear-gradient(45deg,#18231f 25%,#0c1512 25%,#0c1512 75%,#18231f 75%);background-size:24px 24px;background-position:0 0,12px 12px}.post-preview img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.post-placeholder{padding:20px;text-align:center;color:#6f8f82;font-size:42px}.post-category{position:absolute;left:9px;top:9px;padding:5px 8px;border-radius:999px;background:rgba(3,10,8,.88);border:1px solid rgba(159,231,198,.34);color:#c8efdd;font-size:10px;font-weight:850}.post-body{padding:13px}.post-title{margin:0 0 6px;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.post-author,.post-meta{margin:0;color:#94aca2;font-size:11px;line-height:1.6}.post-meta{margin-top:7px}.empty-state{grid-column:1/-1;padding:48px 18px;text-align:center;color:#9eb4aa;border:1px dashed rgba(118,196,164,.35);border-radius:16px;background:rgba(3,12,9,.52)}
-.modal{position:fixed;inset:0;z-index:1000;display:none;place-items:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(8px)}.modal.open{display:grid}.modal-card{width:min(920px,100%);max-height:min(860px,calc(100vh - 28px));overflow:auto;border-radius:22px;border:1px solid rgba(133,214,180,.5);background:#081712}.modal-head{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;padding:11px;background:rgba(8,23,18,.95)}.modal-close{width:42px;height:42px;border:1px solid rgba(123,202,169,.4);border-radius:10px;color:#fff;background:#10251d;cursor:pointer;font-size:20px}.modal-content{padding:0 25px 28px}.detail-grid{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(0,1.15fr);gap:25px}.detail-preview{min-height:340px;display:grid;place-items:center;overflow:hidden;border-radius:17px;border:1px solid rgba(117,197,164,.3);background:#04100c}.detail-preview img{width:100%;height:100%;max-height:520px;object-fit:contain;image-rendering:pixelated}.detail-copy h2{margin:0 0 8px;font-size:29px}.detail-description{white-space:pre-wrap;color:#c6d8d0;line-height:1.85}.tag-list{display:flex;flex-wrap:wrap;gap:7px;margin:15px 0}.tag{padding:6px 9px;border-radius:999px;background:#123025;color:#afe4ce;font-size:11px}.file-list{margin-top:18px;display:grid;gap:8px}.file-row{display:flex;align-items:center;justify-content:space-between;gap:11px;padding:10px 12px;border:1px solid rgba(112,190,158,.3);border-radius:10px;background:#06120e}.file-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d9e6e1;font-size:12px}.download-link{flex:none;padding:8px 11px;border-radius:9px;text-decoration:none;color:#062019;background:var(--green);font-size:11px;font-weight:850}footer{text-align:center;padding:30px 20px;background:rgba(1,8,5,.95);color:#aeb9b4;font-size:12px;line-height:1.8;border-top:1px solid rgba(100,180,147,.24)}
-@media(max-width:930px){.hero{grid-template-columns:1fr;padding:36px}.hero-icon-wrap{min-height:290px}.feature-grid{grid-template-columns:repeat(2,1fr)}.gallery-grid{grid-template-columns:repeat(3,1fr)}.detail-grid{grid-template-columns:1fr}}@media(max-width:650px){body{background-attachment:scroll}.craft-header{aspect-ratio:auto;height:240px;background-position:center}nav{gap:2px 10px;padding:9px 7px}nav a{font-size:11px}main{width:min(100% - 14px,1180px);padding-top:16px}.hero,.section{padding:21px 15px;border-radius:17px}.hero{min-height:0}.hero-copy{font-size:14px}.hero-icon-wrap{min-height:235px}.hero-icon{width:min(250px,90%)}.feature-grid{grid-template-columns:1fr}.gallery-toolbar{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr);gap:8px}.modal{padding:6px}.modal-content{padding:0 13px 19px}}
+
+:root{
+  --green:#78f0a1;
+  --green2:#c7ffd8;
+  --cyan:#57ddff;
+  --gold:#ffd56c;
+  --text:#f7fff9;
+  --muted:#bad0c5;
+  --panel:rgba(3,25,18,.88);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+
+  color:var(--text);
+
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(1,12,8,.10),
+      rgba(1,10,7,.50) 70%,
+      #020806
+    ),
+    url("images/forestcraft/back-image.png")
+    center top / cover fixed no-repeat,
+    #020806;
+}
+
+a{
+  color:inherit;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.craft-header{
+  position:relative;
+
+  width:100%;
+  height:auto;
+
+  margin:0;
+  padding:0;
+
+  overflow:hidden;
+
+  background:#06140e;
+
+  border-bottom:
+    1px solid rgba(117,247,172,.52);
+
+  box-shadow:
+    0 16px 44px rgba(0,0,0,.42);
+}
+
+.craft-header::before,
+.craft-header::after{
+  display:none;
+  content:none;
+}
+
+.craft-header-image{
+  display:block;
+
+  width:100%;
+  height:auto;
+
+  margin:0;
+  padding:0;
+
+  object-fit:contain;
+}
+
+.header-accessible{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  padding:0;
+  margin:-1px;
+
+  overflow:hidden;
+
+  clip:rect(0 0 0 0);
+  white-space:nowrap;
+
+  border:0;
+}
+
+
+/* =========================================================
+   NAV
+========================================================= */
+
+nav{
+  position:sticky;
+  top:0;
+
+  z-index:80;
+
+  display:flex;
+  flex-wrap:wrap;
+
+  justify-content:center;
+
+  gap:4px 22px;
+
+  padding:13px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,37,25,.97),
+      rgba(1,18,13,.98)
+    );
+
+  border-top:
+    1px solid rgba(255,211,107,.22);
+
+  border-bottom:
+    1px solid rgba(91,237,163,.50);
+
+  box-shadow:
+    0 12px 34px rgba(0,0,0,.38);
+
+  backdrop-filter:blur(15px);
+}
+
+nav::before,
+nav::after{
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  right:0;
+
+  height:1px;
+
+  pointer-events:none;
+}
+
+nav::before{
+  top:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold),
+      var(--green),
+      var(--cyan),
+      transparent
+    );
+
+  opacity:.48;
+}
+
+nav::after{
+  bottom:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--green),
+      var(--cyan),
+      transparent
+    );
+
+  opacity:.34;
+}
+
+nav a{
+  position:relative;
+
+  padding:8px 4px;
+
+  color:#f1fbf5;
+
+  font-size:14px;
+  font-weight:850;
+
+  text-decoration:none;
+
+  border-bottom:
+    2px solid transparent;
+
+  transition:.16s;
+}
+
+nav a:hover{
+  color:#e5ffed;
+
+  text-shadow:
+    0 0 18px rgba(99,239,157,.62);
+}
+
+nav a[aria-current="page"]{
+  color:var(--green2);
+
+  border-bottom-color:var(--green);
+
+  text-shadow:
+    0 0 18px rgba(96,242,159,.50);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main{
+  width:min(
+    1180px,
+    calc(100% - 28px)
+  );
+
+  margin:auto;
+
+  padding:
+    36px 0 76px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+  position:relative;
+
+  isolation:isolate;
+
+  overflow:hidden;
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    390px;
+
+  gap:28px;
+
+  align-items:center;
+
+  min-height:390px;
+
+  padding:
+    48px 50px;
+
+  border:
+    1px solid rgba(111,242,171,.72);
+
+  border-radius:28px;
+
+  background:
+    radial-gradient(
+      circle at 12% 0,
+      rgba(117,255,168,.19),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 90% 22%,
+      rgba(63,212,255,.18),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 70% 100%,
+      rgba(255,203,88,.12),
+      transparent 34%
+    ),
+    linear-gradient(
+      110deg,
+      rgba(4,29,20,.94),
+      rgba(3,23,17,.84) 58%,
+      rgba(3,21,16,.72)
+    );
+
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.50),
+    0 0 45px rgba(56,207,126,.08);
+
+  backdrop-filter:blur(6px);
+}
+
+.hero::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:-2;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,16,10,.66),
+      rgba(0,16,10,.18) 62%,
+      transparent
+    );
+
+  pointer-events:none;
+}
+
+.hero::after{
+  content:"";
+
+  position:absolute;
+
+  inset:10px;
+
+  border:
+    1px solid rgba(148,255,195,.09);
+
+  border-radius:21px;
+
+  pointer-events:none;
+}
+
+.hero-copy-wrap{
+  position:relative;
+
+  z-index:2;
+
+  max-width:720px;
+}
+
+.eyebrow{
+  margin:
+    0 0 10px;
+
+  color:#8cf5ad;
+
+  letter-spacing:.15em;
+
+  font-size:12px;
+  font-weight:950;
+}
+
+.hero h1{
+  margin:
+    0 0 14px;
+
+  font-size:
+    clamp(
+      32px,
+      4.4vw,
+      55px
+    );
+
+  line-height:1.08;
+
+  letter-spacing:-.04em;
+
+  text-shadow:
+    0 6px 24px rgba(0,0,0,.38);
+}
+
+.hero-copy{
+  margin:0;
+
+  color:#e2eee8;
+
+  font-size:16px;
+
+  line-height:1.92;
+
+  text-shadow:
+    0 2px 10px rgba(0,0,0,.45);
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+
+  gap:12px;
+
+  margin-top:25px;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.button{
+  appearance:none;
+
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  min-height:50px;
+
+  padding:
+    12px 19px;
+
+  border:
+    1px solid transparent;
+
+  border-radius:12px;
+
+  color:inherit;
+
+  font:inherit;
+
+  font-weight:900;
+
+  text-decoration:none;
+
+  cursor:pointer;
+
+  transition:.16s;
+}
+
+.button:hover:not(.disabled){
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.07);
+}
+
+.button.primary{
+  color:#052015;
+
+  background:
+    linear-gradient(
+      135deg,
+      #bcf7ca,
+      #52d27f
+    );
+
+  box-shadow:
+    0 0 28px rgba(70,225,128,.23),
+    0 9px 25px rgba(0,0,0,.26);
+}
+
+.button.web{
+  color:#f8fff9;
+
+  border-color:
+    rgba(100,238,163,.68);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(7,68,43,.80),
+      rgba(5,42,34,.72)
+    );
+
+  box-shadow:
+    inset 0 0 20px rgba(61,220,132,.07),
+    0 0 22px rgba(66,216,255,.05);
+}
+
+.button.secondary{
+  color:#e9f4ef;
+
+  border-color:
+    rgba(130,210,177,.42);
+
+  background:
+    rgba(255,255,255,.05);
+}
+
+.button.disabled{
+  opacity:.78;
+
+  cursor:not-allowed;
+}
+
+.download-note{
+  margin:
+    11px 0 0;
+
+  color:#accbbb;
+
+  font-size:12px;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   FOREST CRAFT ICON
+========================================================= */
+
+.hero-icon-wrap{
+  position:relative;
+
+  z-index:3;
+
+  display:grid;
+
+  place-items:center;
+
+  min-height:330px;
+
+  padding:8px;
+}
+
+.hero-icon-wrap::before{
+  content:"";
+
+  position:absolute;
+
+  width:350px;
+  height:350px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(63,220,255,.24),
+      rgba(84,239,148,.12) 44%,
+      rgba(255,201,83,.06) 62%,
+      transparent 74%
+    );
+
+  filter:
+    blur(12px);
+
+  animation:
+    pulseGlow
+    4.2s
+    ease-in-out
+    infinite;
+}
+
+.hero-icon-wrap::after{
+  display:none;
+  content:none;
+}
+
+.hero-icon{
+  position:relative;
+
+  z-index:2;
+
+  display:block;
+
+  width:min(
+    355px,
+    98%
+  );
+
+  height:auto;
+
+  object-fit:contain;
+
+  opacity:1;
+
+  visibility:visible;
+
+  filter:
+    drop-shadow(
+      0 28px 44px
+      rgba(0,0,0,.62)
+    )
+    drop-shadow(
+      0 0 28px
+      rgba(48,209,255,.25)
+    );
+
+  animation:
+    floatIcon
+    5s
+    ease-in-out
+    infinite;
+}
+
+@keyframes floatIcon{
+  50%{
+    transform:
+      translateY(-9px)
+      rotate(1deg);
+  }
+}
+
+@keyframes pulseGlow{
+  50%{
+    transform:
+      scale(1.07);
+
+    opacity:.82;
+  }
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+  position:relative;
+
+  overflow:hidden;
+
+  margin-top:30px;
+
+  padding:32px;
+
+  border:
+    1px solid rgba(111,231,169,.48);
+
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(70,211,255,.09),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      rgba(255,203,81,.08),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(4,29,20,.92),
+      rgba(3,18,14,.85)
+    );
+
+  box-shadow:
+    0 18px 46px rgba(0,0,0,.34),
+    inset 0 1px rgba(255,255,255,.025);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.section-title{
+  display:flex;
+
+  align-items:end;
+
+  justify-content:space-between;
+
+  gap:18px;
+
+  margin-bottom:22px;
+}
+
+.section-title h2{
+  margin:0;
+
+  font-size:28px;
+
+  text-shadow:
+    0 5px 20px rgba(0,0,0,.35);
+}
+
+.section-title p{
+  margin:0;
+
+  max-width:650px;
+
+  color:var(--muted);
+
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.feature-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:13px;
+}
+
+.feature-card{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:22px;
+
+  border:
+    1px solid rgba(115,222,169,.37);
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10,42,28,.94),
+      rgba(4,21,15,.89)
+    );
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.035),
+    0 10px 28px rgba(0,0,0,.18);
+
+  transition:.16s;
+}
+
+.feature-card:hover{
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(132,246,184,.68);
+}
+
+.feature-card:nth-child(1){
+  box-shadow:
+    inset 0 3px #ffcf5a,
+    0 10px 28px rgba(0,0,0,.18);
+}
+
+.feature-card:nth-child(2){
+  box-shadow:
+    inset 0 3px #54d9ff,
+    0 10px 28px rgba(0,0,0,.18);
+}
+
+.feature-card:nth-child(3){
+  box-shadow:
+    inset 0 3px #77ef9e,
+    0 10px 28px rgba(0,0,0,.18);
+}
+
+.feature-card:nth-child(4){
+  box-shadow:
+    inset 0 3px #b98cff,
+    0 10px 28px rgba(0,0,0,.18);
+}
+
+.feature-card b{
+  display:block;
+
+  margin-bottom:8px;
+
+  color:#d1f9dd;
+}
+
+.feature-card p{
+  margin:0;
+
+  color:#b7ccc1;
+
+  line-height:1.7;
+
+  font-size:13px;
+}
+
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
+.category-tabs{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-bottom:17px;
+}
+
+.category-tab{
+  padding:
+    9px 14px;
+
+  border:
+    1px solid rgba(118,210,170,.44);
+
+  border-radius:999px;
+
+  background:#071b13;
+
+  color:#e3eee8;
+
+  cursor:pointer;
+
+  font-weight:750;
+}
+
+.category-tab.active{
+  color:#052015;
+
+  border-color:
+    var(--green);
+
+  background:
+    linear-gradient(
+      135deg,
+      #c2f7d0,
+      #6ee39a
+    );
+
+  box-shadow:
+    0 0 18px rgba(105,238,154,.18);
+}
+
+.gallery-toolbar{
+  display:grid;
+
+  grid-template-columns:
+    minmax(210px,1fr)
+    auto
+    auto;
+
+  gap:11px;
+
+  margin-bottom:16px;
+}
+
+input,
+select{
+  width:100%;
+
+  min-height:44px;
+
+  border:
+    1px solid rgba(112,205,162,.42);
+
+  border-radius:10px;
+
+  background:#06170f;
+
+  color:#f4f8f6;
+
+  padding:
+    0 13px;
+
+  font:inherit;
+
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:
+    var(--green);
+
+  box-shadow:
+    0 0 0 2px rgba(112,237,157,.10);
+}
+
+.gallery-status{
+  min-height:30px;
+
+  padding:
+    6px 0 13px;
+
+  color:#abc0b7;
+}
+
+.gallery-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0,1fr)
+    );
+
+  gap:15px;
+}
+
+.post-card{
+  overflow:hidden;
+
+  border:
+    1px solid rgba(112,201,162,.36);
+
+  border-radius:17px;
+
+  background:#06170f;
+
+  cursor:pointer;
+
+  transition:.16s;
+}
+
+.post-card:hover{
+  transform:
+    translateY(-3px);
+
+  border-color:
+    var(--green);
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.28);
+}
+
+.post-preview{
+  position:relative;
+
+  aspect-ratio:1;
+
+  display:grid;
+
+  place-items:center;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      45deg,
+      #18231f 25%,
+      transparent 25%,
+      transparent 75%,
+      #18231f 75%
+    ),
+    linear-gradient(
+      45deg,
+      #18231f 25%,
+      #0c1512 25%,
+      #0c1512 75%,
+      #18231f 75%
+    );
+
+  background-size:
+    24px 24px;
+
+  background-position:
+    0 0,
+    12px 12px;
+}
+
+.post-preview img{
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+
+  image-rendering:pixelated;
+}
+
+.post-placeholder{
+  padding:20px;
+
+  text-align:center;
+
+  color:#6f8f82;
+
+  font-size:42px;
+}
+
+.post-category{
+  position:absolute;
+
+  left:9px;
+  top:9px;
+
+  padding:
+    5px 8px;
+
+  border-radius:999px;
+
+  background:
+    rgba(3,10,8,.88);
+
+  border:
+    1px solid rgba(159,231,198,.34);
+
+  color:#c8efdd;
+
+  font-size:10px;
+
+  font-weight:850;
+}
+
+.post-body{
+  padding:13px;
+}
+
+.post-title{
+  margin:
+    0 0 6px;
+
+  font-size:15px;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+.post-author,
+.post-meta{
+  margin:0;
+
+  color:#94aca2;
+
+  font-size:11px;
+
+  line-height:1.6;
+}
+
+.post-meta{
+  margin-top:7px;
+}
+
+.empty-state{
+  grid-column:
+    1 / -1;
+
+  padding:
+    48px 18px;
+
+  text-align:center;
+
+  color:#9eb4aa;
+
+  border:
+    1px dashed rgba(118,196,164,.35);
+
+  border-radius:16px;
+
+  background:
+    rgba(3,12,9,.52);
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+  position:fixed;
+
+  inset:0;
+
+  z-index:1000;
+
+  display:none;
+
+  place-items:center;
+
+  padding:18px;
+
+  background:
+    rgba(0,0,0,.78);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.modal.open{
+  display:grid;
+}
+
+.modal-card{
+  width:min(
+    920px,
+    100%
+  );
+
+  max-height:min(
+    860px,
+    calc(100vh - 28px)
+  );
+
+  overflow:auto;
+
+  border-radius:22px;
+
+  border:
+    1px solid rgba(133,214,180,.5);
+
+  background:#081712;
+}
+
+.modal-head{
+  position:sticky;
+
+  top:0;
+
+  z-index:2;
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  padding:11px;
+
+  background:
+    rgba(8,23,18,.95);
+}
+
+.modal-close{
+  width:42px;
+  height:42px;
+
+  border:
+    1px solid rgba(123,202,169,.4);
+
+  border-radius:10px;
+
+  color:#fff;
+
+  background:#10251d;
+
+  cursor:pointer;
+
+  font-size:20px;
+}
+
+.modal-content{
+  padding:
+    0 25px 28px;
+}
+
+.detail-grid{
+  display:grid;
+
+  grid-template-columns:
+    minmax(260px,.85fr)
+    minmax(0,1.15fr);
+
+  gap:25px;
+}
+
+.detail-preview{
+  min-height:340px;
+
+  display:grid;
+
+  place-items:center;
+
+  overflow:hidden;
+
+  border-radius:17px;
+
+  border:
+    1px solid rgba(117,197,164,.3);
+
+  background:#04100c;
+}
+
+.detail-preview img{
+  width:100%;
+  height:100%;
+
+  max-height:520px;
+
+  object-fit:contain;
+
+  image-rendering:pixelated;
+}
+
+.detail-copy h2{
+  margin:
+    0 0 8px;
+
+  font-size:29px;
+}
+
+.detail-description{
+  white-space:pre-wrap;
+
+  color:#c6d8d0;
+
+  line-height:1.85;
+}
+
+.tag-list{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:7px;
+
+  margin:
+    15px 0;
+}
+
+.tag{
+  padding:
+    6px 9px;
+
+  border-radius:999px;
+
+  background:#123025;
+
+  color:#afe4ce;
+
+  font-size:11px;
+}
+
+.file-list{
+  margin-top:18px;
+
+  display:grid;
+
+  gap:8px;
+}
+
+.file-row{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:11px;
+
+  padding:
+    10px 12px;
+
+  border:
+    1px solid rgba(112,190,158,.3);
+
+  border-radius:10px;
+
+  background:#06120e;
+}
+
+.file-name{
+  min-width:0;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+  color:#d9e6e1;
+
+  font-size:12px;
+}
+
+.download-link{
+  flex:none;
+
+  padding:
+    8px 11px;
+
+  border-radius:9px;
+
+  text-decoration:none;
+
+  color:#062019;
+
+  background:
+    var(--green);
+
+  font-size:11px;
+
+  font-weight:850;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  text-align:center;
+
+  padding:
+    30px 20px;
+
+  background:
+    rgba(1,8,5,.95);
+
+  color:#aeb9b4;
+
+  font-size:12px;
+
+  line-height:1.8;
+
+  border-top:
+    1px solid rgba(100,180,147,.24);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:930px){
+
+  .hero{
+    grid-template-columns:1fr;
+
+    padding:36px;
+  }
+
+  .hero-icon-wrap{
+    min-height:290px;
+  }
+
+  .feature-grid{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .gallery-grid{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  body{
+    background-attachment:scroll;
+  }
+
+  nav{
+    gap:2px 10px;
+
+    padding:
+      9px 7px;
+  }
+
+  nav a{
+    font-size:11px;
+  }
+
+  main{
+    width:
+      min(
+        calc(100% - 14px),
+        1180px
+      );
+
+    padding-top:16px;
+  }
+
+  .hero,
+  .section{
+    padding:
+      21px 15px;
+
+    border-radius:17px;
+  }
+
+  .hero{
+    min-height:0;
+  }
+
+  .hero-copy{
+    font-size:14px;
+  }
+
+  .hero-icon-wrap{
+    min-height:235px;
+  }
+
+  .hero-icon{
+    width:min(
+      250px,
+      90%
+    );
+  }
+
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+
+  .gallery-toolbar{
+    grid-template-columns:1fr;
+  }
+
+  .gallery-grid{
+    grid-template-columns:
+      repeat(2,1fr);
+
+    gap:8px;
+  }
+
+  .modal{
+    padding:6px;
+  }
+
+  .modal-content{
+    padding:
+      0 13px 19px;
+  }
+
+}
+
 </style>
 </head>
+
+
 <body>
-<header class="craft-header"><div class="header-accessible"><h1>Forest Craft Studio</h1><p>描く、塗る、組み立てる。Minecraft向けのスキン、テクスチャ、ブロック、3Dモデルをひとつの工房で扱うForest Solオリジナル制作ツール。</p></div></header>
-<nav><a href="index.html">メンバー紹介</a><a href="history.html">森の歴史</a><a href="forestfarm.html">ForestFarm</a><a href="forestcraft.html" aria-current="page">Forest Craft Studio</a><a href="thumbnails.html">サムネ置き場</a><a href="illustrations.html">イラスト</a><a href="terms.html">利用規約</a></nav>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="craft-header">
+
+  <img
+    class="craft-header-image"
+    src="images/forestcraft/forestcraft-header-menu.png"
+    alt="Forest Craft Studio"
+  >
+
+  <div class="header-accessible">
+
+    <h1>
+      Forest Craft Studio
+    </h1>
+
+    <p>
+      描く、塗る、組み立てる。Minecraft向けのスキン、
+      テクスチャ、ブロック、3Dモデルをひとつの工房で扱う
+      Forest Solオリジナル制作ツール。
+    </p>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     NAV
+===================================================== -->
+
+<nav>
+
+  <a href="index.html">
+    メンバー紹介
+  </a>
+
+  <a href="history.html">
+    森の歴史
+  </a>
+
+  <a href="forestfarm.html">
+    ForestFarm
+  </a>
+
+  <a
+    href="forestcraft.html"
+    aria-current="page"
+  >
+    Forest Craft Studio
+  </a>
+
+  <a href="thumbnails.html">
+    サムネ置き場
+  </a>
+
+  <a href="illustrations.html">
+    イラスト
+  </a>
+
+  <a href="terms.html">
+    利用規約
+  </a>
+
+</nav>
+
+
 <main>
-<section class="hero"><div class="hero-copy-wrap"><p class="eyebrow">CREATE / PAINT / BUILD</p><h1>ブラウザでも、Windowsでも。</h1><p class="hero-copy">3Dへの直接ペイント、複数編集レイヤ、比較レイヤ、Auto Tone、ミラー、選択・色置換、動くテクスチャ、.bbmodel読み込みまで。制作机をそのままアプリにしたような環境を目指しています。</p><div class="hero-actions"><span class="button primary disabled" title="Windows版インストーラーのサイト直配布は準備中">🪟 Windows版をダウンロード</span><a class="button web" href="forestcraft-web/">🌐 Web版を起動</a></div><p class="download-note">Web版はそのままブラウザで起動できます。Windows版のサイト直配布は準備中です。</p></div><div class="hero-icon-wrap"><img class="hero-icon" src="images/forestcraft/forest-craft-studio-icon.png?v=20260819b" alt="Forest Craft Studio アイコン"></div></section>
-<section class="section"><div class="section-title"><div><h2>できること</h2><p>Skin / Item / Block / 3D Modelをひとつの操作感で扱えるようにまとめています。</p></div></div><div class="feature-grid"><article class="feature-card"><b>🎨 Skin Editor</b><p>Classic / Slim、Body / Outer、部位表示、比較レイヤ、2種類のミラー。</p></article><article class="feature-card"><b>🧊 3D Model Paint</b><p>.bbmodelを読み込み、UVを保ったままモデル表面へ直接ペイント。</p></article><article class="feature-card"><b>🖌️ Item & Block</b><p>16〜256px、ブロック6面、アニメーションフレーム、.mcmeta書き出し。</p></article><article class="feature-card"><b>🪄 Layer & Brush</b><p>編集レイヤ、統合、透明度、Auto Tone、ブラシ形状、選択、色置換。</p></article></div></section>
-<section id="gallery" class="section"><div class="section-title"><div><h2>作品ギャラリー</h2><p>Forest Craft Studioから公開された作品を表示します。</p></div></div><div class="category-tabs"><button class="category-tab active" data-category="">すべて</button><button class="category-tab" data-category="skin">Skin</button><button class="category-tab" data-category="item">Item</button><button class="category-tab" data-category="block">Block</button><button class="category-tab" data-category="model">3D Model</button></div><div class="gallery-toolbar"><input id="searchInput" type="search" placeholder="タイトル・作者・タグを検索"><select id="sortSelect"><option value="new">新着順</option><option value="rating">評価順</option><option value="download">ダウンロード順</option></select><button id="reloadButton" class="button secondary" type="button">再読み込み</button></div><div id="galleryStatus" class="gallery-status">作品を読み込み中...</div><div id="galleryGrid" class="gallery-grid"></div></section>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+
+  <div class="hero-copy-wrap">
+
+
+    <p class="eyebrow">
+      CREATE / PAINT / BUILD
+    </p>
+
+
+    <h1>
+      ブラウザでも、Windowsでも。
+    </h1>
+
+
+    <p class="hero-copy">
+
+      3Dへの直接ペイント、複数編集レイヤ、
+      比較レイヤ、Auto Tone、ミラー、
+      選択・色置換、動くテクスチャ、
+      .bbmodel読み込みまで。
+
+      制作机をそのままアプリにしたような
+      環境を目指しています。
+
+    </p>
+
+
+    <div class="hero-actions">
+
+      <span
+        class="button primary disabled"
+        title="Windows版インストーラーのサイト直配布は準備中"
+      >
+        🪟 Windows版をダウンロード
+      </span>
+
+
+      <a
+        class="button web"
+        href="forestcraft-web/"
+      >
+        🌐 Web版を起動
+      </a>
+
+    </div>
+
+
+    <p class="download-note">
+
+      Web版はそのままブラウザで起動できます。
+      Windows版のサイト直配布は準備中です。
+
+    </p>
+
+
+  </div>
+
+
+  <!-- ===============================
+       FOREST CRAFT STUDIO ICON
+  ================================ -->
+
+  <div class="hero-icon-wrap">
+
+    <img
+      class="hero-icon"
+      src="images/forestcraft/icon.png"
+      alt="Forest Craft Studio アイコン"
+    >
+
+  </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="section">
+
+
+  <div class="section-title">
+
+    <div>
+
+      <h2>
+        できること
+      </h2>
+
+      <p>
+        Skin / Item / Block / 3D Modelを
+        ひとつの操作感で扱えるようにまとめています。
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="feature-grid">
+
+
+    <article class="feature-card">
+
+      <b>
+        🎨 Skin Editor
+      </b>
+
+      <p>
+        Classic / Slim、Body / Outer、
+        部位表示、比較レイヤ、
+        2種類のミラー。
+      </p>
+
+    </article>
+
+
+    <article class="feature-card">
+
+      <b>
+        🧊 3D Model Paint
+      </b>
+
+      <p>
+        .bbmodelを読み込み、
+        UVを保ったまま
+        モデル表面へ直接ペイント。
+      </p>
+
+    </article>
+
+
+    <article class="feature-card">
+
+      <b>
+        🖌️ Item & Block
+      </b>
+
+      <p>
+        16〜256px、ブロック6面、
+        アニメーションフレーム、
+        .mcmeta書き出し。
+      </p>
+
+    </article>
+
+
+    <article class="feature-card">
+
+      <b>
+        🪄 Layer & Brush
+      </b>
+
+      <p>
+        編集レイヤ、統合、透明度、
+        Auto Tone、ブラシ形状、
+        選択、色置換。
+      </p>
+
+    </article>
+
+
+  </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     GALLERY
+===================================================== -->
+
+<section
+  id="gallery"
+  class="section"
+>
+
+
+  <div class="section-title">
+
+    <div>
+
+      <h2>
+        作品ギャラリー
+      </h2>
+
+      <p>
+        Forest Craft Studioから
+        公開された作品を表示します。
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="category-tabs">
+
+    <button
+      class="category-tab active"
+      data-category=""
+    >
+      すべて
+    </button>
+
+    <button
+      class="category-tab"
+      data-category="skin"
+    >
+      Skin
+    </button>
+
+    <button
+      class="category-tab"
+      data-category="item"
+    >
+      Item
+    </button>
+
+    <button
+      class="category-tab"
+      data-category="block"
+    >
+      Block
+    </button>
+
+    <button
+      class="category-tab"
+      data-category="model"
+    >
+      3D Model
+    </button>
+
+  </div>
+
+
+  <div class="gallery-toolbar">
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="タイトル・作者・タグを検索"
+    >
+
+
+    <select id="sortSelect">
+
+      <option value="new">
+        新着順
+      </option>
+
+      <option value="rating">
+        評価順
+      </option>
+
+      <option value="download">
+        ダウンロード順
+      </option>
+
+    </select>
+
+
+    <button
+      id="reloadButton"
+      class="button secondary"
+      type="button"
+    >
+      再読み込み
+    </button>
+
+
+  </div>
+
+
+  <div
+    id="galleryStatus"
+    class="gallery-status"
+  >
+    作品を読み込み中...
+  </div>
+
+
+  <div
+    id="galleryGrid"
+    class="gallery-grid"
+  ></div>
+
+
+</section>
+
+
 </main>
-<div id="postModal" class="modal"><div class="modal-card"><div class="modal-head"><button id="modalClose" class="modal-close">×</button></div><div id="modalContent" class="modal-content"></div></div></div>
-<footer>© Forestsol / ウォルフィ<br>Forest Craft Studio is an unofficial Minecraft creation tool and is not affiliated with Mojang or Microsoft.</footer>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+  id="postModal"
+  class="modal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <button
+        id="modalClose"
+        class="modal-close"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      id="modalContent"
+      class="modal-content"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+  © Forestsol / ウォルフィ
+
+  <br>
+
+  Forest Craft Studio is an unofficial Minecraft creation tool
+  and is not affiliated with Mojang or Microsoft.
+
+</footer>
+
+
 <script>
-const API_BASE="https://forest-craft-api.wdrk80.workers.dev",galleryGrid=document.getElementById("galleryGrid"),galleryStatus=document.getElementById("galleryStatus"),searchInput=document.getElementById("searchInput"),sortSelect=document.getElementById("sortSelect"),reloadButton=document.getElementById("reloadButton"),modal=document.getElementById("postModal"),modalClose=document.getElementById("modalClose"),modalContent=document.getElementById("modalContent");let activeCategory="",posts=[];const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c])),cat=c=>({skin:"Skin",item:"Item",block:"Block",model:"3D Model"})[c]||c,icon=c=>({skin:"🐺",item:"⚔️",block:"🧊",model:"🐉"})[c]||"🎨",tags=p=>{if(Array.isArray(p.tags))return p.tags;try{return JSON.parse(p.tags_json||"[]")}catch{return[]}},date=v=>{const d=new Date(v);return Number.isNaN(d.getTime())?"":new Intl.DateTimeFormat("ja-JP",{year:"numeric",month:"short",day:"numeric"}).format(d)};
-function filtered(){const q=searchInput.value.trim().toLowerCase();let r=posts.filter(p=>!q||[p.title,p.username,p.display_name,...tags(p)].join(" ").toLowerCase().includes(q));return [...r].sort((a,b)=>sortSelect.value==="rating"?Number(b.rating_average||0)-Number(a.rating_average||0):sortSelect.value==="download"?Number(b.download_count||0)-Number(a.download_count||0):new Date(b.created_at)-new Date(a.created_at))}
-function render(){galleryGrid.innerHTML="";const items=filtered();if(!items.length){galleryGrid.innerHTML='<div class="empty-state">公開作品はまだありません。</div>';return}items.forEach(p=>{const el=document.createElement("article");el.className="post-card";const preview=p.preview_file_id?`<img src="${API_BASE}/files/${encodeURIComponent(p.preview_file_id)}" alt="${esc(p.title)}">`:`<div class="post-placeholder">${icon(p.category)}</div>`;el.innerHTML=`<div class="post-preview">${preview}<span class="post-category">${esc(cat(p.category))}</span></div><div class="post-body"><h3 class="post-title">${esc(p.title)}</h3><p class="post-author">by ${esc(p.display_name||p.username||"Unknown")}</p><p class="post-meta">★ ${Number(p.rating_average||0).toFixed(1)} ・ ↓ ${Number(p.download_count||0)} ・ ${esc(date(p.created_at))}</p></div>`;el.onclick=()=>openPost(p.id);galleryGrid.appendChild(el)})}
-async function loadPosts(){galleryStatus.textContent="作品を読み込み中...";try{const q=new URLSearchParams({limit:"50"});if(activeCategory)q.set("category",activeCategory);const r=await fetch(`${API_BASE}/posts?${q}`),d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||"作品を取得できませんでした");posts=d.posts||[];galleryStatus.textContent=`${posts.length}件の作品を読み込みました。`;render()}catch(e){galleryStatus.textContent="ギャラリーの読み込みに失敗しました。";galleryGrid.innerHTML=`<div class="empty-state">${esc(e.message)}</div>`}}
-async function openPost(id){modal.classList.add("open");document.body.style.overflow="hidden";modalContent.innerHTML='<div class="empty-state">作品情報を読み込み中...</div>';try{const r=await fetch(`${API_BASE}/posts/${encodeURIComponent(id)}`),d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||"作品を取得できませんでした");const p=d.post,f=Array.isArray(p.files)?p.files:[],pv=f.find(x=>x.file_role==="preview"||x.file_role==="thumbnail")||f.find(x=>x.mime_type&&x.mime_type.startsWith("image/")),preview=pv?`<img src="${API_BASE}/files/${encodeURIComponent(pv.id)}" alt="${esc(p.title)}">`:`<div class="post-placeholder">${icon(p.category)}</div>`,tg=tags(p).map(t=>`<span class="tag">${esc(t)}</span>`).join(""),rows=f.length?f.map(x=>`<div class="file-row"><span class="file-name">${esc(x.file_role)} ・ ${esc(x.original_filename)}</span><a class="download-link" href="${API_BASE}/download/${encodeURIComponent(x.id)}" data-no-transition>DL</a></div>`).join(""):'<div class="empty-state">ダウンロード可能なファイルはありません。</div>';modalContent.innerHTML=`<div class="detail-grid"><div class="detail-preview">${preview}</div><div class="detail-copy"><p class="eyebrow">${esc(cat(p.category))}</p><h2>${esc(p.title)}</h2><p class="post-author">by ${esc(p.display_name||p.username||"Unknown")}</p><p class="post-meta">↓ ${Number(p.download_count||0)} ・ 👁 ${Number(p.view_count||0)}</p><div class="tag-list">${tg}</div><p class="detail-description">${esc(p.description||"説明はありません。")}</p><div class="file-list">${rows}</div></div></div>`}catch(e){modalContent.innerHTML=`<div class="empty-state">${esc(e.message)}</div>`}}
-function closeModal(){modal.classList.remove("open");document.body.style.overflow=""}document.querySelectorAll(".category-tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".category-tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeCategory=b.dataset.category||"";loadPosts()});searchInput.oninput=render;sortSelect.onchange=render;reloadButton.onclick=loadPosts;modalClose.onclick=closeModal;modal.onclick=e=>{if(e.target===modal)closeModal()};document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});loadPosts();
+
+const API_BASE =
+  "https://forest-craft-api.wdrk80.workers.dev";
+
+const galleryGrid =
+  document.getElementById("galleryGrid");
+
+const galleryStatus =
+  document.getElementById("galleryStatus");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const sortSelect =
+  document.getElementById("sortSelect");
+
+const reloadButton =
+  document.getElementById("reloadButton");
+
+const modal =
+  document.getElementById("postModal");
+
+const modalClose =
+  document.getElementById("modalClose");
+
+const modalContent =
+  document.getElementById("modalContent");
+
+
+let activeCategory = "";
+let posts = [];
+
+
+const esc = v =>
+
+  String(v ?? "")
+
+  .replace(
+
+    /[&<>"']/g,
+
+    c => ({
+
+      "&":"&amp;",
+
+      "<":"&lt;",
+
+      ">":"&gt;",
+
+      "\"":"&quot;",
+
+      "'":"&#039;"
+
+    }[c])
+
+  );
+
+
+const cat = c => ({
+
+  skin:"Skin",
+
+  item:"Item",
+
+  block:"Block",
+
+  model:"3D Model"
+
+})[c] || c;
+
+
+const icon = c => ({
+
+  skin:"🐺",
+
+  item:"⚔️",
+
+  block:"🧊",
+
+  model:"🐉"
+
+})[c] || "🎨";
+
+
+const tags = p => {
+
+  if(Array.isArray(p.tags))
+    return p.tags;
+
+  try{
+
+    return JSON.parse(
+      p.tags_json || "[]"
+    );
+
+  }
+
+  catch{
+
+    return [];
+
+  }
+
+};
+
+
+const date = v => {
+
+  const d =
+    new Date(v);
+
+  return Number.isNaN(
+    d.getTime()
+  )
+
+  ? ""
+
+  : new Intl.DateTimeFormat(
+
+      "ja-JP",
+
+      {
+
+        year:"numeric",
+
+        month:"short",
+
+        day:"numeric"
+
+      }
+
+    ).format(d);
+
+};
+
+
+function filtered(){
+
+  const q =
+    searchInput
+    .value
+    .trim()
+    .toLowerCase();
+
+
+  let r = posts.filter(
+
+    p =>
+
+      !q ||
+
+      [
+
+        p.title,
+
+        p.username,
+
+        p.display_name,
+
+        ...tags(p)
+
+      ]
+
+      .join(" ")
+
+      .toLowerCase()
+
+      .includes(q)
+
+  );
+
+
+  return [...r].sort(
+
+    (a,b) =>
+
+      sortSelect.value === "rating"
+
+      ? Number(
+          b.rating_average || 0
+        )
+
+        -
+
+        Number(
+          a.rating_average || 0
+        )
+
+
+      : sortSelect.value === "download"
+
+      ? Number(
+          b.download_count || 0
+        )
+
+        -
+
+        Number(
+          a.download_count || 0
+        )
+
+
+      : new Date(
+          b.created_at
+        )
+
+        -
+
+        new Date(
+          a.created_at
+        )
+
+  );
+
+}
+
+
+function render(){
+
+  galleryGrid.innerHTML = "";
+
+
+  const items =
+    filtered();
+
+
+  if(!items.length){
+
+    galleryGrid.innerHTML =
+
+      '<div class="empty-state">' +
+
+      '公開作品はまだありません。' +
+
+      '</div>';
+
+    return;
+
+  }
+
+
+  items.forEach(p => {
+
+    const el =
+      document.createElement(
+        "article"
+      );
+
+
+    el.className =
+      "post-card";
+
+
+    const preview =
+
+      p.preview_file_id
+
+      ? `
+
+        <img
+
+          src="${API_BASE}/files/${encodeURIComponent(p.preview_file_id)}"
+
+          alt="${esc(p.title)}"
+
+        >
+
+      `
+
+      : `
+
+        <div class="post-placeholder">
+
+          ${icon(p.category)}
+
+        </div>
+
+      `;
+
+
+    el.innerHTML = `
+
+      <div class="post-preview">
+
+        ${preview}
+
+        <span class="post-category">
+
+          ${esc(cat(p.category))}
+
+        </span>
+
+      </div>
+
+
+      <div class="post-body">
+
+        <h3 class="post-title">
+
+          ${esc(p.title)}
+
+        </h3>
+
+
+        <p class="post-author">
+
+          by ${esc(
+            p.display_name ||
+            p.username ||
+            "Unknown"
+          )}
+
+        </p>
+
+
+        <p class="post-meta">
+
+          ★ ${Number(
+            p.rating_average || 0
+          ).toFixed(1)}
+
+          ・
+
+          ↓ ${Number(
+            p.download_count || 0
+          )}
+
+          ・
+
+          ${esc(
+            date(p.created_at)
+          )}
+
+        </p>
+
+      </div>
+
+    `;
+
+
+    el.onclick =
+      () => openPost(p.id);
+
+
+    galleryGrid.appendChild(
+      el
+    );
+
+  });
+
+}
+
+
+async function loadPosts(){
+
+  galleryStatus.textContent =
+    "作品を読み込み中...";
+
+
+  try{
+
+    const q =
+      new URLSearchParams({
+        limit:"50"
+      });
+
+
+    if(activeCategory)
+      q.set(
+        "category",
+        activeCategory
+      );
+
+
+    const r =
+      await fetch(
+        `${API_BASE}/posts?${q}`
+      );
+
+
+    const d =
+      await r.json();
+
+
+    if(!r.ok || !d.ok)
+
+      throw new Error(
+
+        d.error ||
+
+        "作品を取得できませんでした"
+
+      );
+
+
+    posts =
+      d.posts || [];
+
+
+    galleryStatus.textContent =
+
+      `${posts.length}件の作品を読み込みました。`;
+
+
+    render();
+
+  }
+
+  catch(e){
+
+    galleryStatus.textContent =
+      "ギャラリーの読み込みに失敗しました。";
+
+
+    galleryGrid.innerHTML = `
+
+      <div class="empty-state">
+
+        ${esc(e.message)}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+async function openPost(id){
+
+  modal.classList.add(
+    "open"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+
+  modalContent.innerHTML =
+
+    '<div class="empty-state">' +
+
+    '作品情報を読み込み中...' +
+
+    '</div>';
+
+
+  try{
+
+    const r =
+      await fetch(
+
+        `${API_BASE}/posts/${encodeURIComponent(id)}`
+
+      );
+
+
+    const d =
+      await r.json();
+
+
+    if(!r.ok || !d.ok)
+
+      throw new Error(
+
+        d.error ||
+
+        "作品を取得できませんでした"
+
+      );
+
+
+    const p =
+      d.post;
+
+
+    const f =
+      Array.isArray(p.files)
+
+      ? p.files
+
+      : [];
+
+
+    const pv =
+
+      f.find(
+
+        x =>
+
+          x.file_role === "preview" ||
+
+          x.file_role === "thumbnail"
+
+      )
+
+      ||
+
+      f.find(
+
+        x =>
+
+          x.mime_type &&
+
+          x.mime_type.startsWith(
+            "image/"
+          )
+
+      );
+
+
+    const preview =
+
+      pv
+
+      ? `
+
+        <img
+
+          src="${API_BASE}/files/${encodeURIComponent(pv.id)}"
+
+          alt="${esc(p.title)}"
+
+        >
+
+      `
+
+      : `
+
+        <div class="post-placeholder">
+
+          ${icon(p.category)}
+
+        </div>
+
+      `;
+
+
+    const tg =
+
+      tags(p)
+
+      .map(
+
+        t =>
+
+          `<span class="tag">
+
+            ${esc(t)}
+
+          </span>`
+
+      )
+
+      .join("");
+
+
+    const rows =
+
+      f.length
+
+      ? f.map(
+
+          x => `
+
+            <div class="file-row">
+
+              <span class="file-name">
+
+                ${esc(x.file_role)}
+
+                ・
+
+                ${esc(
+                  x.original_filename
+                )}
+
+              </span>
+
+
+              <a
+
+                class="download-link"
+
+                href="${API_BASE}/download/${encodeURIComponent(x.id)}"
+
+                data-no-transition
+
+              >
+
+                DL
+
+              </a>
+
+            </div>
+
+          `
+
+        )
+
+        .join("")
+
+      : `
+
+        <div class="empty-state">
+
+          ダウンロード可能なファイルはありません。
+
+        </div>
+
+      `;
+
+
+    modalContent.innerHTML = `
+
+      <div class="detail-grid">
+
+
+        <div class="detail-preview">
+
+          ${preview}
+
+        </div>
+
+
+        <div class="detail-copy">
+
+
+          <p class="eyebrow">
+
+            ${esc(
+              cat(p.category)
+            )}
+
+          </p>
+
+
+          <h2>
+
+            ${esc(p.title)}
+
+          </h2>
+
+
+          <p class="post-author">
+
+            by ${esc(
+
+              p.display_name ||
+
+              p.username ||
+
+              "Unknown"
+
+            )}
+
+          </p>
+
+
+          <p class="post-meta">
+
+            ↓ ${Number(
+              p.download_count || 0
+            )}
+
+            ・
+
+            👁 ${Number(
+              p.view_count || 0
+            )}
+
+          </p>
+
+
+          <div class="tag-list">
+
+            ${tg}
+
+          </div>
+
+
+          <p class="detail-description">
+
+            ${esc(
+              p.description ||
+              "説明はありません。"
+            )}
+
+          </p>
+
+
+          <div class="file-list">
+
+            ${rows}
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+  catch(e){
+
+    modalContent.innerHTML = `
+
+      <div class="empty-state">
+
+        ${esc(e.message)}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+function closeModal(){
+
+  modal.classList.remove(
+    "open"
+  );
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+document
+.querySelectorAll(
+  ".category-tab"
+)
+.forEach(
+
+  b =>
+
+    b.onclick = () => {
+
+      document
+      .querySelectorAll(
+        ".category-tab"
+      )
+      .forEach(
+
+        x =>
+          x.classList.remove(
+            "active"
+          )
+
+      );
+
+
+      b.classList.add(
+        "active"
+      );
+
+
+      activeCategory =
+        b.dataset.category || "";
+
+
+      loadPosts();
+
+    }
+
+);
+
+
+searchInput.oninput =
+  render;
+
+
+sortSelect.onchange =
+  render;
+
+
+reloadButton.onclick =
+  loadPosts;
+
+
+modalClose.onclick =
+  closeModal;
+
+
+modal.onclick = e => {
+
+  if(e.target === modal)
+    closeModal();
+
+};
+
+
+document.addEventListener(
+
+  "keydown",
+
+  e => {
+
+    if(e.key === "Escape")
+      closeModal();
+
+  }
+
+);
+
+
+loadPosts();
+
 </script>
-</body></html>
+
+
+</body>
+</html>
