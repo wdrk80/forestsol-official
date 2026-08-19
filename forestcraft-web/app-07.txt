@@ -34,7 +34,23 @@ async function submitPublish(){
 }
 function bindPublishUI(){
   $$('.publish-btn').forEach(b=>b.addEventListener('click',()=>openPublishModal(b.dataset.publishMode)));
-  $('#publishCloseBtn').onclick=closePublishModal;$('#publishCancelBtn').onclick=closePublishModal;$('#publishTestBtn').onclick=testPublishApi;$('#publishSubmitBtn').onclick=submitPublish;
+  $('#publishCloseBtn').onclick=closePublishModal;
+  $('#publishCancelBtn').onclick=closePublishModal;
+
+  const usingForestAuth=!!window.ForestAuth;
+  if(usingForestAuth){
+    ['publishUserId','publishApiUrl','publishSecret'].forEach(id=>{
+      const el=$('#'+id);const wrap=el?.closest('label');if(wrap)wrap.style.display='none';
+    });
+    const note=$('#publishModal .publish-note');
+    if(note)note.textContent='🔐 Forest Solにログイン中のアカウントで投稿します。管理キーの入力は不要です。';
+    if($('#publishTestBtn'))$('#publishTestBtn').style.display='none';
+    $('#publishSubmitBtn').onclick=null;
+  }else{
+    $('#publishTestBtn').onclick=testPublishApi;
+    $('#publishSubmitBtn').onclick=submitPublish;
+  }
+
   $('#publishModal').addEventListener('pointerdown',e=>{if(e.target.id==='publishModal')closePublishModal()});
   window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#publishModal').classList.contains('hidden'))closePublishModal()});
 }
