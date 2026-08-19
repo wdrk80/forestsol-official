@@ -11,444 +11,366 @@
 
 <style>
 :root{
-  --wood-1:#2a170b;
-  --wood-2:#4a2a12;
-  --wood-3:#6f4724;
-  --wood-4:#8e6537;
-  --paper:#f3dfb8;
-  --paper-2:#fff0cf;
+  --wood-dark:#321b0c;
+  --wood:#5d381c;
+  --wood-light:#81572e;
+  --paper:#f4dfb8;
+  --paper-light:#fff1d1;
   --ink:#432813;
-  --ink-soft:#76573a;
-  --green:#516c2e;
-  --green-2:#718e46;
-  --gold:#d2a95d;
-  --red:#9e4a32;
-  --shadow:rgba(24,13,7,.45);
-  --line:rgba(75,44,20,.28);
+  --ink-soft:#785b3f;
+  --green:#536f31;
+  --green-dark:#395020;
+  --gold:#c99e52;
+  --danger:#8e3f2e;
+  --shadow:rgba(25,13,6,.45);
 }
 
 *{box-sizing:border-box}
-html{min-height:100%;background:#1e130b}
+
+html{
+  min-height:100%;
+  background:#1b1109;
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
   min-height:100vh;
   color:var(--ink);
   font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
   background:
-    linear-gradient(rgba(26,14,7,.10),rgba(26,14,7,.38)),
+    linear-gradient(rgba(25,13,6,.10),rgba(25,13,6,.33)),
     url("images/backgrounds/mypage-home-interior.png") center top/cover fixed no-repeat;
 }
 
-/* ===== 上部：家をイメージしたヘッダー ===== */
-.home-header{
+/* =========================================================
+   決定済みマイページヘッダー
+   元画像そのものは加工しない。
+   画像の下にある暗い余白部分はヘッダー表示領域の外に置く。
+   ========================================================= */
+
+.mypage-hero{
   position:relative;
+  width:100%;
+  aspect-ratio:1536 / 650;
+  min-height:330px;
   overflow:hidden;
-  min-height:300px;
-  border-bottom:5px solid #4f2d13;
   background:
-    linear-gradient(90deg,rgba(32,18,9,.96) 0 34%,rgba(32,18,9,.26) 53%,rgba(32,18,9,.08) 100%),
-    url("images/backgrounds/login-background.png") center/cover no-repeat;
-  box-shadow:0 14px 35px rgba(0,0,0,.38);
-}
-.home-header::before{
-  content:"";
-  position:absolute;
-  inset:0 auto 0 0;
-  width:min(46vw,690px);
-  background:
-    linear-gradient(90deg,rgba(255,202,105,.10),transparent 70%),
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.018) 0 2px,
-      transparent 2px 7px
-    );
-  pointer-events:none;
-}
-.home-header::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;bottom:0;
-  height:18px;
-  background:
-    linear-gradient(#7e522a,#3d210e),
-    repeating-linear-gradient(90deg,transparent 0 130px,rgba(24,12,5,.45) 130px 133px);
-  box-shadow:0 -2px 0 rgba(255,219,144,.16) inset;
+    url("images/headers/mypage-home-header.png")
+    center top / 100% auto no-repeat;
+  box-shadow:0 14px 38px rgba(0,0,0,.42);
 }
 
-.header-inner{
-  position:relative;
-  z-index:1;
-  width:min(1320px,calc(100% - 32px));
-  min-height:300px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:30px;
-  padding:34px 0 38px;
-}
-
-.brand-house{
-  position:relative;
-  width:min(520px,62vw);
-  padding:30px 32px 28px;
-  border:2px solid rgba(224,180,102,.35);
-  border-radius:28px 28px 18px 18px;
-  color:#f6e6bd;
-  background:
-    linear-gradient(rgba(61,35,16,.95),rgba(42,23,11,.98)),
-    repeating-linear-gradient(0deg,transparent 0 38px,rgba(20,10,4,.28) 39px 41px);
-  box-shadow:
-    0 18px 38px rgba(0,0,0,.38),
-    inset 0 0 0 5px rgba(128,84,39,.12);
-}
-.brand-house::before{
-  content:"";
+/* 画像内の固定ユーザー表示の上に、実アカウント情報を載せる */
+.hero-user{
   position:absolute;
-  left:36px;right:36px;top:-18px;
-  height:24px;
-  border-radius:80% 80% 0 0;
-  background:
-    repeating-linear-gradient(90deg,#603719 0 34px,#3b2110 34px 39px);
-  transform:skewX(-20deg);
-  box-shadow:0 3px 0 rgba(0,0,0,.28);
-}
-.brand-house h1{
-  margin:0;
-  font-size:clamp(38px,5vw,66px);
-  line-height:1;
-  letter-spacing:-.045em;
-  text-shadow:0 3px 0 rgba(0,0,0,.34);
-}
-.brand-house p{
-  margin:13px 0 0;
-  color:#d8c396;
-  font-size:14px;
-  letter-spacing:.08em;
-}
-.brand-leaf{
-  display:inline-block;
-  margin-right:10px;
-  color:#89a755;
-}
-
-.user-plaque{
+  z-index:4;
+  top:18.4%;
+  right:1.9%;
+  width:28.2%;
+  min-height:108px;
   display:flex;
   align-items:center;
   gap:14px;
-  min-width:290px;
-  padding:14px 18px;
-  border:2px solid rgba(232,191,113,.34);
-  border-radius:16px;
-  color:#f7e7c0;
-  background:linear-gradient(180deg,rgba(74,43,20,.96),rgba(42,23,10,.98));
-  box-shadow:0 12px 28px rgba(0,0,0,.34);
+  padding:13px 18px;
+  border:2px solid rgba(210,159,81,.50);
+  border-radius:13px;
+  color:#f7e8c4;
+  background:
+    linear-gradient(180deg,rgba(103,66,32,.99),rgba(61,34,16,.99));
+  box-shadow:
+    inset 0 1px 0 rgba(255,235,192,.20),
+    0 8px 20px rgba(0,0,0,.28);
 }
-.user-plaque .mini-avatar{
-  width:62px;
-  height:62px;
-  flex:0 0 62px;
+
+.hero-avatar{
+  width:70px;
+  height:70px;
+  flex:0 0 70px;
   overflow:hidden;
   display:grid;
   place-items:center;
   border-radius:50%;
-  border:3px solid #d4ad62;
-  background:#ead9b4;
-  font-size:28px;
+  border:3px solid #d8b16c;
+  color:#2b1b10;
+  background:#efe0bc;
+  font-size:32px;
 }
-.user-plaque .mini-avatar img{
+
+.hero-avatar img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
-.user-plaque strong{
+
+.hero-user strong{
   display:block;
-  margin-bottom:4px;
-  font-size:17px;
-}
-.user-plaque small{
-  color:#cdbb97;
+  font-size:clamp(13px,1.45vw,23px);
+  line-height:1.25;
 }
 
-/* ===== 木製ナビ ===== */
-.wood-nav{
-  position:sticky;
-  top:0;
-  z-index:20;
-  display:flex;
-  justify-content:center;
-  overflow-x:auto;
-  padding:0 12px;
-  border-bottom:2px solid #2b1709;
-  background:
-    linear-gradient(180deg,#5a3418,#3c210f);
-  box-shadow:0 8px 18px rgba(0,0,0,.28);
+.hero-user small{
+  display:block;
+  margin-top:5px;
+  color:#e1c99c;
+  font-size:clamp(10px,.9vw,14px);
 }
-.wood-nav a,
-.wood-nav button{
-  flex:0 0 auto;
-  min-width:128px;
-  min-height:58px;
-  padding:9px 14px;
-  border:0;
-  border-left:1px solid rgba(255,227,174,.10);
-  border-right:1px solid rgba(22,11,5,.38);
-  color:#f7e6bf;
-  background:transparent;
+
+/* 画像に描かれている木製メニューを実際にクリックできるようにする */
+.hero-hotspots{
+  position:absolute;
+  z-index:5;
+  left:0;
+  right:0;
+  bottom:0;
+  height:10.2%;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+}
+
+.hero-hotspots a{
+  position:relative;
+  display:block;
   text-decoration:none;
-  text-align:center;
-  font:inherit;
-  font-size:13px;
-  font-weight:800;
-  cursor:pointer;
-}
-.wood-nav a:hover,
-.wood-nav button:hover{
-  background:rgba(139,173,76,.15);
-}
-.wood-nav .current{
-  background:linear-gradient(180deg,#607d3c,#3f5928);
-  box-shadow:inset 0 0 0 1px rgba(183,220,111,.22);
-}
-.nav-icon{
-  display:block;
-  margin-bottom:2px;
-  font-family:Arial,sans-serif;
-  font-size:20px;
+  border-right:1px solid transparent;
 }
 
-/* ===== メイン ===== */
+.hero-hotspots a:focus-visible{
+  outline:3px solid #ffd77e;
+  outline-offset:-4px;
+}
+
+.hero-hotspots a:hover{
+  background:rgba(255,231,170,.055);
+}
+
+/* =========================================================
+   本体
+   ========================================================= */
+
 .page-wrap{
-  width:min(1380px,calc(100% - 28px));
+  width:min(1320px,calc(100% - 32px));
   margin:0 auto;
   padding:34px 0 70px;
 }
 
 .dashboard{
   display:grid;
-  grid-template-columns:280px minmax(0,1fr) 310px;
+  grid-template-columns:280px minmax(0,1fr) 300px;
   gap:20px;
   align-items:start;
 }
 
 .wood-card,
-.parchment-card{
+.paper-card{
   position:relative;
-  border-radius:16px;
-  box-shadow:0 16px 38px var(--shadow);
+  overflow:hidden;
+  border-radius:17px;
+  box-shadow:0 18px 46px var(--shadow);
 }
+
 .wood-card{
-  border:2px solid rgba(205,158,84,.23);
-  color:#f4e3bc;
+  border:2px solid rgba(218,170,94,.24);
+  color:#f5e4bd;
   background:
-    linear-gradient(180deg,rgba(70,40,18,.96),rgba(43,23,10,.97));
+    linear-gradient(180deg,rgba(77,44,20,.96),rgba(44,24,11,.98));
 }
-.parchment-card{
-  border:2px solid rgba(83,51,23,.28);
-  color:var(--ink);
+
+.paper-card{
+  border:2px solid rgba(91,57,27,.25);
   background:
-    linear-gradient(180deg,rgba(255,242,211,.97),rgba(231,203,153,.97));
+    linear-gradient(180deg,rgba(255,244,219,.97),rgba(235,208,161,.97));
 }
-.parchment-card::before{
+
+.paper-card::before{
   content:"";
   position:absolute;
-  inset:8px;
-  border:1px solid rgba(106,74,38,.14);
+  inset:9px;
+  border:1px solid rgba(96,62,30,.13);
   border-radius:11px;
   pointer-events:none;
 }
 
-/* ===== 左：プロフィール ===== */
+/* 左はプロフィールカードだけ。重複メニューは置かない */
 .profile-card{
-  overflow:hidden;
-  padding:20px 16px 18px;
+  padding:20px 17px 18px;
   text-align:center;
 }
-.profile-title{
-  margin:-2px -2px 18px;
-  padding:10px 8px;
-  border-radius:12px 12px 8px 8px;
-  color:#f9e7ba;
-  background:linear-gradient(180deg,#68401f,#42230f);
-  font-size:18px;
-  font-weight:900;
+
+.profile-card h1{
+  margin:0 0 18px;
+  padding:10px;
+  border-radius:10px;
+  color:#f8e7ba;
+  background:linear-gradient(180deg,#704720,#482711);
+  font-size:19px;
 }
+
 .avatar-large{
   width:138px;
   height:138px;
-  margin:0 auto 12px;
+  margin:0 auto 13px;
   overflow:hidden;
   display:grid;
   place-items:center;
   border-radius:50%;
-  border:5px solid #d2a75b;
-  outline:3px solid rgba(70,39,15,.8);
-  background:#e9d7b4;
+  border:5px solid #d2aa60;
+  outline:3px solid rgba(59,31,13,.78);
+  background:#ead9b8;
   font-size:54px;
 }
+
 .avatar-large img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
+
 .profile-name{
   font-size:22px;
   font-weight:900;
 }
+
 .profile-user{
-  margin-top:3px;
-  color:#cbb78f;
+  margin-top:4px;
+  color:#cdb990;
   font-size:12px;
 }
+
 .profile-bio{
-  margin:13px 0 15px;
-  color:#d8c8a8;
+  margin:14px 0 17px;
+  color:#ddccaa;
   font-size:12px;
-  line-height:1.7;
+  line-height:1.75;
 }
-.profile-actions{
+
+.profile-buttons{
   display:grid;
-  gap:8px;
+  gap:9px;
 }
-.house-btn,
-.danger-btn{
-  min-height:42px;
+
+.button{
+  min-height:43px;
+  display:grid;
+  place-items:center;
+  padding:8px 12px;
   border-radius:9px;
-  font:inherit;
+  text-decoration:none;
   font-size:12px;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
 }
-.house-btn{
-  border:1px solid #4c672e;
-  color:#fff2ce;
-  background:linear-gradient(180deg,#6d8846,#4b652f);
-}
-.house-btn.secondary{
-  border-color:#8e6536;
-  background:linear-gradient(180deg,#6f4724,#4d2c14);
-}
-.danger-btn{
-  border:1px solid #7d3425;
-  color:#ffe9dc;
-  background:linear-gradient(180deg,#a4563e,#743423);
+
+.button.green{
+  color:#fff3d2;
+  border:1px solid #46622b;
+  background:linear-gradient(180deg,#718d48,#4f692f);
 }
 
-.side-menu{
-  margin-top:14px;
-  overflow:hidden;
-}
-.side-menu a{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px 14px;
-  border-bottom:1px solid rgba(255,231,181,.09);
-  color:#f2deb5;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:800;
-}
-.side-menu a:hover{
-  background:rgba(112,145,66,.13);
+.button.wood{
+  color:#f8e5bd;
+  border:1px solid #8f6335;
+  background:linear-gradient(180deg,#714821,#4c2b13);
 }
 
-/* ===== 中央 ===== */
-.center-stack{
+/* 中央 */
+.center{
   display:grid;
   gap:18px;
 }
-.welcome-card{
-  overflow:hidden;
+
+.welcome{
   padding:24px 26px;
 }
-.welcome-card h2{
+
+.welcome h2,
+.section-title{
   position:relative;
   z-index:1;
-  margin:0 0 8px;
-  font-size:26px;
 }
-.welcome-card p{
+
+.welcome h2{
+  margin:0 0 8px;
+  font-size:27px;
+}
+
+.welcome p{
   position:relative;
   z-index:1;
   margin:0;
   color:var(--ink-soft);
   line-height:1.8;
 }
-.welcome-card::after{
-  content:"";
-  position:absolute;
-  right:-18px;
-  bottom:-24px;
-  width:150px;
-  height:150px;
-  background:url("images/animals/golden-retriever-resting.png") center/contain no-repeat;
-  opacity:.46;
-  filter:saturate(.9);
-}
 
-.notice-card{
-  overflow:hidden;
+.notice-card,
+.works-card{
   padding:20px 22px 22px;
 }
+
 .section-head{
   position:relative;
   z-index:1;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:12px;
   margin-bottom:14px;
 }
+
 .section-head h2{
   margin:0;
-  font-size:20px;
+  font-size:21px;
 }
-.section-head a,
+
 .section-head button{
   border:0;
-  color:#5f432a;
+  color:#62462e;
   background:transparent;
   font:inherit;
   font-size:11px;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
 }
+
+/* notice-board は「掲示板の透かし」としてのみ使う */
+.notice-card::after{
+  content:"";
+  position:absolute;
+  right:-16px;
+  bottom:-25px;
+  width:170px;
+  height:170px;
+  background:url("images/ui/notice-board.png") center/contain no-repeat;
+  opacity:.10;
+  pointer-events:none;
+}
+
 .notice-list{
   position:relative;
   z-index:1;
   display:grid;
   gap:8px;
 }
-.notice-item{
+
+.notice-row{
   display:grid;
-  grid-template-columns:86px 1fr;
+  grid-template-columns:90px 1fr;
   gap:12px;
-  padding:10px 12px;
+  padding:11px 13px;
   border-radius:9px;
-  background:rgba(255,250,236,.44);
+  background:rgba(255,252,240,.48);
 }
-.notice-item time{
-  color:#866b50;
+
+.notice-row b{
+  color:#806348;
   font-size:11px;
 }
-.notice-item span{
+
+.notice-row span{
   font-size:12px;
   font-weight:700;
 }
-.notice-decoration{
-  position:absolute;
-  right:8px;
-  bottom:6px;
-  width:124px;
-  height:124px;
-  background:url("images/ui/notice-board.png") center/contain no-repeat;
-  opacity:.14;
-}
 
-.works-card{
-  padding:20px 20px 22px;
-}
 .works{
   position:relative;
   z-index:1;
@@ -456,85 +378,96 @@ body{
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:14px;
 }
+
 .work-card{
   overflow:hidden;
-  border:1px solid rgba(82,52,25,.27);
+  border:1px solid rgba(84,52,25,.24);
   border-radius:12px;
-  background:rgba(255,249,231,.72);
+  background:rgba(255,249,232,.76);
 }
+
 .work-preview{
-  height:160px;
+  height:165px;
+  overflow:hidden;
   display:grid;
   place-items:center;
-  overflow:hidden;
-  background:
-    linear-gradient(135deg,rgba(103,131,68,.16),rgba(121,77,41,.12));
+  background:rgba(103,132,70,.10);
 }
+
 .work-preview img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
+
 .work-body{
   padding:12px;
 }
+
 .work-title{
   margin-bottom:5px;
   font-size:14px;
   font-weight:900;
 }
+
 .work-meta{
-  color:#7f6349;
+  color:#80634a;
   font-size:10px;
 }
+
 .work-actions{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
   margin-top:10px;
 }
+
 .mini-btn{
   min-height:30px;
   padding:0 9px;
-  border:1px solid #86613a;
+  border:1px solid #89613a;
   border-radius:7px;
-  color:#55371f;
-  background:#ead0a0;
+  color:#54351e;
+  background:#e9cea0;
   font:inherit;
   font-size:10px;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
 }
+
 .mini-btn.delete{
-  color:#fff1e7;
-  border-color:#713222;
-  background:#91452f;
-}
-.empty{
-  grid-column:1/-1;
-  padding:28px;
-  border:1px dashed rgba(88,57,28,.28);
-  border-radius:10px;
-  text-align:center;
-  color:#795d43;
+  color:#fff0e5;
+  border-color:#713122;
+  background:#904630;
 }
 
-/* ===== 右 ===== */
-.right-stack{
+.empty{
+  grid-column:1/-1;
+  padding:30px 20px;
+  border:1px dashed rgba(89,58,28,.28);
+  border-radius:10px;
+  text-align:center;
+  color:#775c43;
+}
+
+/* 右は必要な情報だけ */
+.right{
   display:grid;
   gap:16px;
 }
-.stats-card{
-  padding:18px;
+
+.stats-card,
+.edit-card{
+  padding:19px;
 }
-.stats-card h2,
-.friends-card h2,
-.edit-card h2{
+
+.stats-card h2{
   position:relative;
   z-index:1;
   margin:0 0 14px;
-  font-size:19px;
+  font-size:20px;
 }
+
 .stats-grid{
   position:relative;
   z-index:1;
@@ -542,285 +475,236 @@ body{
   grid-template-columns:1fr 1fr;
   gap:8px;
 }
-.stat-box{
-  padding:12px 8px;
-  border:1px solid rgba(86,57,27,.18);
+
+.stat{
+  padding:13px 8px;
+  border:1px solid rgba(87,56,28,.17);
   border-radius:10px;
   text-align:center;
-  background:rgba(255,248,230,.48);
+  background:rgba(255,250,235,.46);
 }
-.stat-num{
+
+.stat strong{
   display:block;
   font-size:23px;
-  font-weight:900;
 }
-.stat-label{
-  color:#80654a;
+
+.stat span{
+  color:#80644a;
   font-size:10px;
 }
 
-.friends-card{
-  overflow:hidden;
-  padding:18px;
-}
-.friend-strip{
-  position:relative;
-  z-index:1;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-.friend-photo{
-  overflow:hidden;
-  aspect-ratio:1/1;
-  border:2px solid rgba(89,55,25,.22);
-  border-radius:12px;
-  background:#2f1d10;
-}
-.friend-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.friend-photo.slime{
-  grid-column:1/-1;
-  aspect-ratio:2.2/1;
-}
-.friend-caption{
-  position:relative;
-  z-index:1;
-  margin:10px 0 0;
-  color:#74573d;
-  font-size:11px;
-  line-height:1.6;
-}
-
-.edit-card{
-  padding:18px;
-}
 .edit-card details{
   position:relative;
   z-index:1;
 }
+
 .edit-card summary{
   cursor:pointer;
+  font-size:16px;
   font-weight:900;
 }
+
 .form{
   display:grid;
   gap:12px;
-  margin-top:14px;
+  margin-top:16px;
 }
+
 .field{
   display:grid;
   gap:6px;
 }
+
 .field span{
   font-size:11px;
-  font-weight:800;
+  font-weight:900;
 }
+
 .field input,
 .field textarea{
   width:100%;
-  border:1px solid rgba(83,52,25,.25);
-  border-radius:8px;
   padding:10px 11px;
+  border:1px solid rgba(84,53,27,.24);
+  border-radius:8px;
   color:var(--ink);
-  background:rgba(255,252,241,.75);
+  background:rgba(255,253,245,.78);
   font:inherit;
   font-size:12px;
 }
+
 .field textarea{
-  min-height:90px;
+  min-height:95px;
   resize:vertical;
 }
+
+.save-btn{
+  min-height:42px;
+  border:1px solid #48632c;
+  border-radius:9px;
+  color:#fff3d0;
+  background:linear-gradient(180deg,#718d48,#506b30);
+  font:inherit;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
 .status{
   min-height:18px;
-  margin-top:9px;
+  margin-top:10px;
   text-align:center;
   font-size:11px;
-  font-weight:800;
+  font-weight:900;
 }
-.status.good{color:#496c2d}
-.status.bad{color:#9a3e31}
 
-/* ===== 下部装飾 ===== */
-.floor-decor{
-  position:relative;
-  height:150px;
-  margin-top:20px;
-  pointer-events:none;
-}
-.floor-decor img{
-  position:absolute;
-  bottom:0;
-  width:150px;
-  max-height:150px;
-  object-fit:contain;
-  filter:drop-shadow(0 12px 14px rgba(0,0,0,.28));
-}
-.floor-decor .dog{left:4%}
-.floor-decor .cat{right:5%;width:135px}
+.status.good{color:#47692d}
+.status.bad{color:#983e30}
 
-@media(max-width:1100px){
+/* レスポンシブ */
+@media(max-width:1080px){
   .dashboard{
-    grid-template-columns:250px minmax(0,1fr);
+    grid-template-columns:260px minmax(0,1fr);
   }
-  .right-stack{
+
+  .right{
     grid-column:1/-1;
-    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-columns:1fr 1fr;
   }
 }
 
-@media(max-width:800px){
+@media(max-width:760px){
   body{background-attachment:scroll}
-  .home-header{min-height:260px}
-  .header-inner{
-    min-height:260px;
-    align-items:flex-end;
-    padding-bottom:30px;
+
+  .mypage-hero{
+    min-height:0;
   }
-  .user-plaque{
-    position:absolute;
-    right:0;
-    top:18px;
-    min-width:0;
-    max-width:58%;
+
+  .hero-user{
+    top:15%;
+    right:2%;
+    width:36%;
+    min-height:0;
+    padding:8px 10px;
   }
-  .brand-house{
-    width:min(520px,82vw);
+
+  .hero-avatar{
+    width:44px;
+    height:44px;
+    flex-basis:44px;
+    border-width:2px;
   }
+
+  .hero-user small{
+    display:none;
+  }
+
   .dashboard{
     grid-template-columns:1fr;
   }
-  .right-stack{
+
+  .right{
     grid-column:auto;
     grid-template-columns:1fr;
   }
+
   .works{
     grid-template-columns:1fr;
   }
 }
 
-@media(max-width:560px){
-  .page-wrap{width:calc(100% - 18px);padding-top:18px}
-  .home-header{min-height:230px}
-  .header-inner{
-    width:calc(100% - 20px);
-    min-height:230px;
+@media(max-width:500px){
+  .page-wrap{
+    width:calc(100% - 18px);
+    padding-top:18px;
   }
-  .brand-house{
-    width:100%;
-    padding:24px 20px 20px;
+
+  .hero-user{
+    display:none;
   }
-  .brand-house h1{font-size:38px}
-  .brand-house p{font-size:11px}
-  .user-plaque{
-    top:10px;
-    right:0;
-    padding:8px 10px;
+
+  .profile-card{
+    padding:17px 14px;
   }
-  .user-plaque .mini-avatar{
-    width:42px;height:42px;flex-basis:42px;
-  }
-  .user-plaque small{display:none}
-  .wood-nav{justify-content:flex-start}
-  .wood-nav a,.wood-nav button{min-width:106px;min-height:52px;font-size:11px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="home-header">
-  <div class="header-inner">
-    <div class="brand-house">
-      <h1><span class="brand-leaf">❧</span>Forest Sol</h1>
-      <p>つくる。つながる。ひろがる。</p>
-    </div>
-
-    <div class="user-plaque">
-      <div id="headerAvatar" class="mini-avatar">🐾</div>
-      <div>
-        <strong id="headerGreeting">おかえりなさい</strong>
-        <small id="headerUser">@user</small>
-      </div>
+<header class="mypage-hero" aria-label="Forest Sol マイページ">
+  <div class="hero-user">
+    <div id="headerAvatar" class="hero-avatar">🐾</div>
+    <div>
+      <strong id="headerGreeting">こんにちは！</strong>
+      <small id="headerUser">@user</small>
     </div>
   </div>
-</header>
 
-<nav class="wood-nav" aria-label="マイページメニュー">
-  <a class="current" href="mypage.html"><span class="nav-icon">⌂</span>マイページ</a>
-  <a id="profileNavLink" href="profile.html"><span class="nav-icon">●</span>プロフィール</a>
-  <a href="#myWorks"><span class="nav-icon">▣</span>自分の作品</a>
-  <a href="forestcraft.html"><span class="nav-icon">✎</span>Forest Craft</a>
-  <a href="history.html"><span class="nav-icon">▤</span>森の歴史</a>
-  <a href="index.html"><span class="nav-icon">⌂</span>トップ</a>
-  <button id="navLogout" type="button"><span class="nav-icon">↪</span>ログアウト</button>
-</nav>
+  <nav class="hero-hotspots" aria-label="マイページヘッダーメニュー">
+    <a href="mypage.html" aria-label="マイページ"></a>
+    <a id="headerProfileLink" href="profile.html" aria-label="プロフィール"></a>
+    <a href="#myWorks" aria-label="プレイ履歴・作品"></a>
+    <a href="index.html" aria-label="フレンド・コミュニティ"></a>
+    <a href="#notices" aria-label="お知らせ"></a>
+    <a href="#profileEdit" aria-label="設定"></a>
+  </nav>
+</header>
 
 <main class="page-wrap">
   <div class="dashboard">
 
     <aside>
       <section class="wood-card profile-card">
-        <div class="profile-title">マイページ</div>
+        <h1>マイページ</h1>
+
         <div id="profileView">
           <div class="avatar-large">🐾</div>
           <div class="profile-name">読み込み中…</div>
           <div class="profile-user"></div>
         </div>
 
-        <div class="profile-actions">
-          <a id="publicProfileLink" class="house-btn secondary" href="profile.html">公開プロフィールを見る</a>
-          <a class="house-btn" href="forestcraft-web/">Forest Craft Studioを開く</a>
+        <div class="profile-buttons">
+          <a id="publicProfileLink" class="button wood" href="profile.html">
+            公開プロフィールを見る
+          </a>
+
+          <a class="button green" href="forestcraft-web/">
+            Forest Craft Studioを開く
+          </a>
         </div>
       </section>
-
-      <nav class="wood-card side-menu">
-        <a href="#top">⌂　マイページ</a>
-        <a href="#myWorks">▣　投稿・作品</a>
-        <a href="#profileEdit">✎　プロフィール編集</a>
-        <a href="history.html">▤　森の歴史</a>
-        <a href="illustrations.html">▧　イラスト</a>
-        <a href="index.html">⌂　Forest Solトップ</a>
-      </nav>
     </aside>
 
-    <section class="center-stack" id="top">
+    <section class="center">
 
-      <section class="parchment-card welcome-card">
+      <section class="paper-card welcome">
         <h2 id="welcomeTitle">ようこそ。</h2>
         <p>
-          ここはあなたの森の家。プロフィールや作品を管理しながら、
-          Forest Solでの活動をゆっくり育てていけます。
+          ここはあなたの森の家。
+          プロフィールや作品を管理しながら、Forest Solでの活動を育てていけます。
         </p>
       </section>
 
-      <section class="parchment-card notice-card">
+      <section id="notices" class="paper-card notice-card">
         <div class="section-head">
           <h2>お知らせ</h2>
-          <a href="index.html">Forest Solへ</a>
         </div>
 
         <div class="notice-list">
-          <div class="notice-item">
-            <time>MY PAGE</time>
-            <span>プロフィールと作品管理をひとつの場所にまとめました。</span>
-          </div>
-          <div class="notice-item">
-            <time>STUDIO</time>
+          <div class="notice-row">
+            <b>STUDIO</b>
             <span>作品はForest Craft Studioから投稿すると、このページに自動で表示されます。</span>
           </div>
-          <div class="notice-item">
-            <time>PROFILE</time>
+
+          <div class="notice-row">
+            <b>PROFILE</b>
             <span>表示名、自己紹介、アイコンは右側の「プロフィール編集」から変更できます。</span>
           </div>
         </div>
-        <div class="notice-decoration" aria-hidden="true"></div>
       </section>
 
-      <section id="myWorks" class="parchment-card works-card">
+      <section id="myWorks" class="paper-card works-card">
         <div class="section-head">
           <h2>自分の作品</h2>
           <button id="reloadBtn" type="button">再読み込み</button>
@@ -833,34 +717,19 @@ body{
 
     </section>
 
-    <aside class="right-stack">
+    <aside class="right">
 
-      <section class="parchment-card stats-card">
+      <section class="paper-card stats-card">
         <h2>アカウント状況</h2>
         <div id="accountStats" class="stats-grid">
-          <div class="stat-box"><span class="stat-num">…</span><span class="stat-label">作品</span></div>
+          <div class="stat">
+            <strong>…</strong>
+            <span>作品</span>
+          </div>
         </div>
       </section>
 
-      <section class="parchment-card friends-card">
-        <h2>森の仲間たち</h2>
-        <div class="friend-strip">
-          <div class="friend-photo">
-            <img src="images/animals/husky-sleeping-camp.png" alt="">
-          </div>
-          <div class="friend-photo">
-            <img src="images/animals/silver-tabby-cat-stretching.png" alt="">
-          </div>
-          <div class="friend-photo slime">
-            <img src="images/monsters/blue-slime-cube-01.png" alt="">
-          </div>
-        </div>
-        <p class="friend-caption">
-          以前作った動物・モンスター素材を、家の中の写真や飾りみたいに配置しています。
-        </p>
-      </section>
-
-      <section id="profileEdit" class="parchment-card edit-card">
+      <section id="profileEdit" class="paper-card edit-card">
         <details>
           <summary>プロフィール編集</summary>
 
@@ -880,7 +749,7 @@ body{
               <input id="avatarUrl" type="url" maxlength="500" placeholder="https://...">
             </label>
 
-            <button class="house-btn" type="submit">プロフィールを保存</button>
+            <button class="save-btn" type="submit">プロフィールを保存</button>
           </form>
 
           <div id="profileStatus" class="status"></div>
@@ -888,11 +757,7 @@ body{
       </section>
 
     </aside>
-  </div>
 
-  <div class="floor-decor" aria-hidden="true">
-    <img class="dog" src="images/animals/golden-retriever-lying-01.png" alt="">
-    <img class="cat" src="images/animals/golden-retriever-sitting.png" alt="">
   </div>
 </main>
 
@@ -922,9 +787,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  function avatarMarkup(className = "") {
+  function avatarMarkup() {
     if (user.avatar_url) {
-      return `<img class="${className}" src="${esc(user.avatar_url)}" alt="">`;
+      return `<img src="${esc(user.avatar_url)}" alt="">`;
     }
     return "🐾";
   }
@@ -940,7 +805,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     `;
 
     $("#headerAvatar").innerHTML = avatarMarkup();
-    $("#headerGreeting").textContent = `おかえり、${name}さん`;
+    $("#headerGreeting").textContent = `こんにちは、${name}さん！`;
     $("#headerUser").textContent = `@${user.username}`;
     $("#welcomeTitle").textContent = `ようこそ、${name}さん。`;
 
@@ -948,9 +813,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     $("#bio").value = user.bio || "";
     $("#avatarUrl").value = user.avatar_url || "";
 
-    const profileUrl = "profile.html?u=" + encodeURIComponent(user.username);
+    const profileUrl =
+      "profile.html?u=" + encodeURIComponent(user.username);
+
     $("#publicProfileLink").href = profileUrl;
-    $("#profileNavLink").href = profileUrl;
+    $("#headerProfileLink").href = profileUrl;
   }
 
   function preview(post) {
@@ -967,6 +834,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       `;
     }
 
+    /* 既存素材は「作品の代替プレビュー」が必要な時だけ使用 */
     return `
       <img
         src="images/collections/animal-and-monster-set-01.png"
@@ -976,34 +844,37 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderStats(posts) {
-    const publicCount = posts.filter(
-      post => post.visibility === "public" && post.status === "published"
-    ).length;
+    const publicCount =
+      posts.filter(p =>
+        p.visibility === "public" &&
+        p.status === "published"
+      ).length;
 
-    const privateCount = posts.filter(
-      post => post.visibility !== "public"
-    ).length;
+    const privateCount =
+      posts.filter(p => p.visibility !== "public").length;
 
-    const draftCount = posts.filter(
-      post => post.status !== "published"
-    ).length;
+    const draftCount =
+      posts.filter(p => p.status !== "published").length;
 
     $("#accountStats").innerHTML = `
-      <div class="stat-box">
-        <span class="stat-num">${posts.length}</span>
-        <span class="stat-label">作品</span>
+      <div class="stat">
+        <strong>${posts.length}</strong>
+        <span>作品</span>
       </div>
-      <div class="stat-box">
-        <span class="stat-num">${publicCount}</span>
-        <span class="stat-label">公開</span>
+
+      <div class="stat">
+        <strong>${publicCount}</strong>
+        <span>公開</span>
       </div>
-      <div class="stat-box">
-        <span class="stat-num">${privateCount}</span>
-        <span class="stat-label">非公開</span>
+
+      <div class="stat">
+        <strong>${privateCount}</strong>
+        <span>非公開</span>
       </div>
-      <div class="stat-box">
-        <span class="stat-num">${draftCount}</span>
-        <span class="stat-label">下書き</span>
+
+      <div class="stat">
+        <strong>${draftCount}</strong>
+        <span>下書き</span>
       </div>
     `;
   }
@@ -1023,10 +894,14 @@ window.addEventListener("DOMContentLoaded", async () => {
     $("#works").innerHTML = posts.map(post => `
       <article class="work-card" data-id="${esc(post.id)}">
         <div class="work-preview">${preview(post)}</div>
+
         <div class="work-body">
           <div class="work-title">${esc(post.title)}</div>
+
           <div class="work-meta">
-            ${esc(post.category)} ・ ${esc(post.visibility)} ・ ${esc(post.status)}
+            ${esc(post.category)} ・
+            ${esc(post.visibility)} ・
+            ${esc(post.status)}
           </div>
 
           <div class="work-actions">
@@ -1108,16 +983,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  async function logout() {
-    await ForestAuth.logout();
-    location.href = "account.html";
-  }
-
   renderUser();
   await loadPosts();
 
   $("#reloadBtn").onclick = loadPosts;
-  $("#navLogout").onclick = logout;
 
   $("#profileForm").addEventListener("submit", async event => {
     event.preventDefault();
@@ -1133,9 +1002,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       });
 
       renderUser();
-      setStatus("保存しました。", "good");
+      setStatus("保存しました。","good");
     } catch (error) {
-      setStatus(error.message, "bad");
+      setStatus(error.message,"bad");
     } finally {
       event.submitter.disabled = false;
     }
