@@ -1,19 +1,245 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ログイン・新規登録 | Forestsol</title><meta name="robots" content="noindex"><link rel="stylesheet" href="assets/account.css"><script src="assets/forest-auth.js" defer></script><script src="assets/page-transition.js" defer></script></head>
-<body>
-<header class="account-head"><img class="account-brand-icon" src="images/forestcraft/forest-craft-studio-icon.png" alt="Forest Craft Studio"><div class="kicker">FORESTSOL CREATOR ACCOUNT</div><h1>制作を、自分の森に残そう。</h1><p>Forest Craft Studioの投稿、マイページ、作品管理をひとつのアカウントにまとめます。</p></header>
-<nav><a href="index.html">メンバー紹介</a><a href="history.html">森の歴史</a><a href="forestfarm.html">ForestFarm</a><a href="forestcraft.html">Forest Craft Studio</a><a class="account-current" href="account.html">ログイン</a></nav>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ログイン・新規登録 | Forestsol</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/account.css">
+<script src="assets/forest-auth.js" defer></script>
+<script src="assets/page-transition.js" defer></script>
+<style>
+body.auth-page{
+  background:
+    linear-gradient(rgba(1,12,8,.45),rgba(1,9,7,.82)),
+    url("images/forestcraft/back-image.png") center top/cover fixed no-repeat,
+    #03100b;
+}
+.auth-page .account-head{
+  padding:34px 20px 30px;
+  background:linear-gradient(180deg,rgba(2,18,12,.48),rgba(2,14,10,.90));
+}
+.auth-page .account-head:before{
+  background:url("images/forestcraft/forestcraft-header-menu.png") center/cover no-repeat;
+  opacity:.26;
+}
+.auth-page .account-brand-icon{
+  width:82px;
+  height:82px;
+  margin-bottom:8px;
+}
+.auth-page main{
+  width:min(820px,calc(100% - 28px));
+  padding-top:42px;
+}
+.auth-page .account-stage{
+  display:block;
+}
+.auth-page .form-panel{
+  position:relative;
+  min-height:0;
+  padding:34px;
+  border-radius:30px;
+  border:1px solid rgba(124,239,183,.58);
+  background:
+    radial-gradient(circle at 8% 0,rgba(255,211,107,.10),transparent 28%),
+    radial-gradient(circle at 92% 5%,rgba(85,216,255,.12),transparent 30%),
+    linear-gradient(145deg,rgba(5,34,24,.96),rgba(3,18,14,.97));
+  box-shadow:0 28px 80px rgba(0,0,0,.50),0 0 0 1px rgba(126,238,183,.05) inset;
+}
+.auth-page .form-panel:before{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(162,255,207,.08);
+  border-radius:22px;
+  pointer-events:none;
+  background:none;
+}
+.auth-page .form-panel:after{
+  content:"";
+  position:absolute;
+  left:34px;
+  right:34px;
+  top:0;
+  height:3px;
+  border-radius:0 0 999px 999px;
+  background:linear-gradient(90deg,transparent,#ffd36b,#73efa8,#55d8ff,transparent);
+  opacity:.9;
+}
+.auth-gate-head{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  margin-bottom:22px;
+}
+.auth-gate-emblem{
+  width:92px;
+  height:92px;
+  margin:0 auto 10px;
+  display:grid;
+  place-items:center;
+  border-radius:26px;
+  border:1px solid rgba(117,239,177,.34);
+  background:linear-gradient(145deg,rgba(15,62,43,.82),rgba(4,22,16,.92));
+  box-shadow:0 14px 34px rgba(0,0,0,.35),0 0 32px rgba(73,221,139,.10);
+  transform:rotate(-2deg);
+}
+.auth-gate-emblem img{
+  width:78px;
+  height:78px;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 16px rgba(0,0,0,.4));
+}
+.auth-gate-head h2{
+  margin:8px 0 7px;
+  font-size:clamp(27px,4vw,38px);
+  letter-spacing:-.035em;
+}
+.auth-gate-head p{
+  max-width:620px;
+  margin:0 auto;
+  color:#bcd3c9;
+  line-height:1.75;
+}
+.craft-chips{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:7px;
+  margin-top:15px;
+}
+.craft-chips span{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(126,221,180,.22);
+  background:rgba(255,255,255,.035);
+  color:#cfe6dc;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.06em;
+}
+.auth-page .account-tabs{
+  position:relative;
+  z-index:1;
+  padding:6px;
+  margin:0 0 24px;
+  border-radius:18px;
+  background:rgba(0,0,0,.22);
+}
+.auth-page .account-tabs button{
+  min-height:46px;
+  border-radius:13px;
+  transition:transform .15s,background .15s,border-color .15s;
+}
+.auth-page .account-tabs button.active{
+  background:linear-gradient(135deg,rgba(159,231,198,.18),rgba(85,216,255,.08));
+  border-color:rgba(159,231,198,.42);
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+.auth-page #loginPane,
+.auth-page #registerPane{
+  position:relative;
+  z-index:1;
+  max-width:640px;
+  margin:0 auto;
+}
+.auth-page #loginPane>h2,
+.auth-page #registerPane>h2{
+  font-size:25px;
+  margin-bottom:6px;
+}
+.auth-page .field input{
+  min-height:52px;
+  border-radius:14px;
+  background:rgba(3,18,13,.82);
+}
+.auth-page .primary{
+  min-height:52px;
+  margin-top:4px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#b8f0d4,#69d0a5 58%,#55d8ff);
+  color:#052016;
+  box-shadow:0 12px 28px rgba(75,208,158,.18);
+}
+.auth-page .legal-note{
+  margin-top:18px;
+  padding:16px 18px 0;
+  text-align:center;
+}
+@media(max-width:620px){
+  .auth-page .form-panel{padding:24px 18px;border-radius:22px}
+  .auth-page .form-panel:after{left:20px;right:20px}
+  .auth-gate-emblem{width:76px;height:76px;border-radius:21px}
+  .auth-gate-emblem img{width:64px;height:64px}
+  .craft-chips{gap:5px}
+  .craft-chips span{font-size:9px;padding:5px 8px}
+}
+</style>
+</head>
+<body class="auth-page">
+<header class="account-head">
+  <img class="account-brand-icon" src="images/forestcraft/icon.png" alt="Forest Craft Studio">
+  <div class="kicker">FORESTSOL CREATOR ACCOUNT</div>
+  <h1>制作を、自分の森に残そう。</h1>
+  <p>Forest Craft Studioの投稿、マイページ、作品管理をひとつのアカウントにまとめます。</p>
+</header>
+<nav>
+  <a href="index.html">メンバー紹介</a>
+  <a href="history.html">森の歴史</a>
+  <a href="forestfarm.html">ForestFarm</a>
+  <a href="forestcraft.html">Forest Craft Studio</a>
+  <a class="account-current" href="account.html">ログイン</a>
+</nav>
 <main>
-<div class="account-stage">
-<section class="studio-card"><div><span class="account-badge">🎨 FOREST CRAFT CREATOR</span><h2>作品の続きは、ここから。</h2><p>ログインするとForest Craft Studioから直接投稿でき、自分の公開作品・下書き・非公開作品をマイページで管理できます。</p></div><div class="studio-art" aria-hidden="true"><div class="mini-canvas"></div><div class="mini-palette"><span class="paint-splash s1"></span><span class="paint-splash s2"></span><span class="paint-splash s3"></span></div><div class="mini-brush"></div><img class="icon" src="images/forestcraft/forest-craft-studio-icon.png" alt=""></div><div class="notice">未ログインでも公開作品の閲覧・ダウンロードは可能です。投稿・編集・削除はログイン中の本人だけが利用できます。</div></section>
-<section class="panel form-panel"><div class="account-tabs"><button id="showLogin" class="active" type="button">ログイン</button><button id="showRegister" type="button">新規登録</button></div>
-<div id="loginPane"><h2>おかえりなさい</h2><p>登録したメールアドレスとパスワードでログインします。</p><form id="loginForm" class="form"><label class="field"><span>メールアドレス</span><input id="loginName" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label class="field"><span>パスワード</span><input id="loginPassword" type="password" autocomplete="current-password" required maxlength="128"></label><button class="primary" type="submit">ログイン</button></form><div id="loginStatus" class="status"></div></div>
-<div id="registerPane" hidden><h2>クリエイター登録</h2><p>メールアドレスはログイン用です。公開ページには表示されません。</p><form id="registerForm" class="form"><label class="field"><span>メールアドレス</span><input id="regEmail" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label class="field"><span>ユーザー名</span><input id="regUsername" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" placeholder="3〜24文字 / 英数字 _ -"></label><div class="form-hint">公開プロフィールURLや作者名の識別に使います。</div><label class="field"><span>表示名</span><input id="regDisplayName" required maxlength="40" placeholder="サイトに表示する名前"></label><label class="field"><span>パスワード</span><input id="regPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="8文字以上"></label><label class="field"><span>パスワード確認</span><input id="regPassword2" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label><button class="primary" type="submit">アカウントを作成</button></form><div id="registerStatus" class="status"></div><div class="legal-note">登録すると、Forest Craft Studioから作品投稿・マイページ・公開プロフィールを利用できます。メールアドレスは他ユーザーには公開しません。</div></div>
-</section>
-</div>
+  <div class="account-stage">
+    <section class="panel form-panel">
+      <div class="auth-gate-head">
+        <div class="auth-gate-emblem"><img src="images/forestcraft/icon.png" alt=""></div>
+        <span class="account-badge">✦ FOREST CRAFT CREATOR GATE</span>
+        <h2>森の工房へようこそ</h2>
+        <p>作ったものを保存して、公開して、また続きを作る。ここがあなたの制作入口です。</p>
+        <div class="craft-chips" aria-hidden="true">
+          <span>SKIN</span><span>ITEM</span><span>BLOCK</span><span>3D MODEL</span>
+        </div>
+      </div>
+
+      <div class="account-tabs">
+        <button id="showLogin" class="active" type="button">ログイン</button>
+        <button id="showRegister" type="button">新規登録</button>
+      </div>
+
+      <div id="loginPane">
+        <h2>おかえりなさい</h2>
+        <p>登録したメールアドレスとパスワードでログインします。</p>
+        <form id="loginForm" class="form">
+          <label class="field"><span>メールアドレス</span><input id="loginName" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+          <label class="field"><span>パスワード</span><input id="loginPassword" type="password" autocomplete="current-password" required maxlength="128"></label>
+          <button class="primary" type="submit">ログイン</button>
+        </form>
+        <div id="loginStatus" class="status"></div>
+      </div>
+
+      <div id="registerPane" hidden>
+        <h2>クリエイター登録</h2>
+        <p>メールアドレスはログイン用です。公開ページには表示されません。</p>
+        <form id="registerForm" class="form">
+          <label class="field"><span>メールアドレス</span><input id="regEmail" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+          <label class="field"><span>ユーザー名</span><input id="regUsername" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" placeholder="3〜24文字 / 英数字 _ -"></label>
+          <div class="form-hint">公開プロフィールURLや作者名の識別に使います。</div>
+          <label class="field"><span>表示名</span><input id="regDisplayName" required maxlength="40" placeholder="サイトに表示する名前"></label>
+          <label class="field"><span>パスワード</span><input id="regPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="8文字以上"></label>
+          <label class="field"><span>パスワード確認</span><input id="regPassword2" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
+          <button class="primary" type="submit">アカウントを作成</button>
+        </form>
+        <div id="registerStatus" class="status"></div>
+        <div class="legal-note">登録すると、Forest Craft Studioから作品投稿・マイページ・公開プロフィールを利用できます。メールアドレスは他ユーザーには公開しません。</div>
+      </div>
+    </section>
+  </div>
 </main>
 <script>
 window.addEventListener('DOMContentLoaded',async()=>{const next=new URLSearchParams(location.search).get('next');const safeNext=next&&/^[a-zA-Z0-9_./?-]+$/.test(next)?next:'mypage.html';const existing=await ForestAuth.me(false);if(existing){location.replace(safeNext);return}const loginPane=document.getElementById('loginPane'),registerPane=document.getElementById('registerPane'),showLogin=document.getElementById('showLogin'),showRegister=document.getElementById('showRegister');function tab(mode){const isLogin=mode==='login';loginPane.hidden=!isLogin;registerPane.hidden=isLogin;showLogin.classList.toggle('active',isLogin);showRegister.classList.toggle('active',!isLogin)}showLogin.onclick=()=>tab('login');showRegister.onclick=()=>tab('register');const set=(id,msg,kind='')=>{const el=document.getElementById(id);el.textContent=msg;el.className='status '+kind};document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;set('loginStatus','ログイン中…');try{await ForestAuth.login(document.getElementById('loginName').value.trim(),document.getElementById('loginPassword').value);set('loginStatus','ログインしました。','good');location.href=safeNext}catch(err){set('loginStatus',err.message,'bad')}finally{b.disabled=false}});document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPassword').value,p2=document.getElementById('regPassword2').value;if(p!==p2){set('registerStatus','パスワードが一致しません。','bad');return}const b=e.submitter;b.disabled=true;set('registerStatus','アカウント作成中…');try{await ForestAuth.register({email:document.getElementById('regEmail').value.trim(),username:document.getElementById('regUsername').value.trim(),display_name:document.getElementById('regDisplayName').value.trim(),password:p});set('registerStatus','登録しました。','good');location.href=safeNext}catch(err){set('registerStatus',err.message,'bad')}finally{b.disabled=false}})});
 </script>
-</body></html>
+</body>
+</html>
