@@ -22,6 +22,25 @@
   ensureSiteNav();
   window.addEventListener("forestsol-auth-change",ensureSiteNav);
 
+  function loadApprovedForestCraftIcon(){
+    var heroIcon=document.querySelector(".hero-icon");
+    if(!heroIcon||heroIcon.dataset.approvedLoaded==="yes"||heroIcon.dataset.approvedLoaded==="loading")return;
+    heroIcon.dataset.approvedLoaded="loading";
+    var chunks=["00","01","02","03a","03b","04","05","06","07a1","07a2","07b","08","09"];
+    var jobs=chunks.map(function(name){
+      return fetch("images/forestcraft/icon-data/icon-"+name+".txt?v=20260819e",{cache:"no-store"}).then(function(res){
+        if(!res.ok)throw new Error("Forest Craft Studio icon asset failed: "+name);
+        return res.text();
+      });
+    });
+    Promise.all(jobs).then(function(parts){
+      var data=parts.join("").replace(/\s+/g,"");
+      heroIcon.onload=function(){heroIcon.dataset.approvedLoaded="yes";heroIcon.style.opacity="1";};
+      heroIcon.onerror=function(){heroIcon.dataset.approvedLoaded="";heroIcon.style.opacity="0";};
+      heroIcon.src="data:image/webp;base64,"+data;
+    }).catch(function(){heroIcon.dataset.approvedLoaded="";heroIcon.style.opacity="0";});
+  }
+
   function applyForestCraftVisualFix(){
     if(!/\/forestcraft\.html$/i.test(location.pathname))return;
     var header=document.querySelector(".craft-header");
@@ -35,7 +54,7 @@
       art.style.cssText="position:absolute;inset:0;display:grid;grid-template-columns:572fr 286fr 287fr 286fr 286fr;overflow:hidden;z-index:0";
       ["header-a.svg","header-2.svg","header-3.svg","header-4.svg","header-5.svg"].forEach(function(name){
         var img=document.createElement("img");
-        img.src="images/forestcraft/tiles/"+name+"?v=20260819c";
+        img.src="images/forestcraft/tiles/"+name+"?v=20260819e";
         img.alt="";
         img.draggable=false;
         img.style.cssText="display:block;width:100%;height:100%;object-fit:fill;min-width:0";
@@ -46,9 +65,10 @@
     }
     if(!document.getElementById("forestcraft-native-art-style")){
       var s=document.createElement("style");s.id="forestcraft-native-art-style";
-      s.textContent="body:has(.craft-header){background-color:#020906!important}.craft-header{background-image:none!important}.craft-header:before,.craft-header:after{display:none!important}.hero-icon-wrap:after{display:none!important}.hero-icon{opacity:1!important;visibility:visible!important;filter:drop-shadow(0 22px 36px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(64,208,255,.26))!important}.forestcraft-header-art img{image-rendering:auto!important}";
+      s.textContent="body{background:linear-gradient(180deg,rgba(1,12,8,.16),rgba(1,10,7,.56) 70%,#020806),url('images/forestcraft/forestcraft-bg.svg?v=20260819e') center top/cover fixed no-repeat,#020906!important}.craft-header{background-image:none!important}.craft-header:before,.craft-header:after{display:none!important}.hero:before{background:linear-gradient(90deg,rgba(0,16,10,.58),rgba(0,16,10,.10) 62%,transparent),url('images/forestcraft/forestcraft-bg.svg?v=20260819e') center 58%/cover no-repeat!important;opacity:.34!important}.hero-icon-wrap:after{display:none!important}.hero-icon-wrap:before{background:radial-gradient(circle,rgba(63,220,255,.34),rgba(84,239,148,.17) 44%,rgba(255,201,83,.08) 62%,transparent 74%)!important}.hero-icon{width:min(360px,98%)!important;max-height:360px!important;opacity:0!important;visibility:visible!important;filter:drop-shadow(0 22px 36px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(64,208,255,.28))!important;transition:opacity .18s ease}.hero-icon[data-approved-loaded='yes']{opacity:1!important}.forestcraft-header-art img{image-rendering:auto!important}.section{box-shadow:0 18px 46px rgba(0,0,0,.34),0 0 28px rgba(76,225,150,.07),inset 0 1px rgba(255,255,255,.025)!important}.feature-card:hover{box-shadow:0 14px 32px rgba(0,0,0,.28),0 0 20px rgba(82,216,255,.09)!important}";
       document.head.appendChild(s);
     }
+    loadApprovedForestCraftIcon();
   }
   applyForestCraftVisualFix();
 
