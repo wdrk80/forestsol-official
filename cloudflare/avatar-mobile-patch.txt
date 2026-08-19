@@ -1,0 +1,69 @@
+Forest Sol / Cloudflare Worker モバイル用アイコン追加パッチ
+
+目的:
+現在の正常稼働中 `2.1-email-auth` を丸ごと置き換えず、アイコン機能だけ追加します。
+ログイン・投稿・作品配信の既存コードは消しません。
+
+====================
+1) route() に3行追加
+====================
+
+`if(path==='/me/posts'&&req.method==='GET')return myPosts(req,env);`
+の直後に追加:
+
+if(path==='/me/avatar'&&req.method==='POST')return uploadAvatar(req,env,url);
+if(path==='/me/avatar'&&req.method==='DELETE')return deleteAvatar(req,env);
+
+次に、`let m=path.match(/^\/users\/([^/]+)$/);` より前に追加:
+
+let am=path.match(/^\/avatars\/([^/]+)$/);if(am&&req.method==='GET')return serveAvatar(env,decodeURIComponent(am[1]));
+
+====================
+2) ファイル末尾に3関数を追加
+====================
+
+async function uploadAvatar(req,env,url){
+ const u=await sessionUser(req,env,true),mime=(req.headers.get('Content-Type')||'').split(';')[0].trim().toLowerCase();
+ if(!['image/jpeg','image/png','image/webp'].includes(mime))return json({ok:false,error:'JPG・PNG・WebP画像を選んでください'},415);
+ const bytes=await req.arrayBuffer();
+ if(!bytes.byteLength)return json({ok:false,error:'画像が空です'},400);
+ if(bytes.byteLength>3*1024*1024)return json({ok:false,error:'アイコン画像は3MBまでです'},413);
+ const key=`avatars/${u.id}/avatar`;
+ await env.ASSETS.put(key,bytes,{httpMetadata:{contentType:mime}});
+ const avatar=`${url.origin}/avatars/${encodeURIComponent(u.id)}?v=${Date.now()}`;
+ await env.DB.prepare('UPDATE users SET avatar_url=?,updated_at=? WHERE id=?').bind(avatar,now(),u.id).run();
+ return json({ok:true,user:pub(await env.DB.prepare('SELECT * FROM users WHERE id=?').bind(u.id).first())},201);
+}
+
+async function deleteAvatar(req,env){
+ const u=await sessionUser(req,env,true);
+ await env.ASSETS.delete(`avatars/${u.id}/avatar`).catch(()=>{});
+ await env.DB.prepare("UPDATE users SET avatar_url='',updated_at=? WHERE id=?").bind(now(),u.id).run();
+ return json({ok:true,user:pub(await env.DB.prepare('SELECT * FROM users WHERE id=?').bind(u.id).first())});
+}
+
+async function serveAvatar(env,userId){
+ const u=await env.DB.prepare("SELECT id FROM users WHERE id=? AND status='active'").bind(userId).first();
+ if(!u)return json({ok:false,error:'ユーザーが見つかりません'},404);
+ const obj=await env.ASSETS.get(`avatars/${userId}/avatar`);
+ if(!obj)return json({ok:false,error:'アイコン画像が見つかりません'},404);
+ const h=new Headers();obj.writeHttpMetadata(h);h.set('Cache-Control','public, max-age=3600');h.set('X-Content-Type-Options','nosniff');
+ return new Response(obj.body,{headers:h});
+}
+
+====================
+3) 任意: version 表示だけ変更
+====================
+
+`version:'2.1-email-auth'`
+を
+`version:'2.2-avatar-upload'`
+へ変更。
+
+====================
+4) Deploy前確認
+====================
+
+Cloudflareエディタ左下のエラー数が 0 であることを確認してから Deploy。
+既存Bindingsは変更しない:
+DB / SKINS / ASSETS / MODELS / UPLOAD_SECRET
