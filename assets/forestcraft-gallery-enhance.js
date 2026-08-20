@@ -44,8 +44,8 @@
     openPost=function(id){return window.ForestCraftGallery.openPost(id,{onDelete:function(){if(typeof loadPosts==="function")loadPosts()}})};
     window.openPost=openPost;
 
-    var search=document.getElementById("searchInput");if(search)search.addEventListener("input",function(){more.href=moreHref()});
-    var sort=document.getElementById("sortSelect");if(sort)sort.addEventListener("change",function(){more.href=moreHref()});
+    var search=document.getElementById("searchInput");if(search)search.oninput=render;
+    var sort=document.getElementById("sortSelect");if(sort)sort.onchange=render;
     document.querySelectorAll(".category-tab").forEach(function(b){b.addEventListener("click",function(){setTimeout(function(){more.href=moreHref()},0)})});
 
     render();
