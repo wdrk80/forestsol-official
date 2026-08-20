@@ -12,7 +12,7 @@
   }
   function loadFixes(done){
     function block(){
-      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountBlockCard==='function')return done();
+      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.patchBlockDetail==='function')return done();
       loadOne('assets/forestcraft-gallery-block3d.js?v=20260820-block3d1','data-forest-craft-block3d',done);
     }
     if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountSkinCard==='function')return block();
@@ -29,7 +29,7 @@
       offset+=50;
     }
     postByPreview.clear();
-    out.forEach(function(p){if((p.category==="skin"||p.category==="block")&&p.preview_file_id)postByPreview.set(String(p.preview_file_id),p)});
+    out.forEach(function(p){if(p.category==="skin"&&p.preview_file_id)postByPreview.set(String(p.preview_file_id),p)});
   }
 
   function fileId(img){
@@ -38,19 +38,18 @@
 
   function scan(){
     var h=window.ForestCraftGallery,grid=document.getElementById("grid");
-    if(!h||typeof h.mountSkinCard!=="function"||typeof h.mountBlockCard!=="function"||!grid)return;
+    if(!h||typeof h.mountSkinCard!=="function"||!grid)return;
     grid.querySelectorAll(".card .preview").forEach(function(preview){
       if(preview.dataset.fc3dMounted==="1")return;
       var img=preview.querySelector("img");if(!img)return;
       var p=postByPreview.get(fileId(img));if(!p)return;
       preview.dataset.fc3dMounted="1";
-      if(p.category==="skin")h.mountSkinCard(preview,img.src,p.classic_slim==="slim");
-      if(p.category==="block")h.mountBlockCard(preview,p);
+      h.mountSkinCard(preview,img.src,p.classic_slim==="slim");
     });
   }
 
   function start(){
-    if(!window.ForestCraftGallery||typeof window.ForestCraftGallery.mountSkinCard!=="function"||typeof window.ForestCraftGallery.mountBlockCard!=="function"){setTimeout(start,60);return}
+    if(!window.ForestCraftGallery||typeof window.ForestCraftGallery.mountSkinCard!=="function"||typeof window.ForestCraftGallery.patchBlockDetail!=="function"){setTimeout(start,60);return}
     var grid=document.getElementById("grid");if(!grid){setTimeout(start,60);return}
     loadPosts().then(function(){scan();new MutationObserver(scan).observe(grid,{childList:true,subtree:true})}).catch(function(e){console.warn("3Dギャラリー準備失敗",e)});
   }
