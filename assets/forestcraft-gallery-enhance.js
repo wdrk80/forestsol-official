@@ -38,7 +38,7 @@
       var total=0;
       try{total=filtered().length}catch(e){total=cards.length}
       if(status&&total>0)status.textContent="最新 "+Math.min(8,total)+"件を表示中 / 全"+total+"件";
-      wrap.style.display=total>8?"flex":"none";
+      wrap.style.display="flex";
     };
 
     openPost=function(id){return window.ForestCraftGallery.openPost(id,{onDelete:function(){if(typeof loadPosts==="function")loadPosts()}})};
