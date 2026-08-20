@@ -58,3 +58,4 @@ function bindPublishUI(){
 function init(){initDocs();bindUI();bindPublishUI();setColor(state.color,false);renderRecentColors();initBlockTabs();buildBlockCube();buildSkinModel();resizePixelCanvas($('#itemCanvas'),16);resizePixelCanvas($('#itemPreviewCanvas'),16);resizePixelCanvas($('#blockCanvas'),16);refreshItem();refreshBlock();renderLayers();updateFrameLabels();updateUndoButtons();updateSkinPreviewView();updateBlockView();updateSelectionUI();setStatus('準備完了')}
 init();
 setTimeout(()=>{if(document.querySelector('script[data-fcs-upgrade="20260820"]'))return;const s=document.createElement('script');s.dataset.fcsUpgrade='20260820';s.src='upgrade-20260820.js?v=20260820-1';document.head.appendChild(s)},0);
+setTimeout(()=>{if(document.querySelector('script[data-fcs-upgrade-3d="20260820"]'))return;const s=document.createElement('script');s.dataset.fcsUpgrade3d='20260820';s.src='upgrade-20260820-3d2.js?v=20260820-1';document.head.appendChild(s)},500);
