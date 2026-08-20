@@ -59,3 +59,4 @@ function init(){initDocs();bindUI();bindPublishUI();setColor(state.color,false);
 init();
 setTimeout(()=>{if(document.querySelector('script[data-fcs-upgrade="20260820"]'))return;const s=document.createElement('script');s.dataset.fcsUpgrade='20260820';s.src='upgrade-20260820.js?v=20260820-1';document.head.appendChild(s)},0);
 setTimeout(()=>{if(document.querySelector('script[data-fcs-upgrade-3d="20260820"]'))return;const s=document.createElement('script');s.dataset.fcsUpgrade3d='20260820';s.src='upgrade-20260820-3d2.js?v=20260820-1';document.head.appendChild(s)},500);
+setTimeout(()=>{if(document.querySelector('script[data-fcs-safe-docs="20260820"]'))return;const s=document.createElement('script');s.dataset.fcsSafeDocs='20260820';s.src='upgrade-20260820-safe-docs.js?v=20260820-1';document.head.appendChild(s)},1000);
