@@ -20,6 +20,7 @@ async function init(){
  for(let i=0;i<120&&!document.getElementById('myWorks');i++)await sleep(50);const own=document.getElementById('myWorks');if(!own)return;
  addStyles();await ensure3d();
  const section=document.createElement('section');section.id='favoriteWorks';section.className='paper-card works-card';section.innerHTML=`<div class="section-head"><h2>お気に入り</h2><button id="favoriteReloadBtn" type="button">再読み込み</button></div><div id="favoriteCount" class="favorite-count">読み込み中…</div><div id="favoriteGrid" class="works" style="margin-top:12px"><div class="empty">お気に入りを読み込み中…</div></div>`;own.insertAdjacentElement('afterend',section);
+ const buttons=document.querySelector('.profile-buttons');if(buttons&&!document.getElementById('favoriteWorksLink')){const a=document.createElement('a');a.id='favoriteWorksLink';a.className='button wood';a.href='#favoriteWorks';a.textContent='★ お気に入りを見る';buttons.appendChild(a)}
  const grid=section.querySelector('#favoriteGrid'),count=section.querySelector('#favoriteCount');
  async function load(){
   grid.innerHTML='<div class="empty">お気に入りを読み込み中…</div>';
