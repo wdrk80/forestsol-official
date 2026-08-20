@@ -1,7 +1,9 @@
 (function(){
   "use strict";
 
-  if(/(^|\/)mypage\.html$/.test(location.pathname)&&!document.querySelector('script[data-forest-avatar-cropper]')){
+  var isMyPage=/(^|\/)mypage\.html$/.test(location.pathname);
+
+  if(isMyPage&&!document.querySelector('script[data-forest-avatar-cropper]')){
     var cropper=document.createElement("script");
     cropper.src="assets/avatar-cropper.js";
     cropper.async=false;
@@ -9,8 +11,47 @@
     document.head.appendChild(cropper);
   }
 
+  function clearMypageLegacyNav(){
+    if(!isMyPage) return;
+    document.querySelectorAll('.hero-button-nav .forestcraft-nav-link,.hero-button-nav .forest-account-nav-link').forEach(function(n){n.remove();});
+  }
+
+  function ensureMypageLogout(){
+    if(!isMyPage) return;
+    var box=document.querySelector('.profile-buttons');
+    if(!box||document.getElementById('mypageLogoutBtn')) return;
+
+    var button=document.createElement('button');
+    button.id='mypageLogoutBtn';
+    button.type='button';
+    button.className='button wood mypage-logout-btn';
+    button.textContent='ログアウト';
+    button.addEventListener('click',async function(){
+      if(button.disabled) return;
+      button.disabled=true;
+      button.textContent='ログアウト中…';
+      try{
+        if(window.ForestAuth&&typeof window.ForestAuth.logout==='function'){
+          await window.ForestAuth.logout();
+        }else{
+          localStorage.removeItem('forestsol_session_v1');
+          localStorage.removeItem('forestsol_user_v1');
+        }
+      }catch(e){
+        localStorage.removeItem('forestsol_session_v1');
+        localStorage.removeItem('forestsol_user_v1');
+      }
+      location.href='account.html';
+    });
+    box.appendChild(button);
+  }
+
   function ensureSiteNav(){
+    clearMypageLegacyNav();
+    if(isMyPage) return;
+
     document.querySelectorAll("nav").forEach(function(nav){
+      if(nav.classList.contains('hero-button-nav')||nav.hasAttribute('data-no-auto-nav')) return;
       if(!nav.querySelector('a[href="forestcraft.html"],a[href$="/forestcraft.html"]')){
         var craft=document.createElement("a");
         craft.href="forestcraft.html";
@@ -45,8 +86,12 @@
   }
 
   ensureSiteNav();
+  ensureMypageLogout();
   enableForestCraftDownload();
-  window.addEventListener("forestsol-auth-change",ensureSiteNav);
+  window.addEventListener("forestsol-auth-change",function(){
+    ensureSiteNav();
+    ensureMypageLogout();
+  });
 
   var TRANSITION_DURATION=920;
   var REDUCED_MOTION_DURATION=180;
@@ -59,6 +104,8 @@
     ".forestcraft-nav-link:hover{color:#ffd36b!important}",
     ".forest-account-nav-link{color:#ffd36b!important}",
     ".forest-account-nav-link:hover{color:#9fe7c6!important}",
+    ".mypage-logout-btn{width:100%;font:inherit}",
+    ".mypage-logout-btn:disabled{opacity:.65;cursor:wait}",
     ".paw-page-transition{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;background:radial-gradient(circle at 50% 46%,rgba(255,255,244,.98) 0 18%,rgba(255,242,190,.96) 54%,rgba(226,183,83,.96) 100%);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}",
     ".paw-page-transition.is-active{visibility:visible;pointer-events:auto;animation:paw-curtain-in 260ms ease-out forwards}",
     ".paw-page-transition__sun{position:absolute;width:min(78vw,620px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.72),rgba(255,218,107,.2) 48%,transparent 70%);animation:paw-sun-breathe 2.4s ease-in-out infinite alternate}",
@@ -132,8 +179,9 @@
     isLeaving=false;
     document.documentElement.classList.remove("paw-transition-leaving");
     overlay.classList.remove("is-active");
-    document.querySelectorAll('.forest-account-nav-link').forEach(function(n){n.remove();});
+    document.querySelectorAll('.forest-account-nav-link,.hero-button-nav .forestcraft-nav-link').forEach(function(n){n.remove();});
     ensureSiteNav();
+    ensureMypageLogout();
     enableForestCraftDownload();
   });
 })();
