@@ -9,8 +9,8 @@
   }
   function loadModelFixes(done){
     function block(){
-      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.patchBlockDetail==='function')return done();
-      loadOne('assets/forestcraft-gallery-block3d.js?v=20260820-block3d1','data-forest-craft-block3d',done);
+      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.patchBlockDetail==='function'&&typeof window.ForestCraftGallery.mountBlockCard==='function')return done();
+      loadOne('assets/forestcraft-gallery-block3d.js?v=20260820-block3d2','data-forest-craft-block3d',done);
     }
     if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountSkinCard==='function')return block();
     loadOne('assets/forestcraft-gallery-skinfix.js?v=20260820-skinfix1','data-forest-craft-skinfix',block);
@@ -20,7 +20,7 @@
     if(!window.ForestCraftGallery||typeof render!=="function"||typeof openPost!=="function"||!document.getElementById("galleryGrid")){
       setTimeout(install,60);return;
     }
-    if(typeof window.ForestCraftGallery.mountSkinCard!=="function"||typeof window.ForestCraftGallery.patchBlockDetail!=="function"){
+    if(typeof window.ForestCraftGallery.mountSkinCard!=="function"||typeof window.ForestCraftGallery.patchBlockDetail!=="function"||typeof window.ForestCraftGallery.mountBlockCard!=="function"){
       loadModelFixes(install);return;
     }
     if(window.__forestCraftGalleryEnhanced)return;
@@ -50,9 +50,10 @@
     function mountCardModels(items,cards){
       var h=window.ForestCraftGallery;
       cards.forEach(function(card,i){
-        var p=items[i];if(!p||p.category!=="skin"||!p.preview_file_id)return;
+        var p=items[i];if(!p||!p.preview_file_id)return;
         var preview=card.querySelector(".post-preview");if(!preview)return;
-        h.mountSkinCard(preview,h.apiBase+"/files/"+encodeURIComponent(p.preview_file_id),p.classic_slim==="slim");
+        if(p.category==="skin")h.mountSkinCard(preview,h.apiBase+"/files/"+encodeURIComponent(p.preview_file_id),p.classic_slim==="slim");
+        if(p.category==="block")h.mountBlockCard(preview,p);
       });
     }
 
