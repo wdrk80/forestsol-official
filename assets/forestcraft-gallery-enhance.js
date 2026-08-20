@@ -8,9 +8,17 @@
     var s=document.createElement('script');s.src=src;s.async=false;s.setAttribute(attr,'1');s.onload=function(){s.dataset.loaded='1';done()};document.head.appendChild(s);
   }
   function loadModelFixes(done){
+    function community(){
+      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountCommunity==='function')return done();
+      loadOne('assets/forestcraft-community.js?v=20260820-community1','data-forest-craft-community',done);
+    }
+    function model(){
+      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountModelCard==='function'&&typeof window.ForestCraftGallery.patchModelDetail==='function')return community();
+      loadOne('assets/forestcraft-gallery-model3d.js?v=20260820-model3d1','data-forest-craft-model3d',community);
+    }
     function block(){
-      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.patchBlockDetail==='function'&&typeof window.ForestCraftGallery.mountBlockCard==='function')return done();
-      loadOne('assets/forestcraft-gallery-block3d.js?v=20260820-block3d2','data-forest-craft-block3d',done);
+      if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.patchBlockDetail==='function'&&typeof window.ForestCraftGallery.mountBlockCard==='function')return model();
+      loadOne('assets/forestcraft-gallery-block3d.js?v=20260820-block3d2','data-forest-craft-block3d',model);
     }
     if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountSkinCard==='function')return block();
     loadOne('assets/forestcraft-gallery-skinfix.js?v=20260820-skinfix1','data-forest-craft-skinfix',block);
@@ -20,7 +28,7 @@
     if(!window.ForestCraftGallery||typeof render!=="function"||typeof openPost!=="function"||!document.getElementById("galleryGrid")){
       setTimeout(install,60);return;
     }
-    if(typeof window.ForestCraftGallery.mountSkinCard!=="function"||typeof window.ForestCraftGallery.patchBlockDetail!=="function"||typeof window.ForestCraftGallery.mountBlockCard!=="function"){
+    if(typeof window.ForestCraftGallery.mountSkinCard!=="function"||typeof window.ForestCraftGallery.patchBlockDetail!=="function"||typeof window.ForestCraftGallery.mountBlockCard!=="function"||typeof window.ForestCraftGallery.mountModelCard!=="function"||typeof window.ForestCraftGallery.patchModelDetail!=="function"||typeof window.ForestCraftGallery.mountCommunity!=="function"){
       loadModelFixes(install);return;
     }
     if(window.__forestCraftGalleryEnhanced)return;
@@ -54,6 +62,7 @@
         var preview=card.querySelector(".post-preview");if(!preview)return;
         if(p.category==="skin")h.mountSkinCard(preview,h.apiBase+"/files/"+encodeURIComponent(p.preview_file_id),p.classic_slim==="slim");
         if(p.category==="block")h.mountBlockCard(preview,p);
+        if(p.category==="model")h.mountModelCard(preview,p);
       });
     }
 
@@ -75,6 +84,10 @@
     var search=document.getElementById("searchInput");if(search)search.oninput=render;
     var sort=document.getElementById("sortSelect");if(sort)sort.onchange=render;
     document.querySelectorAll(".category-tab").forEach(function(b){b.addEventListener("click",function(){setTimeout(function(){more.href=moreHref()},0)})});
+    window.addEventListener("forestcraft-community-change",function(e){
+      var d=e.detail||{},p=posts&&posts.find?posts.find(function(x){return x.id===d.postId}):null;if(!p||!d.community)return;
+      p.rating_average=Number(d.community.rating_average||0);p.rating_count=Number(d.community.rating_count||0);p.favorite_count=Number(d.community.favorite_count||0);render();
+    });
 
     render();
     var postId=new URLSearchParams(location.search).get("post");
