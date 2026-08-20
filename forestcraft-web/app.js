@@ -39,6 +39,7 @@
       [submit,cancel,close].forEach(b=>{if(b)b.disabled=true});
 
       const category=({skin:'skin',model:'model',item:'item',block:'block'})[pstate.mode]||pstate.mode;
+      let createdPostId='';
       try{
         progress('作品情報を登録中…');
         const body={title,description,category,tags,visibility};
@@ -49,12 +50,12 @@
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify(body)
         });
-        const postId=postData.post.id;
+        createdPostId=postData.post.id;
 
         for(let i=0;i<pstate.files.length;i++){
           const f=pstate.files[i];
           progress(`ファイル ${i+1}/${pstate.files.length} を送信中… ${f.filename}`);
-          const path=`/posts/${encodeURIComponent(postId)}/files?type=${encodeURIComponent(f.storage)}&role=${encodeURIComponent(f.role)}&filename=${encodeURIComponent(f.filename)}`;
+          const path=`/posts/${encodeURIComponent(createdPostId)}/files?type=${encodeURIComponent(f.storage)}&role=${encodeURIComponent(f.role)}&filename=${encodeURIComponent(f.filename)}`;
           await auth.request(path,{
             method:'POST',
             headers:{'Content-Type':f.mime},
@@ -65,6 +66,10 @@
         progress(`投稿完了！ ${user.display_name||user.username} の作品に追加しました。`,'good');
         bridge.setStatus?.(`サイト投稿完了: ${title}`);
       }catch(err){
+        if(createdPostId){
+          progress('投稿に失敗したため、途中データを片付けています…','bad');
+          try{await auth.request(`/posts/${encodeURIComponent(createdPostId)}`,{method:'DELETE'})}catch(cleanupErr){console.warn('投稿ロールバック失敗',cleanupErr)}
+        }
         progress(`投稿失敗: ${err.message||String(err)}`,'bad');
       }finally{
         pstate.busy=false;
