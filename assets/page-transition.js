@@ -2,6 +2,23 @@
   "use strict";
 
   var isMyPage=/(^|\/)mypage\.html$/.test(location.pathname);
+  var isForestCraft=/(^|\/)forestcraft\.html$/.test(location.pathname);
+
+  if(isForestCraft&&!document.querySelector('script[data-forest-craft-gallery-ui]')){
+    var galleryUi=document.createElement("script");
+    galleryUi.src="assets/forestcraft-gallery-ui.js?v=20260820-gallery2";
+    galleryUi.async=false;
+    galleryUi.dataset.forestCraftGalleryUi="1";
+    galleryUi.onload=function(){
+      if(document.querySelector('script[data-forest-craft-gallery-enhance]'))return;
+      var galleryEnhance=document.createElement("script");
+      galleryEnhance.src="assets/forestcraft-gallery-enhance.js?v=20260820-gallery2";
+      galleryEnhance.async=false;
+      galleryEnhance.dataset.forestCraftGalleryEnhance="1";
+      document.head.appendChild(galleryEnhance);
+    };
+    document.head.appendChild(galleryUi);
+  }
 
   if(isMyPage&&!document.querySelector('script[data-forest-avatar-cropper]')){
     var cropper=document.createElement("script");
