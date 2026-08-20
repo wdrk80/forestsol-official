@@ -43,7 +43,7 @@
 
   function install(){
     ensureStyles();var h=window.ForestCraftGallery;if(!h||h.__communityInstalled)return false;h.__communityInstalled=true;var original=h.openPost;if(typeof original!=="function")return false;
-    h.openPost=async function(id,opts){var r=await original(id,opts);try{var p=await h.getPost(id);await mountCommunity(opts&&opts.content?opts.content:document.getElementById("modalContent"),p)}catch(e){console.warn("Community UI failed",e)}return r};
+    h.openPost=async function(id,opts){var r=await original(id,opts);try{await mountCommunity(opts&&opts.content?opts.content:document.getElementById("modalContent"),{id:id})}catch(e){console.warn("Community UI failed",e)}return r};
     h.mountCommunity=mountCommunity;return true;
   }
   if(!install()){var timer=setInterval(function(){if(install())clearInterval(timer)},60);setTimeout(function(){clearInterval(timer)},7000)}
