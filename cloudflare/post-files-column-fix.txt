@@ -1,0 +1,62 @@
+Forest Craft API / post_files D1 column fix
+===========================================
+
+D1 の実テーブル:
+  original_filename TEXT NOT NULL
+  mime_type         TEXT
+  size_bytes        INTEGER NOT NULL DEFAULT 0
+
+Worker の post_files 用コードだけ、以下の3か所を置き換える。
+
+[1] getPost() のファイル一覧SELECT
+
+変更前:
+SELECT id,post_id,storage_type,file_role,object_key,filename AS original_filename,mime AS mime_type,size FROM post_files WHERE post_id=? ORDER BY file_role,id
+
+変更後:
+SELECT id,post_id,storage_type,file_role,object_key,original_filename,mime_type,size_bytes FROM post_files WHERE post_id=? ORDER BY file_role,id
+
+
+[2] addFile() のINSERT
+
+変更前:
+INSERT INTO post_files(id,post_id,storage_type,file_role,object_key,filename,mime,size) VALUES(?,?,?,?,?,?,?,?)
+
+変更後:
+INSERT INTO post_files(id,post_id,storage_type,file_role,object_key,original_filename,mime_type,size_bytes) VALUES(?,?,?,?,?,?,?,?)
+
+bind(...) の順番はそのままでOK:
+.bind(id,postId,type,role,key,filename,mime,bytes.byteLength)
+
+返却JSONは可能なら次の形にする:
+{
+  id,
+  post_id: postId,
+  storage_type: type,
+  file_role: role,
+  object_key: key,
+  original_filename: filename,
+  mime_type: mime,
+  size_bytes: bytes.byteLength
+}
+
+
+[3] serveFile() の列参照
+
+変更前:
+h.set('Content-Type',f.mime||h.get('Content-Type')||'application/octet-stream');
+
+変更後:
+h.set('Content-Type',f.mime_type||h.get('Content-Type')||'application/octet-stream');
+
+変更前:
+if(download)h.set('Content-Disposition',`attachment; filename="${String(f.filename||'download').replace(/["\r\n]/g,'_')}"`);
+
+変更後:
+if(download)h.set('Content-Disposition',`attachment; filename="${String(f.original_filename||'download').replace(/["\r\n]/g,'_')}"`);
+
+
+注意:
+- D1側でALTER TABLEや列名変更はしない。
+- 現在の post_files の列構造を正としてWorkerを合わせる。
+- 修正後にWorkerをDeployしてから再投稿する。
