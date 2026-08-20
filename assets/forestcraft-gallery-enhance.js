@@ -2,9 +2,23 @@
   "use strict";
   if(!/(^|\/)forestcraft\.html$/.test(location.pathname))return;
 
+  function loadSkinFix(done){
+    if(window.ForestCraftGallery&&typeof window.ForestCraftGallery.mountSkinCard==="function")return done();
+    if(document.querySelector('script[data-forest-craft-skinfix]')){setTimeout(function(){loadSkinFix(done)},50);return}
+    var s=document.createElement("script");
+    s.src="assets/forestcraft-gallery-skinfix.js?v=20260820-skinfix1";
+    s.async=false;
+    s.dataset.forestCraftSkinfix="1";
+    s.onload=done;
+    document.head.appendChild(s);
+  }
+
   function install(){
     if(!window.ForestCraftGallery||typeof render!=="function"||typeof openPost!=="function"||!document.getElementById("galleryGrid")){
       setTimeout(install,60);return;
+    }
+    if(typeof window.ForestCraftGallery.mountSkinCard!=="function"){
+      loadSkinFix(install);return;
     }
     if(window.__forestCraftGalleryEnhanced)return;
     window.__forestCraftGalleryEnhanced=true;
@@ -30,13 +44,25 @@
     wrap.appendChild(more);
     grid.parentNode.insertBefore(wrap,grid.nextSibling);
 
+    function mountCardModels(items,cards){
+      var h=window.ForestCraftGallery;
+      cards.forEach(function(card,i){
+        var p=items[i];
+        if(!p||p.category!=="skin"||!p.preview_file_id)return;
+        var preview=card.querySelector(".post-preview");
+        if(!preview)return;
+        h.mountSkinCard(preview,h.apiBase+"/files/"+encodeURIComponent(p.preview_file_id),p.classic_slim==="slim");
+      });
+    }
+
     render=function(){
       originalRender();
+      var items=[];try{items=filtered()}catch(e){}
       var cards=Array.from(grid.querySelectorAll(".post-card"));
+      mountCardModels(items,cards);
       cards.slice(8).forEach(function(c){c.remove()});
       more.href=moreHref();
-      var total=0;
-      try{total=filtered().length}catch(e){total=cards.length}
+      var total=items.length||cards.length;
       if(status&&total>0)status.textContent="最新 "+Math.min(8,total)+"件を表示中 / 全"+total+"件";
       wrap.style.display="flex";
     };
