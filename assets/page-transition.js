@@ -13,7 +13,7 @@
     galleryUi.onload=function(){
       if(document.querySelector('script[data-forest-craft-gallery-enhance]'))return;
       var galleryEnhance=document.createElement("script");
-      galleryEnhance.src="assets/forestcraft-gallery-enhance.js?v=20260820-gallery3";
+      galleryEnhance.src="assets/forestcraft-gallery-enhance.js?v=20260820-gallery4";
       galleryEnhance.async=false;
       galleryEnhance.dataset.forestCraftGalleryEnhance="1";
       document.head.appendChild(galleryEnhance);
@@ -23,7 +23,7 @@
 
   if(isForestCraftGallery&&!document.querySelector('script[data-forest-craft-gallery-page3d]')){
     var galleryPage3d=document.createElement("script");
-    galleryPage3d.src="assets/forestcraft-gallery-page3d.js?v=20260820-gallery3";
+    galleryPage3d.src="assets/forestcraft-gallery-page3d.js?v=20260820-gallery4";
     galleryPage3d.async=false;
     galleryPage3d.dataset.forestCraftGalleryPage3d="1";
     document.head.appendChild(galleryPage3d);
@@ -35,6 +35,14 @@
     cropper.async=false;
     cropper.dataset.forestAvatarCropper="1";
     document.head.appendChild(cropper);
+  }
+
+  if(isMyPage&&!document.querySelector('script[data-forest-mypage-favorites]')){
+    var favorites=document.createElement("script");
+    favorites.src="assets/mypage-favorites.js?v=20260820-favorites1";
+    favorites.async=false;
+    favorites.dataset.forestMypageFavorites="1";
+    document.head.appendChild(favorites);
   }
 
   function clearMypageLegacyNav(){
