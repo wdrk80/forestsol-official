@@ -3,12 +3,13 @@
   const appParts=['app-01.txt','app-02.txt','app-03.txt','app-04.txt','app-05.txt','app-06.txt','app-07.txt'];
   const loadScript=src=>new Promise((resolve,reject)=>{if(document.querySelector(`script[src="${src}"]`))return resolve();const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error(src+' の読み込みに失敗'));document.head.appendChild(s)});
   try{
-    await loadScript('../assets/forest-auth.js?v=20260820-publish-auth');
+    await loadScript('../assets/forest-auth.js?v=20260820-publish-auth2');
     const css=(await Promise.all(styleParts.map(async p=>{const r=await fetch(p,{cache:'no-store'});if(!r.ok)throw new Error(p+' '+r.status);return r.text()}))).join('');
     const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
     const chunks=await Promise.all(appParts.map(async p=>{const r=await fetch(p,{cache:'no-store'});if(!r.ok)throw new Error(p+' '+r.status);return r.text()}));
     chunks[1]=chunks[1].replace(/^[\s\S]*?(?=function bindSkinFace\(cv\))/, '');
-    const js=chunks.join('');
+    const bridge='\nwindow.ForestCraftStudioBridge={publishState,buildPublishFiles,setPublishProgress,setStatus,state};';
+    const js=chunks.join('')+bridge;
     (0,eval)(js);
     await window.ForestAuth?.mountStudio?.();
   }catch(err){
