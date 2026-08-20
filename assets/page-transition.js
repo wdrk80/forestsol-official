@@ -3,6 +3,7 @@
 
   var isMyPage=/(^|\/)mypage\.html$/.test(location.pathname);
   var isForestCraft=/(^|\/)forestcraft\.html$/.test(location.pathname);
+  var isForestCraftGallery=/(^|\/)forestcraft-gallery\.html$/.test(location.pathname);
 
   if(isForestCraft&&!document.querySelector('script[data-forest-craft-gallery-ui]')){
     var galleryUi=document.createElement("script");
@@ -12,12 +13,20 @@
     galleryUi.onload=function(){
       if(document.querySelector('script[data-forest-craft-gallery-enhance]'))return;
       var galleryEnhance=document.createElement("script");
-      galleryEnhance.src="assets/forestcraft-gallery-enhance.js?v=20260820-gallery2";
+      galleryEnhance.src="assets/forestcraft-gallery-enhance.js?v=20260820-gallery3";
       galleryEnhance.async=false;
       galleryEnhance.dataset.forestCraftGalleryEnhance="1";
       document.head.appendChild(galleryEnhance);
     };
     document.head.appendChild(galleryUi);
+  }
+
+  if(isForestCraftGallery&&!document.querySelector('script[data-forest-craft-gallery-page3d]')){
+    var galleryPage3d=document.createElement("script");
+    galleryPage3d.src="assets/forestcraft-gallery-page3d.js?v=20260820-gallery3";
+    galleryPage3d.async=false;
+    galleryPage3d.dataset.forestCraftGalleryPage3d="1";
+    document.head.appendChild(galleryPage3d);
   }
 
   if(isMyPage&&!document.querySelector('script[data-forest-avatar-cropper]')){
