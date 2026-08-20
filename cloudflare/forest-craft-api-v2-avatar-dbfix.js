@@ -74,7 +74,7 @@ async function sessionUser(req, env, required = false) {
 
 async function route(req, env, url) {
   const path = url.pathname.replace(/\/+$/, "") || "/";
-  if (path === "/" && req.method === "GET") return json({ ok: true, name: "Forest Craft API", version: "2.2-avatar-upload-dbfix", auth: "registered-users-only", login: "email" });
+  if (path === "/" && req.method === "GET") return json({ ok: true, name: "Forest Craft API", version: "2.3-community", auth: "registered-users-only", login: "email" });
   if (path === "/db-test" && req.method === "GET") { const r = await env.DB.prepare("SELECT COUNT(*) AS post_count FROM posts").first(); return json({ ok: true, post_count: Number(r?.post_count || 0) }); }
 
   if (path === "/auth/register" && req.method === "POST") return register(req, env);
@@ -83,6 +83,7 @@ async function route(req, env, url) {
   if (path === "/auth/logout" && req.method === "POST") return logout(req, env);
   if (path === "/me" && req.method === "PATCH") return updateMe(req, env);
   if (path === "/me/posts" && req.method === "GET") return myPosts(req, env);
+  if (path === "/me/favorites" && req.method === "GET") return myFavorites(req, env);
   if (path === "/me/avatar" && req.method === "POST") return uploadAvatar(req, env, url);
   if (path === "/me/avatar" && req.method === "DELETE") return deleteAvatar(req, env);
 
@@ -93,6 +94,13 @@ async function route(req, env, url) {
   m = path.match(/^\/users\/([^/]+)\/posts$/); if (m && req.method === "GET") return getUserPosts(env, decodeURIComponent(m[1]));
   if (path === "/posts" && req.method === "GET") return listPosts(env, url);
   if (path === "/posts" && req.method === "POST") return createPost(req, env);
+  m = path.match(/^\/posts\/([^/]+)\/community$/); if (m && req.method === "GET") return getCommunity(req, env, m[1]);
+  m = path.match(/^\/posts\/([^/]+)\/rating$/);
+  if (m && req.method === "POST") return setRating(req, env, m[1]);
+  if (m && req.method === "DELETE") return deleteRating(req, env, m[1]);
+  m = path.match(/^\/posts\/([^/]+)\/favorite$/);
+  if (m && req.method === "POST") return setFavorite(req, env, m[1]);
+  if (m && req.method === "DELETE") return deleteFavorite(req, env, m[1]);
   m = path.match(/^\/posts\/([^/]+)$/);
   if (m && req.method === "GET") return getPost(req, env, m[1]);
   if (m && req.method === "PATCH") return patchPost(req, env, m[1]);
@@ -181,11 +189,63 @@ async function serveAvatar(env, userId) {
   return new Response(obj.body, { headers: h });
 }
 
-const POST_SELECT = `SELECT p.*,u.username,u.display_name,u.avatar_url,COALESCE(ps.download_count,0) AS download_count,COALESCE(ps.view_count,0) AS view_count,0 AS rating_average,0 AS rating_count,(SELECT id FROM post_files pf WHERE pf.post_id=p.id AND pf.file_role IN ('preview','thumbnail') ORDER BY CASE pf.file_role WHEN 'preview' THEN 0 ELSE 1 END LIMIT 1) AS preview_file_id FROM posts p JOIN users u ON u.id=p.user_id LEFT JOIN post_stats ps ON ps.post_id=p.id`;
+const POST_SELECT = `SELECT p.*,u.username,u.display_name,u.avatar_url,COALESCE(ps.download_count,0) AS download_count,COALESCE(ps.view_count,0) AS view_count,COALESCE(ps.favorite_count,0) AS favorite_count,COALESCE((SELECT AVG(r.rating) FROM post_ratings_v2 r WHERE r.post_id=p.id),0) AS rating_average,(SELECT COUNT(*) FROM post_ratings_v2 r WHERE r.post_id=p.id) AS rating_count,(SELECT id FROM post_files pf WHERE pf.post_id=p.id AND pf.file_role IN ('preview','thumbnail') ORDER BY CASE pf.file_role WHEN 'preview' THEN 0 ELSE 1 END LIMIT 1) AS preview_file_id FROM posts p JOIN users u ON u.id=p.user_id LEFT JOIN post_stats ps ON ps.post_id=p.id`;
 async function listPosts(env, url) { const cat = url.searchParams.get("category"), limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 24), 1), 50), offset = Math.max(Number(url.searchParams.get("offset") || 0), 0); let w = ` WHERE p.visibility='public' AND p.status='published'`, a = []; if (cat && validCategory(cat)) { w += " AND p.category=?"; a.push(cat); } a.push(limit, offset); const r = await env.DB.prepare(POST_SELECT + w + " ORDER BY p.created_at DESC LIMIT ? OFFSET ?").bind(...a).all(); return json({ ok: true, posts: r.results || [] }); }
 async function myPosts(req, env) { const u = await sessionUser(req, env, true), r = await env.DB.prepare(POST_SELECT + " WHERE p.user_id=? ORDER BY p.created_at DESC").bind(u.id).all(); return json({ ok: true, posts: r.results || [] }); }
+async function myFavorites(req, env) { const u = await sessionUser(req, env, true), r = await env.DB.prepare(POST_SELECT + " JOIN post_favorites fav ON fav.post_id=p.id WHERE fav.user_id=? AND p.visibility='public' AND p.status='published' ORDER BY fav.created_at DESC").bind(u.id).all(); return json({ ok: true, posts: r.results || [] }); }
 async function getUser(env, username) { const u = await env.DB.prepare(`SELECT * FROM users WHERE lower(username)=lower(?) AND status='active'`).bind(username).first(); if (!u) return json({ ok: false, error: "ユーザーが見つかりません" }, 404); return json({ ok: true, user: pub(u) }); }
 async function getUserPosts(env, username) { const u = await env.DB.prepare(`SELECT id FROM users WHERE lower(username)=lower(?) AND status='active'`).bind(username).first(); if (!u) return json({ ok: false, error: "ユーザーが見つかりません" }, 404); const r = await env.DB.prepare(POST_SELECT + ` WHERE p.user_id=? AND p.visibility='public' AND p.status='published' ORDER BY p.created_at DESC`).bind(u.id).all(); return json({ ok: true, posts: r.results || [] }); }
+
+async function readablePost(req, env, id) {
+  const p = await env.DB.prepare("SELECT * FROM posts WHERE id=?").bind(id).first();
+  if (!p) { const e = new Error("作品が見つかりません"); e.status = 404; throw e; }
+  if (p.visibility !== "public" || p.status !== "published") ownerOrAdmin(await sessionUser(req, env, false), p);
+  return p;
+}
+async function communitySummary(env, postId, userId = "") {
+  const r = await env.DB.prepare("SELECT COALESCE(AVG(rating),0) AS rating_average,COUNT(*) AS rating_count FROM post_ratings_v2 WHERE post_id=?").bind(postId).first();
+  const f = await env.DB.prepare("SELECT COUNT(*) AS favorite_count FROM post_favorites WHERE post_id=?").bind(postId).first();
+  let mine = null, fav = null;
+  if (userId) {
+    mine = await env.DB.prepare("SELECT rating FROM post_ratings_v2 WHERE post_id=? AND user_id=?").bind(postId, userId).first();
+    fav = await env.DB.prepare("SELECT 1 AS yes FROM post_favorites WHERE post_id=? AND user_id=?").bind(postId, userId).first();
+  }
+  return { rating_average: Number(r?.rating_average || 0), rating_count: Number(r?.rating_count || 0), favorite_count: Number(f?.favorite_count || 0), my_rating: Number(mine?.rating || 0), is_favorite: !!fav };
+}
+async function syncFavoriteCount(env, postId) {
+  await env.DB.prepare("INSERT OR IGNORE INTO post_stats(post_id,download_count,view_count,favorite_count) VALUES(?,0,0,0)").bind(postId).run();
+  await env.DB.prepare("UPDATE post_stats SET favorite_count=(SELECT COUNT(*) FROM post_favorites WHERE post_id=?) WHERE post_id=?").bind(postId, postId).run();
+}
+async function getCommunity(req, env, id) {
+  await readablePost(req, env, id);
+  const u = await sessionUser(req, env, false);
+  return json({ ok: true, community: await communitySummary(env, id, u?.id || "") });
+}
+async function setRating(req, env, id) {
+  const u = await sessionUser(req, env, true); await readablePost(req, env, id);
+  const b = await readJson(req), rating = Number(b.rating);
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) return json({ ok: false, error: "評価は1〜5の整数で指定してください" }, 400);
+  const t = now();
+  await env.DB.prepare("INSERT INTO post_ratings_v2(post_id,user_id,rating,created_at,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(post_id,user_id) DO UPDATE SET rating=excluded.rating,updated_at=excluded.updated_at").bind(id, u.id, rating, t, t).run();
+  return json({ ok: true, community: await communitySummary(env, id, u.id) });
+}
+async function deleteRating(req, env, id) {
+  const u = await sessionUser(req, env, true); await readablePost(req, env, id);
+  await env.DB.prepare("DELETE FROM post_ratings_v2 WHERE post_id=? AND user_id=?").bind(id, u.id).run();
+  return json({ ok: true, community: await communitySummary(env, id, u.id) });
+}
+async function setFavorite(req, env, id) {
+  const u = await sessionUser(req, env, true); await readablePost(req, env, id);
+  await env.DB.prepare("INSERT OR IGNORE INTO post_favorites(post_id,user_id,created_at) VALUES(?,?,?)").bind(id, u.id, now()).run();
+  await syncFavoriteCount(env, id);
+  return json({ ok: true, community: await communitySummary(env, id, u.id) });
+}
+async function deleteFavorite(req, env, id) {
+  const u = await sessionUser(req, env, true); await readablePost(req, env, id);
+  await env.DB.prepare("DELETE FROM post_favorites WHERE post_id=? AND user_id=?").bind(id, u.id).run();
+  await syncFavoriteCount(env, id);
+  return json({ ok: true, community: await communitySummary(env, id, u.id) });
+}
 
 async function createPost(req, env) {
   const u = await sessionUser(req, env, true), b = await readJson(req), title = String(b.title || "").trim(), category = String(b.category || "");
@@ -198,7 +258,7 @@ async function createPost(req, env) {
 }
 async function getPost(req, env, id) { const p = await env.DB.prepare(POST_SELECT + " WHERE p.id=?").bind(id).first(); if (!p) return json({ ok: false, error: "作品が見つかりません" }, 404); if (p.visibility !== "public" || p.status !== "published") ownerOrAdmin(await sessionUser(req, env, false), p); else env.DB.prepare("UPDATE post_stats SET view_count=view_count+1 WHERE post_id=?").bind(id).run().catch(() => {}); p.files = (await env.DB.prepare("SELECT id,post_id,storage_type,file_role,object_key,original_filename,mime_type,size_bytes FROM post_files WHERE post_id=? ORDER BY file_role,id").bind(id).all()).results || []; return json({ ok: true, post: p }); }
 async function patchPost(req, env, id) { const u = await sessionUser(req, env, true), p = await env.DB.prepare("SELECT * FROM posts WHERE id=?").bind(id).first(); if (!p) return json({ ok: false, error: "作品が見つかりません" }, 404); ownerOrAdmin(u, p); const b = await readJson(req), title = b.title !== undefined ? String(b.title).trim() : p.title, description = b.description !== undefined ? String(b.description).slice(0, 5000) : p.description, visibility = b.visibility !== undefined && validVisibility(b.visibility) ? b.visibility : p.visibility, status = b.status !== undefined && validStatus(b.status) ? b.status : p.status, tags = b.tags !== undefined ? JSON.stringify(Array.isArray(b.tags) ? b.tags.slice(0, 20) : []) : p.tags_json; await env.DB.prepare("UPDATE posts SET title=?,description=?,visibility=?,status=?,tags_json=?,updated_at=? WHERE id=?").bind(title, description, visibility, status, tags, now(), id).run(); return json({ ok: true, post: await env.DB.prepare("SELECT * FROM posts WHERE id=?").bind(id).first() }); }
-async function deletePost(req, env, id) { const u = await sessionUser(req, env, true), p = await env.DB.prepare("SELECT * FROM posts WHERE id=?").bind(id).first(); if (!p) return json({ ok: false, error: "作品が見つかりません" }, 404); ownerOrAdmin(u, p); const files = (await env.DB.prepare("SELECT * FROM post_files WHERE post_id=?").bind(id).all()).results || []; for (const f of files) try { await bucketFor(env, f.storage_type).delete(f.object_key); } catch {} await env.DB.batch([env.DB.prepare("DELETE FROM post_files WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM ratings WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM comments WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM post_stats WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM download_daily WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM posts WHERE id=?").bind(id)]); return json({ ok: true }); }
+async function deletePost(req, env, id) { const u = await sessionUser(req, env, true), p = await env.DB.prepare("SELECT * FROM posts WHERE id=?").bind(id).first(); if (!p) return json({ ok: false, error: "作品が見つかりません" }, 404); ownerOrAdmin(u, p); const files = (await env.DB.prepare("SELECT * FROM post_files WHERE post_id=?").bind(id).all()).results || []; for (const f of files) try { await bucketFor(env, f.storage_type).delete(f.object_key); } catch {} await env.DB.batch([env.DB.prepare("DELETE FROM post_files WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM post_ratings_v2 WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM post_favorites WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM ratings WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM comments WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM post_stats WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM download_daily WHERE post_id=?").bind(id), env.DB.prepare("DELETE FROM posts WHERE id=?").bind(id)]); return json({ ok: true }); }
 async function addFile(req, env, url, postId) { const u = await sessionUser(req, env, true), p = await env.DB.prepare("SELECT * FROM posts WHERE id=?").bind(postId).first(); if (!p) return json({ ok: false, error: "作品が見つかりません" }, 404); ownerOrAdmin(u, p); const type = url.searchParams.get("type") || "asset", role = (url.searchParams.get("role") || "other").slice(0, 30), filename = (url.searchParams.get("filename") || "file.bin").replace(/[\\/]/g, "_").slice(0, 180); if (!validStorage(type)) return json({ ok: false, error: "storage typeが不正です" }, 400); const bytes = await req.arrayBuffer(); if (bytes.byteLength > 25 * 1024 * 1024) return json({ ok: false, error: "1ファイル25MBまでです" }, 413); const id = "file_" + crypto.randomUUID(), key = `${new Date().toISOString().slice(0, 10).replace(/-/g, "/")}/${postId}/${id}_${filename}`, mime = (req.headers.get("Content-Type") || "application/octet-stream").slice(0, 120), bucket = bucketFor(env, type); await bucket.put(key, bytes, { httpMetadata: { contentType: mime } }); try { await env.DB.prepare("INSERT INTO post_files(id,post_id,storage_type,file_role,object_key,original_filename,mime_type,size_bytes) VALUES(?,?,?,?,?,?,?,?)").bind(id, postId, type, role, key, filename, mime, bytes.byteLength).run(); } catch (e) { await bucket.delete(key); throw e; } return json({ ok: true, file: { id, post_id: postId, storage_type: type, file_role: role, object_key: key, original_filename: filename, mime_type: mime, size_bytes: bytes.byteLength, size: bytes.byteLength } }, 201); }
 async function serveFile(req, env, id, download) { const f = await env.DB.prepare(`SELECT pf.*,p.visibility,p.status,p.user_id FROM post_files pf JOIN posts p ON p.id=pf.post_id WHERE pf.id=?`).bind(id).first(); if (!f) return json({ ok: false, error: "ファイルが見つかりません" }, 404); if (f.visibility !== "public" || f.status !== "published") ownerOrAdmin(await sessionUser(req, env, false), f); const obj = await bucketFor(env, f.storage_type).get(f.object_key); if (!obj) return json({ ok: false, error: "R2ファイルが見つかりません" }, 404); if (download) env.DB.prepare("UPDATE post_stats SET download_count=download_count+1 WHERE post_id=?").bind(f.post_id).run().catch(() => {}); const h = new Headers(); obj.writeHttpMetadata(h); h.set("Content-Type", f.mime_type || h.get("Content-Type") || "application/octet-stream"); h.set("Cache-Control", f.visibility === "public" ? "public, max-age=3600" : "private, no-store"); if (download) h.set("Content-Disposition", `attachment; filename="${String(f.original_filename || "download").replace(/["\r\n]/g, "_")}"`); return new Response(obj.body, { headers: h }); }
 async function legacyUpload(req, env, url) { const auth = req.headers.get("Authorization") || "", secret = env.UPLOAD_SECRET || ""; if (!secret || auth !== `Bearer ${secret}`) return json({ ok: false, error: "Unauthorized" }, 401); const type = url.searchParams.get("type") || "asset"; if (!validStorage(type)) return json({ ok: false, error: "type must be skin, asset, or model" }, 400); const filename = (url.searchParams.get("filename") || "upload.bin").replace(/[\\/]/g, "_"), key = `${new Date().toISOString().slice(0, 10).replace(/-/g, "/")}/${crypto.randomUUID()}_${filename}`, body = await req.arrayBuffer(), mime = req.headers.get("Content-Type") || "application/octet-stream"; await bucketFor(env, type).put(key, body, { httpMetadata: { contentType: mime } }); return json({ ok: true, type, key }); }
