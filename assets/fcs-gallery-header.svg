@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="450" viewBox="0 0 1920 450">
+<defs>
+  <filter id="paper"><feTurbulence type="fractalNoise" baseFrequency=".015" numOctaves="3" seed="7" result="n"/><feBlend in="SourceGraphic" in2="n" mode="multiply"/></filter>
+  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#8f7354" stroke-opacity=".18" stroke-width="1"/></pattern>
+  <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8Z" fill="#49351f"/></marker>
+</defs>
+<rect width="1920" height="450" fill="#d8bd8e"/>
+<rect width="1920" height="450" fill="url(#grid)" opacity=".9"/>
+<rect x="12" y="12" width="1896" height="426" rx="4" fill="none" stroke="#5e472d" stroke-width="2" stroke-dasharray="8 6" opacity=".72"/>
+<g fill="none" stroke="#3f2d1b" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" opacity=".92">
+<!-- HOUSE -->
+<g transform="translate(70 52)">
+ <path d="M20 278h330M48 278V156l135-94 136 94v122M88 278V177h189v101M72 158l111-76 112 76M135 278v-70h70v70M229 193h34v39h-34M93 193h34v39H93M33 160l150-112 151 112"/>
+ <path d="M60 154v-28h21v12M285 148v-56h24v73M165 70v-30h37v30"/>
+ <path d="M0 300h370M8 295v10M362 295v10" marker-start="url(#arr)" marker-end="url(#arr)"/>
+ <path d="M382 73v207M377 82h10M377 272h10" marker-start="url(#arr)" marker-end="url(#arr)"/>
+ <text x="0" y="20" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="18">3D MODEL : HOUSE</text>
+ <text x="140" y="325" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">48 BLOCKS</text>
+ <text x="394" y="190" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">32</text>
+</g>
+<!-- CHEST -->
+<g transform="translate(500 76)">
+ <text x="0" y="0" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="18">ITEM : STORAGE CHEST</text>
+ <path d="M25 87 138 50l122 49-111 41Z M25 87v112l124 53V140M260 99v110l-111 43M84 67v113M205 78v111M25 144l124 52 111-44"/>
+ <path d="M126 143h48v32h-48zM142 151h16v15h-16"/>
+ <path d="M287 111 387 74l105 40-96 37Z M287 111v92l109 42v-94M492 114v93l-96 38M303 107c17-39 139-49 173 2"/>
+ <path d="M39 275h218M45 270v10M251 270v10" marker-start="url(#arr)" marker-end="url(#arr)"/>
+ <text x="112" y="298" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">24</text>
+</g>
+<!-- SWORD -->
+<g transform="translate(1000 58)">
+ <text x="0" y="18" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="18">WEAPON : SWORD</text>
+ <path d="M90 48 107 75 102 277 91 335 80 277 75 75Z M63 86h56M65 86 44 103M117 86l22 17M87 335v35h9v-35M82 370h19"/>
+ <path d="M152 53h22v270h-22zM163 30v23M144 333h38"/>
+ <path d="M206 48h18v270h-18zM215 22l12 26h-24zM192 86h46"/>
+ <path d="M45 390h190M51 385v10M229 385v10" marker-start="url(#arr)" marker-end="url(#arr)"/>
+ <text x="112" y="414" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">92 px</text>
+</g>
+<!-- ARMOR -->
+<g transform="translate(1240 70)">
+ <text x="0" y="0" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="18">ARMOR : CHEST</text>
+ <path d="M52 58c34-18 76-18 109 0l24 41-23 35-14 174H66L52 134 29 99Z M73 64l16 50h38l16-50M55 142h107M67 245h81M79 265h57M41 92l35 36M174 92l-35 36"/>
+ <path d="M207 60c28-10 56-6 70 12l8 228h-83l6-228M218 89h52M214 214h62"/>
+ <path d="M26 340h162M32 335v10M182 335v10" marker-start="url(#arr)" marker-end="url(#arr)"/>
+ <text x="94" y="366" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">42</text>
+</g>
+<!-- PICKAXE -->
+<g transform="translate(1500 67)">
+ <text x="0" y="0" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="18">TOOL : PICKAXE</text>
+ <path d="M95 81c50-41 131-43 179 0l-74 18-13 248h-28L146 99Z M160 98h26M173 347v34M160 381h27"/>
+ <path d="M305 65c23-15 50-16 72 0l-29 13-6 260h-20l-6-260Z"/>
+ <path d="M115 400h172M121 395v10M281 395v10" marker-start="url(#arr)" marker-end="url(#arr)"/>
+ <text x="181" y="424" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">32</text>
+</g>
+<!-- FURNACE -->
+<g transform="translate(1770 90)">
+ <text x="0" y="0" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="17">BLOCK</text>
+ <path d="M5 58h105v105H5zM18 72h79v34H18zM18 118h79v32H18zM34 82h47M29 133h56M57 58v105"/>
+ <path d="M8 196h100v100H8zM18 207h80M18 285h80M24 218h68v27H24M24 255h68v21H24"/>
+ <text x="15" y="325" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="16">16×16</text>
+</g>
+<!-- scattered measurements -->
+<path d="M440 42h1060" stroke-dasharray="5 7" opacity=".45"/>
+<path d="M448 37v10M1492 37v10"/>
+<text x="917" y="31" fill="#3f2d1b" stroke="none" font-family="monospace" font-size="15">CONCEPT / SCALE STUDY</text>
+</g>
+<!-- paper wear -->
+<g fill="#6c4d2e" opacity=".16"><circle cx="55" cy="33" r="16"/><circle cx="1870" cy="420" r="18"/><path d="M0 0h150l-40 28L30 18Z M1920 0h-120l55 30 65-12Z"/></g>
+</svg>
