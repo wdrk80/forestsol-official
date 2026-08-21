@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+ <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2b1a10"/><stop offset=".48" stop-color="#3a2517"/><stop offset="1" stop-color="#1b100a"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#ffd477" stop-opacity=".72"/><stop offset=".45" stop-color="#bf772a" stop-opacity=".2"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+ <pattern id="grain" width="200" height="72" patternUnits="userSpaceOnUse"><path d="M0 9c52 8 97-12 200 2M0 30c73-10 113 14 200 3M0 55c48 10 122-14 200 4" fill="none" stroke="#8b684b" stroke-opacity=".12" stroke-width="2"/><path d="M8 0v72M126 0v72" stroke="#130c08" stroke-opacity=".16"/></pattern>
+</defs>
+<rect width="1600" height="1000" fill="url(#wood)"/><rect width="1600" height="1000" fill="url(#grain)"/>
+<g stroke="#0e0906" stroke-width="5" opacity=".65"><path d="M0 202h1600M0 398h1600M0 601h1600M0 803h1600"/></g>
+<!-- lantern left -->
+<circle cx="80" cy="170" r="190" fill="url(#glow)"/>
+<g transform="translate(18 44)" fill="none" stroke="#8b6239" stroke-width="6"><path d="M42 13h46l17 34v122l-17 35H42l-17-35V47Z"/><path d="M31 54h68M31 166h68M48 13V0h34v13M48 205v23h34v-23"/><path d="M46 70h38v82H46z" fill="#b96c27" fill-opacity=".3"/></g>
+<!-- top papers -->
+<g transform="translate(280 12) rotate(-4 150 95)"><rect x="0" y="0" width="310" height="185" rx="4" fill="#b99868" stroke="#6a4b2f" stroke-width="3"/><g fill="none" stroke="#533a24" stroke-width="2" opacity=".85"><path d="M26 145V68l88-51 90 51v77M46 145V82h137v63M103 145v-46h44v46M65 88h28v25H65M158 88h23v25h-23"/><path d="M18 160h205M18 48h230" stroke-dasharray="6 5"/></g><text x="20" y="177" font-family="monospace" font-size="14" fill="#4b3422">HOUSE / FRONT / SCALE 1:16</text></g>
+<g transform="translate(770 6) rotate(3 140 100)"><rect width="330" height="208" rx="5" fill="#c4a875" stroke="#6a4b2f" stroke-width="3"/><g fill="none" stroke="#4d3521" stroke-width="2"><path d="M24 34h282M52 56h32v110H52M66 42v14M40 75h56M128 56h32v110h-32M142 42v14M116 75h56M205 65c32-20 70-20 92 0l-33 12-8 90h-20l-9-90Z"/><path d="M199 181h105" stroke-dasharray="5 4"/></g><text x="23" y="198" font-family="monospace" font-size="14" fill="#4b3422">WEAPON / ARMOR NOTES</text></g>
+<!-- top right crate -->
+<g transform="translate(1280 35)"><path d="M0 28 126 0l129 40v137L126 211 0 170Z" fill="#4b311d" stroke="#1b1009" stroke-width="7"/><path d="M0 28 126 63l129-23M126 63v148M0 88l126 35 129-32" fill="none" stroke="#7d5730" stroke-width="7"/><g fill="#5c6b3e" stroke="#1d2516" stroke-width="3"><rect x="32" y="75" width="34" height="34"/><rect x="72" y="89" width="34" height="34"/><rect x="114" y="72" width="34" height="34"/><rect x="152" y="94" width="34" height="34"/><rect x="191" y="73" width="34" height="34"/></g></g>
+<!-- left blueprint -->
+<g transform="translate(-32 430) rotate(-6 115 120)"><rect x="0" y="0" width="245" height="286" fill="#aa8b60" stroke="#5c4028" stroke-width="3"/><g fill="none" stroke="#4b3422" stroke-width="2"><path d="M37 209V104l81-54 81 54v105M60 209v-91h115v91M95 209v-55h48v55M32 231h174M26 81h184"/><path d="M24 32h195M24 252h195" stroke-dasharray="6 4"/></g><text x="22" y="274" font-family="monospace" font-size="13" fill="#4b3422">ARMOR / STRUCTURE</text></g>
+<!-- bottom notebook -->
+<g transform="translate(290 805) rotate(-3 190 90)"><rect width="340" height="180" rx="10" fill="#2d1b12" stroke="#765233" stroke-width="4"/><rect x="24" y="20" width="292" height="140" rx="3" fill="#493020" stroke="#8b643f"/><path d="M170 20v140" stroke="#26170f" stroke-width="3"/><circle cx="110" cy="88" r="28" fill="none" stroke="#1d120c" stroke-width="5"/><circle cx="96" cy="66" r="8" fill="#1d120c"/><circle cx="124" cy="66" r="8" fill="#1d120c"/><circle cx="86" cy="88" r="7" fill="#1d120c"/><circle cx="134" cy="88" r="7" fill="#1d120c"/></g>
+<!-- bottom drawing / ruler -->
+<g transform="translate(680 805) rotate(4 220 90)"><rect width="420" height="170" fill="#b29367" stroke="#62452c" stroke-width="3"/><g fill="none" stroke="#4b3422" stroke-width="2"><path d="M28 130V65l78-47 81 47v65M47 130V78h121v52M93 130V96h39v34M226 45h145M226 65h145M226 88h145M226 110h145"/></g></g>
+<g transform="translate(650 963) rotate(-3 300 10)"><rect width="620" height="28" fill="#8a673f" stroke="#412b1a" stroke-width="3"/><path d="M20 0v18M40 0v12M60 0v18M80 0v12M100 0v18M120 0v12M140 0v18M160 0v12M180 0v18M200 0v12M220 0v18M240 0v12M260 0v18M280 0v12M300 0v18M320 0v12M340 0v18M360 0v12M380 0v18M400 0v12M420 0v18M440 0v12M460 0v18M480 0v12M500 0v18M520 0v12M540 0v18M560 0v12M580 0v18M600 0v12" stroke="#392517" stroke-width="2"/></g>
+<!-- map right bottom -->
+<g transform="translate(1220 650) rotate(8 150 120)"><rect width="330" height="260" fill="#9f8058" stroke="#513720" stroke-width="4"/><g fill="none" stroke="#4b3422" stroke-width="2" opacity=".75"><path d="M25 72c50-40 97 2 132-28s77-8 143 17M42 121c43-32 80 12 119-18s81-12 135 16M35 176c71-41 103 10 154-16s68-3 112 7"/><circle cx="94" cy="90" r="22"/><path d="M94 55v70M59 90h70M211 92l25-38 20 43 35-18M236 54l8-21"/></g></g>
+<!-- scattered desk marks -->
+<g fill="#7b5a38" opacity=".42"><circle cx="235" cy="365" r="4"/><circle cx="1130" cy="408" r="3"/><circle cx="1185" cy="318" r="4"/><circle cx="473" cy="698" r="3"/><circle cx="1390" cy="548" r="4"/></g>
+<!-- center soft clearing -->
+<rect x="180" y="215" width="1240" height="570" rx="90" fill="#6c4b2d" opacity=".06"/>
+</svg>
