@@ -1,140 +1,31 @@
-/* Forest Craft Studio Works Gallery - handcrafted desk / blueprint theme */
-:root{
-  --fc-ink:#2b1b10;
-  --fc-paper:#ead3a4;
-  --fc-paper-deep:#c8a36d;
-  --fc-wood:#2b190f;
-  --fc-gold:#b88945;
-  --fc-green:#173326;
-  --text:#2b1b10;
-  --muted:#6e5439;
-}
+/* Forest Craft Studio Works Gallery - asset driven workshop theme */
+:root{--fc-ink:#2b1b10;--fc-paper:#ead3a4;--fc-wood:#2b190f;--fc-gold:#b88945;--text:#2b1b10;--muted:#6e5439}
 *{box-sizing:border-box}
 html{background:#160d08}
-body{
-  position:relative;
-  min-height:100vh;
-  color:var(--fc-ink);
-  font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif;
-  background:
-    linear-gradient(rgba(18,9,4,.08),rgba(18,9,4,.18)),
-    url("../images/forestcraft/fcs-gallery-desk.png") center top/cover fixed no-repeat,
-    #1b1009;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  background:radial-gradient(circle at 50% 35%,transparent 0 34%,rgba(8,4,2,.14) 70%,rgba(4,2,1,.48) 100%);
-}
+body{position:relative;min-height:100vh;color:var(--fc-ink);font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif;background:linear-gradient(rgba(18,9,4,.05),rgba(18,9,4,.12)),url("../images/forestcraft/fcs-gallery-desk.png") center top/cover fixed no-repeat,#1b1009}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 36%,transparent 0 38%,rgba(6,3,1,.15) 72%,rgba(4,2,1,.43) 100%)}
 a{color:inherit}
 
-/* The uploaded blueprint illustration IS the header. */
-.gallery-page-head{
-  position:relative;
-  height:clamp(330px,27vw,455px);
-  padding:0;
-  border:0;
-  background:url("../images/forestcraft/fcs-gallery-header.png") center/100% 100% no-repeat;
-  box-shadow:0 18px 44px rgba(8,4,2,.44);
-  overflow:hidden;
-}
-.gallery-page-head-inner{
-  position:relative;
-  width:min(1500px,calc(100% - 24px));
-  height:100%;
-  margin:auto;
-  padding:0;
-}
-.gallery-page-head h1,.gallery-page-head p{
-  position:absolute!important;
-  width:1px!important;
-  height:1px!important;
-  padding:0!important;
-  margin:-1px!important;
-  overflow:hidden!important;
-  clip:rect(0,0,0,0)!important;
-  white-space:nowrap!important;
-  border:0!important;
-}
-.back-link{
-  position:absolute;
-  z-index:5;
-  left:18px;
-  bottom:16px;
-  width:clamp(225px,25vw,340px);
-  aspect-ratio:5.44/1;
-  margin:0;
-  padding:0;
-  border:0;
-  border-radius:0;
-  text-decoration:none;
-  font-size:0;
-  color:transparent;
-  background:url("../images/forestcraft/fcs-gallery-back-to-studio.png") center/100% 220% no-repeat;
-  filter:drop-shadow(0 8px 9px rgba(0,0,0,.32));
-  transition:transform .16s ease,filter .16s ease;
-}
-.back-link::before{content:none}
-.back-link:hover{transform:translateY(-2px);filter:drop-shadow(0 10px 12px rgba(0,0,0,.4)) brightness(1.04)}
+/* Header image itself is the hero. Do not redraw its contents in HTML. */
+.gallery-page-head{position:relative;height:clamp(320px,27vw,450px);padding:0;border:0;background:url("../images/forestcraft/fcs-gallery-header.png") center/100% 100% no-repeat;box-shadow:0 16px 38px rgba(8,4,2,.4);overflow:hidden}
+.gallery-page-head-inner{position:relative;width:min(1450px,calc(100% - 24px));height:100%;margin:auto;padding:0}
+.gallery-page-head h1,.gallery-page-head p{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.back-link{position:absolute;z-index:5;left:16px;bottom:13px;width:clamp(225px,23vw,330px);aspect-ratio:5.42/1;margin:0;padding:0;border:0;outline:0;text-decoration:none;font-size:0;color:transparent;background:url("../images/forestcraft/fcs-gallery-back-to-studio.png") center/contain no-repeat;filter:drop-shadow(0 6px 8px rgba(0,0,0,.32));transition:.15s}
+.back-link::before{content:none}.back-link:hover{transform:translateY(-2px);filter:drop-shadow(0 8px 10px rgba(0,0,0,.38)) brightness(1.04)}
 
-main{width:min(1500px,calc(100% - 28px));margin:auto;padding:24px 0 76px}
+main{width:min(1420px,calc(100% - 26px));margin:auto;padding:20px 0 72px}
 
-/* Search/filter workbench panel */
-.filters{
-  position:relative;
-  display:grid;
-  grid-template-rows:auto auto;
-  gap:18px;
-  min-height:365px;
-  margin:0 auto 18px;
-  padding:112px clamp(34px,7vw,112px) 64px;
-  border:0;
-  border-radius:0;
-  background:url("../images/forestcraft/fcs-gallery-filter-panel.png") center/100% 160% no-repeat;
-  box-shadow:none;
-  clip-path:none;
-}
+/* Search/filter board. The source image contains black crop space, so center-crop it without stretching. */
+.filters{position:relative;display:grid;grid-template-rows:auto auto;align-content:end;gap:14px;height:clamp(310px,24vw,360px);margin:0 auto 18px;padding:0 clamp(70px,7.2vw,105px) 54px;border:0;border-radius:0;background:url("../images/forestcraft/fcs-gallery-filter-panel.png") center 50%/100% auto no-repeat;box-shadow:none;clip-path:none;overflow:visible}
 .filters::before,.filters::after{content:none}
-.tabs{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:10px;
-  padding:0;
-}
-.tab{
-  position:relative;
-  width:clamp(112px,11vw,164px);
-  height:58px;
-  padding:0;
-  border:0;
-  border-radius:0;
-  background:url("../images/forestcraft/fcs-gallery-btn-category-normal.png") center/100% 100% no-repeat;
-  color:transparent;
-  font-size:0;
-  cursor:pointer;
-  box-shadow:none;
-  text-shadow:none;
-  transition:transform .14s ease,filter .14s ease;
-}
+.tabs{display:flex;flex-wrap:nowrap;align-items:center;gap:10px;padding:0;margin:0}
+.tab{position:relative;flex:0 1 154px;width:154px;height:55px;padding:0;border:0;outline:0;border-radius:0;background:url("../images/forestcraft/fcs-gallery-btn-category-normal.png") center/100% 100% no-repeat;color:transparent;font-size:0;cursor:pointer;box-shadow:none;text-shadow:none;transition:transform .14s ease,filter .14s ease}
 .tab::before{content:none}
-.tab::after{
-  content:"";
-  position:absolute;
-  inset:10px 13px;
-  background-position:center;
-  background-size:contain;
-  background-repeat:no-repeat;
-  pointer-events:none;
-}
-.tab:hover{transform:translateY(-2px);filter:brightness(1.08)}
-.tab.active{
-  background-image:url("../images/forestcraft/fcs-gallery-btn-all-normal.png");
-  filter:drop-shadow(0 4px 4px rgba(49,27,12,.28));
-}
+.tab::after{content:"";position:absolute;inset:0;background-position:center;background-size:72% auto;background-repeat:no-repeat;pointer-events:none}
+.tab[data-category="model"]::after{background-size:84% auto}
+.tab:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.tab:focus-visible{filter:brightness(1.08) drop-shadow(0 0 3px rgba(184,137,69,.55))}
+.tab.active{background:url("../images/forestcraft/fcs-gallery-btn-all-normal.png") center/100% 100% no-repeat;filter:drop-shadow(0 3px 4px rgba(49,27,12,.25))}
 .tab[data-category=""]::after{background-image:url("../images/forestcraft/fcs-gallery-label-all-light.png")}
 .tab[data-category="skin"]::after{background-image:url("../images/forestcraft/fcs-gallery-label-skin-light.png")}
 .tab[data-category="item"]::after{background-image:url("../images/forestcraft/fcs-gallery-label-item-light.png")}
@@ -146,251 +37,36 @@ main{width:min(1500px,calc(100% - 28px));margin:auto;padding:24px 0 76px}
 .tab.active[data-category="block"]::after{background-image:url("../images/forestcraft/fcs-gallery-label-block-dark.png")}
 .tab.active[data-category="model"]::after{background-image:url("../images/forestcraft/fcs-gallery-label-3d-model-dark.png")}
 
-.toolbar{display:grid;grid-template-columns:minmax(260px,1fr) 240px;gap:14px;align-items:center}
-.toolbar input,.toolbar select{
-  min-height:62px;
-  border:0;
-  border-radius:0;
-  color:#352215;
-  font:750 14px/1 system-ui,-apple-system,"Segoe UI",sans-serif;
-  outline:none;
-  box-shadow:none;
-}
-.toolbar input{
-  padding:0 24px 0 64px;
-  background-color:transparent;
-  background-image:url("../images/forestcraft/fcs-gallery-search-bar.png");
-  background-position:center;
-  background-size:100% 430%;
-  background-repeat:no-repeat;
-}
-.toolbar input::placeholder{color:#876f54}
-.toolbar input:focus{filter:brightness(1.035) drop-shadow(0 3px 4px rgba(50,29,14,.15))}
-.toolbar select{
-  appearance:none;
-  -webkit-appearance:none;
-  padding:0 64px 0 26px;
-  background-color:transparent;
-  background-image:url("../images/forestcraft/fcs-gallery-sort-dropdown.png");
-  background-position:center;
-  background-size:100% 100%;
-  background-repeat:no-repeat;
-  cursor:pointer;
-}
+.toolbar{display:grid;grid-template-columns:minmax(320px,1fr) 230px;gap:16px;align-items:center}
+.toolbar input,.toolbar select{height:58px;min-height:58px;border:0;outline:0;border-radius:0;color:#352215;font:750 14px/1 system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:none}
+.toolbar input{padding:0 22px 0 80px;background-color:transparent;background-image:url("../images/forestcraft/fcs-gallery-search-bar.png");background-position:center;background-size:100% 390%;background-repeat:no-repeat}
+.toolbar input::placeholder{color:#846d52}.toolbar input:focus{filter:brightness(1.035) drop-shadow(0 2px 3px rgba(50,29,14,.14))}
+.toolbar select{appearance:none;-webkit-appearance:none;padding:0 62px 0 34px;background-color:transparent;background-image:url("../images/forestcraft/fcs-gallery-sort-dropdown.png");background-position:center;background-size:100% 100%;background-repeat:no-repeat;cursor:pointer}
 .toolbar select:focus{filter:brightness(1.04)}
+.status{display:inline-block;margin:0 0 14px 18px;padding:7px 13px;color:#3b291b;background:rgba(231,209,169,.94);border:1px solid rgba(93,63,36,.34);border-radius:2px;font:850 11px/1.2 system-ui,sans-serif;box-shadow:0 5px 12px rgba(24,12,5,.26);transform:rotate(-.35deg)}
 
-.status{
-  display:inline-block;
-  margin:0 0 14px 18px;
-  padding:7px 13px;
-  color:#3b291b;
-  background:rgba(231,209,169,.94);
-  border:1px solid rgba(93,63,36,.34);
-  border-radius:2px;
-  font:850 11px/1.2 system-ui,sans-serif;
-  box-shadow:0 5px 12px rgba(24,12,5,.26);
-  transform:rotate(-.35deg);
-}
+/* Cards: use the paper frame as a frame, not as a stretched page background. */
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start}
+.card{position:relative;aspect-ratio:735/979;overflow:visible;border:0;border-radius:0;background:transparent;cursor:pointer;box-shadow:none;transition:transform .18s ease,filter .18s ease;transform:rotate(-.25deg)}
+.card:nth-child(2n){transform:rotate(.28deg)}.card:nth-child(3n){transform:rotate(-.12deg)}.card:nth-child(5n){transform:rotate(.38deg)}
+.card::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:url("../images/forestcraft/fcs-gallery-card-frame.png") center/209% 100% no-repeat;filter:drop-shadow(0 10px 10px rgba(15,7,3,.4))}
+.card:hover{z-index:8;transform:translateY(-6px) rotate(0deg) scale(1.012);filter:brightness(1.025)}
+.preview{position:absolute;z-index:3;left:8.1%;right:8.1%;top:7.2%;height:56%;aspect-ratio:auto;display:grid;place-items:center;overflow:hidden;margin:0;border:1px solid #70543a;border-radius:1px;background:radial-gradient(circle at 50% 44%,#183a2a,#0a1c13 68%,#06110c);box-shadow:inset 0 0 0 3px rgba(28,18,11,.15),inset 0 0 22px rgba(0,0,0,.34)}
+.preview::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 20px rgba(0,0,0,.2)}
+.preview img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.placeholder{font-size:44px;color:#cfb88a}
+.kind{position:absolute;left:8px;top:8px;z-index:8;padding:5px 8px;border:1px solid rgba(218,189,137,.54);border-radius:2px;background:rgba(48,31,19,.9);color:#f0d8a7;font:900 9px/1 system-ui,sans-serif;letter-spacing:.05em;box-shadow:0 3px 7px rgba(0,0,0,.28)}
+.body{position:absolute;z-index:4;left:9.3%;right:9.3%;top:66.4%;bottom:6.5%;padding:0;color:#342315}
+.body::before{content:none}.body h2{margin:0 0 7px;color:#2a1b10;font-size:clamp(13px,1.18vw,17px);font-weight:900;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.body p{margin:0;color:#66513b;font:750 10px/1.55 system-ui,sans-serif}.body .meta{position:absolute;left:0;right:0;bottom:0;margin:0;padding-top:7px;border-top:1px solid rgba(92,65,39,.19);color:#58422f}
+.empty{grid-column:1/-1;padding:56px 18px;text-align:center;color:#463522;border:1px dashed rgba(86,61,37,.48);background:rgba(226,202,158,.94);box-shadow:0 12px 26px rgba(12,6,3,.3);font-weight:850}
 
-/* Polaroid / concept-sheet cards */
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:start}
-.card{
-  position:relative;
-  aspect-ratio:733/978;
-  overflow:visible;
-  border:0;
-  border-radius:0;
-  background:transparent;
-  cursor:pointer;
-  box-shadow:none;
-  transition:transform .18s ease,filter .18s ease;
-  transform:rotate(-.35deg);
-}
-.card:nth-child(2n){transform:rotate(.4deg)}
-.card:nth-child(3n){transform:rotate(-.15deg)}
-.card:nth-child(5n){transform:rotate(.55deg)}
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:2;
-  pointer-events:none;
-  background:url("../images/forestcraft/fcs-gallery-card-frame.png") center/210% 100% no-repeat;
-  filter:drop-shadow(0 12px 12px rgba(15,7,3,.42));
-}
-.card:hover{z-index:8;transform:translateY(-7px) rotate(0deg) scale(1.015);filter:brightness(1.03)}
-.preview{
-  position:absolute;
-  z-index:3;
-  left:8.6%;
-  right:8.6%;
-  top:8.5%;
-  height:54.5%;
-  aspect-ratio:auto;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  margin:0;
-  border:1px solid #70543a;
-  border-radius:1px;
-  background:radial-gradient(circle at 50% 44%,#183a2a,#0a1c13 68%,#06110c);
-  box-shadow:inset 0 0 0 3px rgba(28,18,11,.18),inset 0 0 24px rgba(0,0,0,.38);
-}
-.preview::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 24px rgba(0,0,0,.22)}
-.preview img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-.placeholder{font-size:44px;color:#cfb88a}
-.kind{
-  position:absolute;
-  left:8px;
-  top:8px;
-  z-index:8;
-  padding:5px 8px;
-  border:1px solid rgba(218,189,137,.54);
-  border-radius:2px;
-  background:rgba(48,31,19,.9);
-  color:#f0d8a7;
-  font:900 9px/1 system-ui,sans-serif;
-  letter-spacing:.05em;
-  box-shadow:0 3px 7px rgba(0,0,0,.28);
-}
-.body{
-  position:absolute;
-  z-index:4;
-  left:9.5%;
-  right:9.5%;
-  top:66.5%;
-  bottom:6.5%;
-  padding:0;
-  color:#342315;
-}
-.body::before{content:none}
-.body h2{
-  margin:0 0 7px;
-  color:#2a1b10;
-  font-size:clamp(13px,1.25vw,18px);
-  font-weight:900;
-  line-height:1.25;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.body p{margin:0;color:#66513b;font:750 10px/1.55 system-ui,sans-serif}
-.body .meta{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  margin:0;
-  padding-top:7px;
-  border-top:1px solid rgba(92,65,39,.19);
-  color:#58422f;
-}
-.empty{
-  grid-column:1/-1;
-  padding:56px 18px;
-  text-align:center;
-  color:#463522;
-  border:1px dashed rgba(86,61,37,.48);
-  background:rgba(226,202,158,.94);
-  box-shadow:0 12px 26px rgba(12,6,3,.3);
-  font-weight:850;
-}
+/* Three independent pagination assets. */
+.pager{display:grid;grid-template-columns:150px 150px 150px;justify-content:center;align-items:center;gap:12px;margin:30px auto 0;width:max-content;max-width:100%;padding:0;border:0;background:none;box-shadow:none}
+.pager button{width:100%;aspect-ratio:624/351;min-height:0;padding:0;border:0;outline:0;border-radius:0;color:transparent;font-size:0;background-color:transparent;background-position:center;background-size:contain;background-repeat:no-repeat;cursor:pointer;box-shadow:none;transition:.14s}
+#prev{background-image:url("../images/forestcraft/fcs-gallery-pagination-prev.png")}#next{background-image:url("../images/forestcraft/fcs-gallery-pagination-next.png")}.pager button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.06)}.pager button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.2)}
+.page-label{display:grid;place-items:center;width:100%;aspect-ratio:689/228;min-width:0;padding:0 18px;color:#f2dfbb;background:url("../images/forestcraft/fcs-gallery-pagination-counter-bg.png") center/contain no-repeat;font:900 15px/1 system-ui,sans-serif;letter-spacing:.08em;text-shadow:0 1px #1d1009}
 
-/* Pagination is built from three separate uploaded pieces. */
-.pager{
-  display:grid;
-  grid-template-columns:clamp(128px,16vw,195px) clamp(120px,14vw,190px) clamp(128px,16vw,195px);
-  justify-content:center;
-  align-items:center;
-  gap:14px;
-  margin:34px auto 0;
-  width:max-content;
-  max-width:100%;
-  padding:0;
-  border:0;
-  background:none;
-  box-shadow:none;
-}
-.pager button{
-  width:100%;
-  aspect-ratio:600/325;
-  min-height:0;
-  padding:0;
-  border:0;
-  border-radius:0;
-  color:transparent;
-  font-size:0;
-  background-color:transparent;
-  background-position:center;
-  background-size:contain;
-  background-repeat:no-repeat;
-  cursor:pointer;
-  box-shadow:none;
-  transition:transform .14s ease,filter .14s ease;
-}
-#prev{background-image:url("../images/forestcraft/fcs-gallery-pagination-prev.png")}
-#next{background-image:url("../images/forestcraft/fcs-gallery-pagination-next.png")}
-.pager button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.07)}
-.pager button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.22)}
-.page-label{
-  display:grid;
-  place-items:center;
-  width:100%;
-  aspect-ratio:665/204;
-  min-width:0;
-  padding:0 22px;
-  color:#f2dfbb;
-  background:url("../images/forestcraft/fcs-gallery-pagination-counter-bg.png") center/contain no-repeat;
-  font:900 15px/1 system-ui,sans-serif;
-  letter-spacing:.08em;
-  text-shadow:0 1px #1d1009;
-}
+.modal{background:rgba(13,7,3,.84);backdrop-filter:blur(7px)}.modal-card{border:1px solid #76583a;border-radius:5px;background:linear-gradient(#dec59a,#b99767);box-shadow:0 30px 80px rgba(0,0,0,.62);color:#2f2318}.modal-head{background:linear-gradient(#4b3320,#2c1d12);border-bottom:1px solid #8d6e45}.modal-close{border:1px solid #b3925e;border-radius:2px;color:#f5e6c8;background:#3b2819}.modal-content{color:#312519}.modal-content .post-author,.modal-content .post-meta,.modal-content .empty-state{color:#6b5944}.modal-content .eyebrow{color:#5f7442}.fc-community{border-color:rgba(96,70,41,.38)!important;background:rgba(238,218,180,.7)!important;color:#35271a!important}.fc-community-note,.fc-community-score span{color:#735e43!important}.fc-favorite{background:#5a4027!important;color:#f1dfb9!important;border-color:#8a6b43!important}.fc-favorite.on{background:#897044!important;color:#251b12!important}
 
-/* Detail modal keeps the same workshop language. */
-.modal{background:rgba(13,7,3,.84);backdrop-filter:blur(7px)}
-.modal-card{border:1px solid #76583a;border-radius:5px;background:linear-gradient(#dec59a,#b99767);box-shadow:0 30px 80px rgba(0,0,0,.62);color:#2f2318}
-.modal-head{background:linear-gradient(#4b3320,#2c1d12);border-bottom:1px solid #8d6e45}
-.modal-close{border:1px solid #b3925e;border-radius:2px;color:#f5e6c8;background:#3b2819}
-.modal-content{color:#312519}
-.modal-content .post-author,.modal-content .post-meta,.modal-content .empty-state{color:#6b5944}
-.modal-content .eyebrow{color:#5f7442}
-.preview .fcm-card-stage,.preview .fcb-card-stage{border-radius:0!important;background:radial-gradient(circle at 50% 46%,rgba(54,77,57,.8),rgba(12,23,16,.72) 62%,rgba(6,12,8,.92))!important}
-.fc-community{border-color:rgba(96,70,41,.38)!important;background:rgba(238,218,180,.7)!important;color:#35271a!important}
-.fc-community-note,.fc-community-score span{color:#735e43!important}
-.fc-favorite{background:#5a4027!important;color:#f1dfb9!important;border-color:#8a6b43!important}
-.fc-favorite.on{background:#897044!important;color:#251b12!important}
-
-@media(max-width:1050px){
-  .grid{grid-template-columns:repeat(3,1fr)}
-  .filters{padding-left:54px;padding-right:54px}
-}
-@media(max-width:760px){
-  body{background-attachment:scroll}
-  .gallery-page-head{height:260px;background-size:auto 100%;background-position:center}
-  .back-link{left:8px;bottom:8px;width:225px}
-  main{width:calc(100% - 14px);padding-top:14px}
-  .filters{min-height:390px;padding:105px 25px 56px;background-size:auto 150%}
-  .tabs{gap:7px}
-  .tab{width:calc(33.333% - 5px);min-width:98px;height:52px}
-  .toolbar{grid-template-columns:1fr;gap:8px}
-  .toolbar input,.toolbar select{min-height:56px}
-  .grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .card{transform:none!important}
-  .preview{left:8%;right:8%;top:8%;height:54%}
-  .body{left:9%;right:9%;top:66%}
-  .body h2{font-size:13px}
-  .body p{font-size:9px}
-  .pager{grid-template-columns:108px 105px 108px;gap:6px;margin-top:24px}
-  .page-label{font-size:12px}
-}
-@media(max-width:430px){
-  .gallery-page-head{height:220px}
-  .back-link{width:196px}
-  .filters{min-height:410px;padding:108px 15px 52px}
-  .tab{width:calc(50% - 4px);height:50px}
-  .grid{grid-template-columns:1fr 1fr;gap:6px}
-  .kind{font-size:7px;padding:4px 6px}
-  .body h2{font-size:12px;margin-bottom:4px}
-  .body p{font-size:8px}
-  .pager{grid-template-columns:92px 92px 92px;gap:4px}
-}
+@media(max-width:1050px){main{width:min(960px,calc(100% - 22px))}.grid{grid-template-columns:repeat(3,1fr)}.filters{padding-left:56px;padding-right:56px}.tab{flex-basis:135px;width:135px;height:48px}.toolbar{grid-template-columns:minmax(250px,1fr) 205px}}
+@media(max-width:760px){body{background-attachment:scroll}.gallery-page-head{height:250px;background-size:auto 100%;background-position:center}.back-link{left:7px;bottom:7px;width:205px}main{width:calc(100% - 12px);padding-top:12px}.filters{height:410px;padding:0 22px 50px;background-size:auto 100%;background-position:center}.tabs{flex-wrap:wrap;gap:6px}.tab{flex:0 0 calc(33.333% - 4px);width:calc(33.333% - 4px);height:49px}.toolbar{grid-template-columns:1fr;gap:7px}.toolbar input,.toolbar select{height:54px;min-height:54px}.toolbar input{padding-left:72px}.grid{grid-template-columns:repeat(2,1fr);gap:7px}.card{transform:none!important}.preview{left:8%;right:8%;top:7%;height:56%}.body{left:9%;right:9%;top:66.5%}.body h2{font-size:13px}.body p{font-size:9px}.pager{grid-template-columns:105px 96px 105px;gap:5px;margin-top:22px}.page-label{font-size:12px}}
+@media(max-width:430px){.gallery-page-head{height:210px}.back-link{width:180px}.filters{height:425px;padding:0 13px 46px}.tab{flex-basis:calc(50% - 3px);width:calc(50% - 3px);height:47px}.grid{grid-template-columns:1fr 1fr;gap:5px}.kind{font-size:7px;padding:4px 6px}.body h2{font-size:12px;margin-bottom:4px}.body p{font-size:8px}.pager{grid-template-columns:90px 82px 90px;gap:3px}}
