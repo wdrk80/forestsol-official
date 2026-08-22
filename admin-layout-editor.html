@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Forest Sol Layout Editor</title>
+<script src="assets/forest-auth.js?v=20260822-layout1"></script>
+<style>
+:root{--bg:#11161b;--panel:#1b2229;--panel2:#222b34;--line:#36414c;--text:#eef4f8;--muted:#9fb0bc;--accent:#72e59a;--warn:#ffcc72}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}
+body{display:grid;grid-template-rows:56px 1fr;overflow:hidden}.topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#151b21;border-bottom:1px solid var(--line);z-index:10}.brand{font-weight:900;margin-right:8px}.pill{border:1px solid var(--line);background:#222b34;color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer}.pill.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.save{margin-left:auto;background:#2b8d50;border-color:#55c878}.danger{background:#5b302f}.layout{min-height:0;display:grid;grid-template-columns:220px 1fr 270px}.side{min-height:0;overflow:auto;background:var(--panel);border-right:1px solid var(--line);padding:12px}.right{border-right:0;border-left:1px solid var(--line)}h2{font-size:13px;margin:5px 0 10px;color:#cbd8e0}.target{width:100%;text-align:left;margin:0 0 7px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);cursor:pointer}.target.active{border-color:var(--accent);background:#1d3528}.hint{font-size:11px;color:var(--muted);line-height:1.55}.canvas{min-width:0;min-height:0;overflow:auto;background:#0a0e12;padding:24px;display:flex;justify-content:center;align-items:flex-start}.device-shell{background:#000;border:1px solid #45525e;box-shadow:0 16px 45px #0008;flex:0 0 auto;transition:width .18s}.device-shell.desktop{width:1440px}.device-shell.tablet{width:900px}.device-shell.mobile{width:390px}iframe{display:block;width:100%;height:900px;border:0;background:#fff}.group{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#171e24}.group-title{font-size:12px;font-weight:800;margin-bottom:8px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px}.field input{width:100%;border:1px solid var(--line);border-radius:7px;background:#0f151a;color:#fff;padding:8px}.nudge{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,38px);justify-content:center;gap:5px}.nudge button{border:1px solid var(--line);background:#26313a;color:#fff;border-radius:7px;cursor:pointer}.nudge .up{grid-column:2}.nudge .left{grid-column:1;grid-row:2}.nudge .down{grid-column:2;grid-row:2}.nudge .rightb{grid-column:3;grid-row:2}.status{font-size:11px;line-height:1.5;color:var(--muted);min-height:34px}.status.good{color:#8bf0ae}.status.warn{color:var(--warn)}.wide{width:100%;margin-top:7px}.kbd{padding:1px 5px;border:1px solid #55636f;border-radius:4px;background:#111820;color:#cdd9e1;font-size:10px}@media(max-width:900px){.layout{grid-template-columns:170px 1fr}.right{position:fixed;right:0;top:56px;bottom:0;width:260px;z-index:12;box-shadow:-10px 0 30px #0008}.canvas{padding-right:280px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Forest Sol Layout Editor</div>
+  <button class="pill device active" data-device="desktop">PC</button>
+  <button class="pill device" data-device="tablet">Tablet</button>
+  <button class="pill device" data-device="mobile">Mobile</button>
+  <button class="pill" id="reloadBtn">再読込</button>
+  <button class="pill save" id="saveBtn">この端末に保存</button>
+</div>
+<div class="layout">
+  <aside class="side">
+    <h2>作品一覧のパーツ</h2>
+    <button class="target active" data-target="tabs">カテゴリボタン5個</button>
+    <button class="target" data-target="search">検索バー</button>
+    <button class="target" data-target="sort">並び替え</button>
+    <button class="target" data-target="back">Studioへ戻る</button>
+    <div class="hint" style="margin-top:14px">プレビュー上の選択パーツを直接ドラッグして移動できます。右側で位置と大きさを数値でも調整できます。</div>
+  </aside>
+  <main class="canvas">
+    <div class="device-shell desktop" id="deviceShell"><iframe id="preview" src="forestcraft-gallery.html?layoutEditorPreview=1"></iframe></div>
+  </main>
+  <aside class="side right">
+    <h2 id="inspectTitle">カテゴリボタン5個</h2>
+    <div class="group">
+      <div class="group-title">位置 / サイズ</div>
+      <div class="fields">
+        <div class="field"><label>X (%)</label><input id="x" type="number" step="0.1"></div>
+        <div class="field"><label>Y (%)</label><input id="y" type="number" step="0.1"></div>
+        <div class="field"><label>幅 (%)</label><input id="w" type="number" step="0.1" min="1" max="100"></div>
+        <div class="field"><label>高さ (px)</label><input id="h" type="number" step="1" min="1"></div>
+      </div>
+    </div>
+    <div class="group">
+      <div class="group-title">1pxずつ移動</div>
+      <div class="nudge">
+        <button class="up" data-dx="0" data-dy="-1">↑</button><button class="left" data-dx="-1" data-dy="0">←</button><button class="down" data-dx="0" data-dy="1">↓</button><button class="rightb" data-dx="1" data-dy="0">→</button>
+      </div>
+    </div>
+    <div class="group">
+      <div class="group-title">操作</div>
+      <button class="pill wide" id="undoBtn">保存前の状態へ戻す</button>
+      <button class="pill danger wide" id="resetBtn">この画面サイズを初期位置へ</button>
+      <button class="pill wide" id="copyBtn">設定JSONをコピー</button>
+    </div>
+    <div id="authStatus" class="status"></div>
+    <div id="status" class="status">プレビューを読み込み中…</div>
+    <div class="hint">ドラッグ中はリンクやカテゴリ切替を実行しません。<br><span class="kbd">Shift</span> を押しながら矢印で10px移動。</div>
+  </aside>
+</div>
+<script>
+(function(){
+  "use strict";
+  const KEY="forestsol_gallery_layout_v1";
+  const labels={tabs:"カテゴリボタン5個",search:"検索バー",sort:"並び替え",back:"Studioへ戻る"};
+  const iframe=document.getElementById("preview"),shell=document.getElementById("deviceShell");
+  const fields={x:document.getElementById("x"),y:document.getElementById("y"),w:document.getElementById("w"),h:document.getElementById("h")};
+  let mode="desktop",selected="tabs",settings=null,savedSnapshot=null,dragCleanup=null;
+  const status=document.getElementById("status");
+  function msg(t,kind=""){status.textContent=t;status.className="status "+kind;}
+  function deep(v){return JSON.parse(JSON.stringify(v));}
+  function frameApi(){try{return iframe.contentWindow.ForestLayout}catch{return null}}
+  function targetInfo(){const api=frameApi();return api&&api.getTargets(iframe.contentDocument)[selected]}
+  function current(){return settings[mode][selected]}
+  function readAuth(){
+    const el=document.getElementById("authStatus");
+    try{
+      const u=JSON.parse(localStorage.getItem("forestsol_user_v1")||"null");
+      if(u&&["admin","moderator"].includes(u.role)){el.textContent=`管理者: ${u.display_name||u.username}`;el.className="status good";}
+      else if(u){el.textContent="管理者ロール未確認。現在はこのブラウザだけに保存します。";el.className="status warn";}
+      else{el.textContent="未ログイン。現在はこのブラウザだけに保存します。";el.className="status warn";}
+    }catch{}
+  }
+  function refreshFields(){const v=current();fields.x.value=v.x;fields.y.value=v.y;fields.w.value=v.w;fields.h.value=v.h;fields.h.disabled=selected==="tabs";document.getElementById("inspectTitle").textContent=labels[selected];}
+  function apply(){const api=frameApi();if(!api)return;api.applyTo(iframe.contentDocument,settings,mode);highlight();refreshFields();}
+  function highlight(){
+    const doc=iframe.contentDocument;if(!doc)return;
+    doc.querySelectorAll(".fc-layout-editor-selected").forEach(el=>{el.classList.remove("fc-layout-editor-selected");el.style.removeProperty("outline");el.style.removeProperty("outline-offset")});
+    const info=targetInfo();if(!info||!info.el)return;
+    info.el.classList.add("fc-layout-editor-selected");info.el.style.setProperty("outline","3px solid #48ff8a","important");info.el.style.setProperty("outline-offset","3px","important");
+  }
+  function initSettings(){const api=frameApi();if(!api)return false;settings=api.getSettings();savedSnapshot=deep(settings);apply();return true;}
+  function parentSize(){const info=targetInfo();if(!info||!info.parent)return {w:1,h:1};const r=info.parent.getBoundingClientRect();return {w:r.width||1,h:r.height||1};}
+  function bindDrag(){
+    if(dragCleanup)dragCleanup();
+    const doc=iframe.contentDocument;if(!doc)return;
+    let active=false,startX=0,startY=0,baseX=0,baseY=0;
+    function down(e){
+      const info=targetInfo();if(!info||!info.el||!(e.target===info.el||info.el.contains(e.target)))return;
+      e.preventDefault();e.stopPropagation();active=true;startX=e.clientX;startY=e.clientY;baseX=current().x;baseY=current().y;doc.body.style.userSelect="none";msg("ドラッグ中…");
+    }
+    function move(e){if(!active)return;e.preventDefault();const p=parentSize();current().x=Math.max(-10,Math.min(100,baseX+(e.clientX-startX)/p.w*100));current().y=Math.max(-10,Math.min(100,baseY+(e.clientY-startY)/p.h*100));apply();}
+    function up(e){if(!active)return;e.preventDefault();active=false;doc.body.style.userSelect="";msg("位置を変更しました。保存するとこの端末の作品一覧に反映されます。","good");}
+    doc.addEventListener("pointerdown",down,true);doc.addEventListener("pointermove",move,true);doc.addEventListener("pointerup",up,true);doc.addEventListener("pointercancel",up,true);
+    dragCleanup=()=>{doc.removeEventListener("pointerdown",down,true);doc.removeEventListener("pointermove",move,true);doc.removeEventListener("pointerup",up,true);doc.removeEventListener("pointercancel",up,true)};
+  }
+  iframe.addEventListener("load",()=>{
+    let n=0;const timer=setInterval(()=>{n++;if(initSettings()){clearInterval(timer);bindDrag();msg("準備完了。緑枠のパーツをドラッグできます。","good")}else if(n>80){clearInterval(timer);msg("レイアウト編集機能を読み込めませんでした。","warn")}},50);
+  });
+  document.querySelectorAll(".target").forEach(btn=>btn.onclick=()=>{selected=btn.dataset.target;document.querySelectorAll(".target").forEach(x=>x.classList.toggle("active",x===btn));apply();bindDrag();});
+  document.querySelectorAll(".device").forEach(btn=>btn.onclick=()=>{mode=btn.dataset.device;shell.className="device-shell "+mode;document.querySelectorAll(".device").forEach(x=>x.classList.toggle("active",x===btn));setTimeout(()=>{apply();bindDrag()},220);});
+  Object.entries(fields).forEach(([k,input])=>input.addEventListener("input",()=>{if(!settings)return;const n=Number(input.value);if(!Number.isFinite(n))return;current()[k]=n;apply();msg("数値を変更しました。","good")}));
+  document.querySelectorAll(".nudge button").forEach(btn=>btn.onclick=e=>{const p=parentSize(),mul=e.shiftKey?10:1;current().x+=Number(btn.dataset.dx)*mul/p.w*100;current().y+=Number(btn.dataset.dy)*mul/p.h*100;apply();});
+  document.getElementById("saveBtn").onclick=()=>{if(!settings)return;localStorage.setItem(KEY,JSON.stringify(settings));savedSnapshot=deep(settings);frameApi()?.applyTo(iframe.contentDocument,settings,mode);msg("保存しました。このブラウザの作品一覧へ即反映されます。","good")};
+  document.getElementById("undoBtn").onclick=()=>{if(!savedSnapshot)return;settings=deep(savedSnapshot);apply();msg("最後に保存した状態へ戻しました。")};
+  document.getElementById("resetBtn").onclick=()=>{const api=frameApi();if(!api)return;settings[mode]=deep(api.getDefaults()[mode]);apply();msg(`${mode} の配置を初期位置へ戻しました。保存するまでは確定しません。`,`warn`)};
+  document.getElementById("reloadBtn").onclick=()=>iframe.contentWindow.location.reload();
+  document.getElementById("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(settings,null,2));msg("設定JSONをコピーしました。","good")}catch{msg("コピーできませんでした。","warn")}};
+  document.addEventListener("keydown",e=>{if(!settings||!["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key))return;if([fields.x,fields.y,fields.w,fields.h].includes(document.activeElement))return;e.preventDefault();const p=parentSize(),step=e.shiftKey?10:1;if(e.key==="ArrowLeft")current().x-=step/p.w*100;if(e.key==="ArrowRight")current().x+=step/p.w*100;if(e.key==="ArrowUp")current().y-=step/p.h*100;if(e.key==="ArrowDown")current().y+=step/p.h*100;apply();});
+  readAuth();
+})();
+</script>
+</body>
+</html>
