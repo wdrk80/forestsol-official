@@ -2,6 +2,14 @@
   "use strict";
   if(!/(^|\/)forestcraft-gallery\.html$/.test(location.pathname))return;
 
+  if(!document.querySelector('script[data-forest-craft-detail-frame]')){
+    var detailFrame=document.createElement('script');
+    detailFrame.src='assets/forestcraft-gallery-detail-frame.js?v=20260822-frame1';
+    detailFrame.async=false;
+    detailFrame.dataset.forestCraftDetailFrame='1';
+    document.head.appendChild(detailFrame);
+  }
+
   if(!document.querySelector('link[data-forest-craft-gallery-original]')){
     var theme=document.createElement('link');
     theme.rel='stylesheet';
