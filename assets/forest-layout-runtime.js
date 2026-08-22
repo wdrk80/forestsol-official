@@ -16,7 +16,7 @@
       back:{x:3,y:72,w:30,h:66}
     },
     mobile:{
-      tabs:{x:8,y:16,w:84,h:108},
+      tabs:{x:8,y:25,w:84,h:108},
       search:{x:7,y:62,w:86,h:52},
       sort:{x:7,y:77,w:86,h:52},
       back:{x:3,y:70,w:52,h:58}
@@ -89,6 +89,17 @@
         force(el,"justify-content",mode==="mobile"?"center":"flex-start");
       }
     });
+
+    /* Mobile only: ignore the old editor-saved category-row coordinates so the
+       buttons stay inside the parchment instead of overlapping the sign/lantern. */
+    if(mode==="mobile"&&map.tabs.el){
+      force(map.tabs.el,"left","8%");
+      force(map.tabs.el,"top","25%");
+      force(map.tabs.el,"width","84%");
+      force(map.tabs.el,"right","auto");
+      force(map.tabs.el,"bottom","auto");
+      force(map.tabs.el,"justify-content","center");
+    }
 
     const q=map.search.el;
     if(q){
