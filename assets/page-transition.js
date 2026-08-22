@@ -23,7 +23,7 @@
 
   if(isForestCraftGallery&&!document.querySelector('script[data-forest-craft-gallery-page3d]')){
     var galleryPage3d=document.createElement("script");
-    galleryPage3d.src="assets/forestcraft-gallery-page3d.js?v=20260820-gallery4";
+    galleryPage3d.src="assets/forestcraft-gallery-page3d.js?v=20260822-gallery6";
     galleryPage3d.async=false;
     galleryPage3d.dataset.forestCraftGalleryPage3d="1";
     document.head.appendChild(galleryPage3d);
@@ -39,7 +39,7 @@
 
   if(isMyPage&&!document.querySelector('script[data-forest-mypage-favorites]')){
     var favorites=document.createElement("script");
-    favorites.src="assets/mypage-favorites.js?v=20260820-favorites1";
+    favorites.src="assets/mypage-favorites.js?v=20260822-favorites3";
     favorites.async=false;
     favorites.dataset.forestMypageFavorites="1";
     document.head.appendChild(favorites);
