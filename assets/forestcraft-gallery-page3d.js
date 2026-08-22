@@ -10,6 +10,21 @@
     document.head.appendChild(theme);
   }
 
+  function applyLayoutFix(){
+    var id='fc-gallery-layout-fix-20260822b';
+    var old=document.getElementById(id);
+    if(old)return;
+    var style=document.createElement('style');
+    style.id=id;
+    style.textContent=[
+      '.toolbar input{background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;}',
+      '@media(min-width:1060px){.gallery-page-head{height:clamp(520px,35vw,640px)!important;background-size:100% auto!important;background-position:center top!important;overflow:visible!important}.tabs{top:30%!important;right:7.5%!important;left:auto!important}}',
+      '@media(min-width:761px) and (max-width:1059px){.gallery-page-head{height:clamp(390px,45vw,480px)!important;background-size:100% auto!important;background-position:center top!important;overflow:visible!important}.tabs{top:28%!important;right:6%!important;left:auto!important}}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+  applyLayoutFix();
+
   var API="https://forest-craft-api.wdrk80.workers.dev";
   var postByPreview=new Map();
 
