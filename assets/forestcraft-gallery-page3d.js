@@ -48,8 +48,19 @@
     ].join('');
     document.head.appendChild(style);
   }
+
+  function loadLayoutRuntime(){
+    if(window.ForestLayout||document.querySelector('script[data-forest-layout-runtime]'))return;
+    var s=document.createElement('script');
+    s.src='assets/forest-layout-runtime.js?v=20260822-layout1';
+    s.async=false;
+    s.dataset.forestLayoutRuntime='1';
+    document.head.appendChild(s);
+  }
+
   ensureLayoutArt();
   applyLayoutFix();
+  loadLayoutRuntime();
 
   var API="https://forest-craft-api.wdrk80.workers.dev";
   var postByPreview=new Map();
