@@ -5,7 +5,7 @@ const API="https://forest-craft-api.wdrk80.workers.dev";
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function addStyles(){if(document.getElementById("mypageFavoriteStyles"))return;const s=document.createElement("style");s.id="mypageFavoriteStyles";s.textContent=`
-.favorite-card .work-preview{position:relative}.favorite-card .work-preview img{object-fit:contain;image-rendering:pixelated}.favorite-rating{margin-top:5px;color:#8b6a31;font-size:10px;font-weight:900}.favorite-open{color:#54351e;text-decoration:none;display:inline-grid;place-items:center}.favorite-heart{position:absolute;right:8px;top:8px;z-index:9;display:grid;place-items:center;width:31px;height:31px;border-radius:50%;border:1px solid #b58b3e;background:rgba(58,38,17,.86);color:#ffe29a;font-size:16px}.favorite-count{font-size:11px;color:#80634a;font-weight:900}
+.work-preview{position:relative}.work-preview>.fcm-card-stage,.work-preview>.fcb-card-stage{position:absolute!important;inset:0!important}.favorite-card .work-preview img{object-fit:contain;image-rendering:pixelated}.favorite-rating{margin-top:5px;color:#8b6a31;font-size:10px;font-weight:900}.favorite-open{color:#54351e;text-decoration:none;display:inline-grid;place-items:center}.favorite-heart{position:absolute;right:8px;top:8px;z-index:9;display:grid;place-items:center;width:31px;height:31px;border-radius:50%;border:1px solid #b58b3e;background:rgba(58,38,17,.86);color:#ffe29a;font-size:16px}.favorite-count{font-size:11px;color:#80634a;font-weight:900}
 `;document.head.appendChild(s)}
 function loadScript(src,key){return new Promise((resolve,reject)=>{const old=document.querySelector(`script[data-${key}]`);if(old){if(old.dataset.loaded==='1')return resolve();old.addEventListener("load",resolve,{once:true});return}const s=document.createElement("script");s.src=src;s.async=false;s.setAttribute(`data-${key}`,"1");s.onload=()=>{s.dataset.loaded='1';resolve()};s.onerror=reject;document.head.appendChild(s)})}
 async function ensure3d(){
@@ -15,10 +15,37 @@ async function ensure3d(){
 }
 function preview(p){return p.preview_file_id?`<img src="${API}/files/${encodeURIComponent(p.preview_file_id)}" alt="${esc(p.title)}">`:`<div style="font-size:38px">${p.category==='model'?'◫':p.category==='block'?'▣':'🎨'}</div>`}
 function mount3d(grid,posts){const h=window.ForestCraftGallery;if(!h)return;[...grid.querySelectorAll('.favorite-card')].forEach((card,i)=>{const p=posts[i],box=card.querySelector('.work-preview');if(!p||!box)return;if(p.category==='block'&&typeof h.mountBlockCard==='function')h.mountBlockCard(box,p);if(p.category==='model'&&typeof h.mountModelCard==='function')h.mountModelCard(box,p)})}
+let ownMountBusy=false;
+async function mountOwn3d(){
+ if(ownMountBusy)return;
+ const h=window.ForestCraftGallery,grid=document.getElementById('works');
+ if(!h||!grid)return;
+ ownMountBusy=true;
+ try{
+  const cards=[...grid.querySelectorAll('.work-card[data-id]')];
+  for(const card of cards){
+   const box=card.querySelector('.work-preview');
+   if(!box||box.dataset.own3d==='1'||box.dataset.own3d==='loading')continue;
+   const meta=(card.querySelector('.work-meta')?.textContent||'').trim().toLowerCase();
+   const category=meta.split('・')[0].trim();
+   if(category!=='model'&&category!=='block')continue;
+   box.dataset.own3d='loading';
+   try{
+    const data=await ForestAuth.request('/posts/'+encodeURIComponent(card.dataset.id));
+    const post=data.post||data;
+    if(category==='block'&&typeof h.mountBlockCard==='function')await h.mountBlockCard(box,post);
+    if(category==='model'&&typeof h.mountModelCard==='function')await h.mountModelCard(box,post);
+    box.dataset.own3d='1';
+   }catch(e){box.dataset.own3d='';console.warn('MyPage own 3D preview failed',e)}
+  }
+ }finally{ownMountBusy=false}
+}
 async function init(){
  for(let i=0;i<120&&!window.ForestAuth;i++)await sleep(50);if(!window.ForestAuth)return;
  for(let i=0;i<120&&!document.getElementById('myWorks');i++)await sleep(50);const own=document.getElementById('myWorks');if(!own)return;
  addStyles();await ensure3d();
+ const ownGrid=document.getElementById('works');
+ if(ownGrid){new MutationObserver(()=>mountOwn3d()).observe(ownGrid,{childList:true,subtree:true});mountOwn3d()}
  const section=document.createElement('section');section.id='favoriteWorks';section.className='paper-card works-card';section.innerHTML=`<div class="section-head"><h2>お気に入り</h2><button id="favoriteReloadBtn" type="button">再読み込み</button></div><div id="favoriteCount" class="favorite-count">読み込み中…</div><div id="favoriteGrid" class="works" style="margin-top:12px"><div class="empty">お気に入りを読み込み中…</div></div>`;own.insertAdjacentElement('afterend',section);
  const buttons=document.querySelector('.profile-buttons');if(buttons&&!document.getElementById('favoriteWorksLink')){const a=document.createElement('a');a.id='favoriteWorksLink';a.className='button wood';a.href='#favoriteWorks';a.textContent='★ お気に入りを見る';buttons.appendChild(a)}
  const grid=section.querySelector('#favoriteGrid'),count=section.querySelector('#favoriteCount');
