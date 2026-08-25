@@ -2,6 +2,14 @@
   "use strict";
   if(!/(^|\/)forestcraft\.html$/.test(location.pathname))return;
 
+  if(!document.querySelector('script[data-forest-craft-store]')){
+    var storeScript=document.createElement("script");
+    storeScript.src="assets/forestcraft-store.js?v=20260825-store1";
+    storeScript.async=false;
+    storeScript.dataset.forestCraftStore="1";
+    document.head.appendChild(storeScript);
+  }
+
   function loadOne(src,attr,done){
     var old=document.querySelector('script['+attr+']');
     if(old){if(old.dataset.loaded==='1')done();else old.addEventListener('load',done,{once:true});return}
