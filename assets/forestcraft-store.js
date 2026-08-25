@@ -8,7 +8,7 @@
   var STORE_DIRECT_URL="https://apps.microsoft.com/detail/"+STORE_ID+"?mode=direct";
   var STORE_FULL_URL="https://apps.microsoft.com/detail/"+STORE_ID+"?mode=full";
   var STORE_REVIEW_URI="ms-windows-store://review/?ProductId="+STORE_ID;
-  var API_BASE="https://forest-craft-api.wdrk80.workers.dev";
+  var API_BASE="https://forest-craft-store-api.wdrk80.workers.dev";
 
   function addStyle(){
     if(document.getElementById("forestCraftStoreStyle"))return;
