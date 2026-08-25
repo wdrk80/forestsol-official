@@ -20,7 +20,7 @@ export default {
       if (url.pathname === "/" && request.method === "GET") {
         response = json({ ok: true, name: "Forest Craft Store Analytics API", appId: STORE_APP_ID });
       } else if (url.pathname === "/store-stats" && request.method === "GET") {
-        response = await cachedJson(request, ctx, "store-stats", () => getStoreStats(env));
+        response = await cachedJson(request, ctx, "store-stats-v2", () => getStoreStats(env));
       } else if (url.pathname === "/store-reviews" && request.method === "GET") {
         const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 6), 1), 20);
         response = await cachedJson(request, ctx, "store-reviews-" + limit, () => getStoreReviews(env, limit));
@@ -68,7 +68,7 @@ function publicError(err) {
   const msg = String(err && err.message || "Store analytics unavailable");
   if (msg.includes("STORE_NOT_CONFIGURED")) return "Microsoft Store APIの接続設定が未完了です";
   if (msg.includes("TOKEN_FAILED")) return "Microsoft Store認証に失敗しました";
-  if (msg.includes("STORE_API_FAILED")) return "Microsoft Store統計を取得できませんでした";
+  if (msg.includes("STORE_RATE_LIMIT")) return "Microsoft Store APIの一時的な回数制限中です";
   return "Microsoft Store統計を取得できませんでした";
 }
 
@@ -129,6 +129,10 @@ async function getAccessToken(env) {
   return tokenCache.token;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function storeGet(env, path, params) {
   const token = await getAccessToken(env);
   const u = new URL(STORE_API + path);
@@ -136,15 +140,29 @@ async function storeGet(env, path, params) {
     if (v !== undefined && v !== null && v !== "") u.searchParams.set(k, String(v));
   });
 
-  const r = await fetch(u.toString(), {
-    headers: { Authorization: "Bearer " + token }
-  });
-  const d = await safeJson(r);
-  if (!r.ok) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const r = await fetch(u.toString(), {
+      headers: { Authorization: "Bearer " + token }
+    });
+    const d = await safeJson(r);
+
+    if (r.ok) return d;
+
+    if (r.status === 429) {
+      console.warn("Microsoft Store API rate limited", u.pathname, attempt + 1);
+      if (attempt < 2) {
+        const retryAfter = Math.max(Number(r.headers.get("Retry-After") || 2), 1);
+        await sleep(Math.min(retryAfter * 1000, 6000));
+        continue;
+      }
+      throw new Error("STORE_RATE_LIMIT");
+    }
+
     console.error("Microsoft Store API failure", r.status, u.pathname, d);
     throw new Error("STORE_API_FAILED");
   }
-  return d;
+
+  throw new Error("STORE_API_FAILED");
 }
 
 async function safeJson(r) {
@@ -157,29 +175,68 @@ function mmddyyyy(date = new Date()) {
   return mm + "/" + dd + "/" + date.getUTCFullYear();
 }
 
+function acquisitionParams(appId) {
+  return {
+    applicationId: appId,
+    startDate: LIFETIME_START,
+    endDate: mmddyyyy(),
+    top: 10000,
+    skip: 0,
+    aggregationLevel: "day",
+    groupby: "date,acquisitionType,storeClient,market,osVersion,deviceType",
+    orderby: "date desc"
+  };
+}
+
+function sumBy(rows, field) {
+  const out = {};
+  for (const row of rows) {
+    const key = String(row[field] || "Unknown");
+    out[key] = (out[key] || 0) + Number(row.acquisitionQuantity || 0);
+  }
+  return out;
+}
+
+function normalizeReviews(d) {
+  return (Array.isArray(d.Value) ? d.Value : []).map(row => ({
+    id: row.id || "",
+    date: row.date || "",
+    reviewer_name: row.reviewerName || "",
+    rating: Number(row.rating || 0),
+    title: row.reviewTitle || "",
+    text: row.reviewText || "",
+    helpful_count: Number(row.helpfulCount || 0),
+    response_date: row.responseDate || null,
+    response_text: row.responseText || ""
+  }));
+}
+
 async function getStoreStats(env) {
-  const common = {
-    applicationId: env.MS_STORE_APP_ID || STORE_APP_ID,
+  const appId = env.MS_STORE_APP_ID || STORE_APP_ID;
+
+  const acq = await storeGet(env, "/appacquisitions", acquisitionParams(appId));
+  await sleep(300);
+  const ratings = await storeGet(env, "/ratings", {
+    applicationId: appId,
     startDate: LIFETIME_START,
     endDate: mmddyyyy(),
     top: 10000,
     skip: 0
-  };
+  });
+  await sleep(300);
+  const reviews = await storeGet(env, "/reviews", {
+    applicationId: appId,
+    startDate: LIFETIME_START,
+    endDate: mmddyyyy(),
+    top: 6,
+    skip: 0,
+    orderby: "date desc"
+  });
 
-  const [acq, ratings, reviews] = await Promise.all([
-    storeGet(env, "/appacquisitions", common),
-    storeGet(env, "/ratings", common),
-    storeGet(env, "/reviews", {
-      applicationId: common.applicationId,
-      startDate: common.startDate,
-      endDate: common.endDate,
-      top: 1,
-      skip: 0,
-      orderby: "date desc"
-    })
-  ]);
+  const acquisitionRows = (Array.isArray(acq.Value) ? acq.Value : [])
+    .filter(row => Number(row.acquisitionQuantity || 0) > 0);
 
-  const downloads = (Array.isArray(acq.Value) ? acq.Value : []).reduce(
+  const downloads = acquisitionRows.reduce(
     (sum, row) => sum + Number(row.acquisitionQuantity || 0), 0
   );
 
@@ -197,15 +254,35 @@ async function getStoreStats(env) {
     ? (starCounts.one + starCounts.two * 2 + starCounts.three * 3 + starCounts.four * 4 + starCounts.five * 5) / ratingCount
     : 0;
 
+  const latest = acquisitionRows[0] || null;
+  const latestAcquisition = latest ? {
+    date: latest.date || "",
+    quantity: Number(latest.acquisitionQuantity || 0),
+    market: latest.market || "Unknown",
+    device_type: latest.deviceType || "Unknown",
+    store_client: latest.storeClient || "Unknown",
+    os_version: latest.osVersion || "Unknown",
+    acquisition_type: latest.acquisitionType || "Unknown"
+  } : null;
+
   return {
     ok: true,
-    app_id: common.applicationId,
+    app_id: appId,
     downloads,
     acquisitions: downloads,
     rating_average: ratingAverage,
     rating_count: ratingCount,
     review_count: Number(reviews.TotalCount || 0),
     stars: starCounts,
+    reviews: normalizeReviews(reviews),
+    latest_acquisition: latestAcquisition,
+    acquisition_breakdown: {
+      markets: sumBy(acquisitionRows, "market"),
+      devices: sumBy(acquisitionRows, "deviceType"),
+      store_clients: sumBy(acquisitionRows, "storeClient"),
+      os_versions: sumBy(acquisitionRows, "osVersion"),
+      acquisition_types: sumBy(acquisitionRows, "acquisitionType")
+    },
     freshness: acq.DataFreshnessTimestamp || ratings.DataFreshnessTimestamp || null,
     synced_at: new Date().toISOString()
   };
@@ -222,17 +299,7 @@ async function getStoreReviews(env, limit) {
     orderby: "date desc"
   });
 
-  const reviews = (Array.isArray(d.Value) ? d.Value : []).map(row => ({
-    id: row.id || "",
-    date: row.date || "",
-    reviewer_name: row.reviewerName || "",
-    rating: Number(row.rating || 0),
-    title: row.reviewTitle || "",
-    text: row.reviewText || "",
-    helpful_count: Number(row.helpfulCount || 0),
-    response_date: row.responseDate || null,
-    response_text: row.responseText || ""
-  }));
+  const reviews = normalizeReviews(d);
 
   return {
     ok: true,
