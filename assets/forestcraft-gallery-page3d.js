@@ -60,7 +60,7 @@
   function loadLayoutRuntime(){
     if(window.ForestLayout||document.querySelector('script[data-forest-layout-runtime]'))return;
     var s=document.createElement('script');
-    s.src='assets/forest-layout-runtime.js?v=20260822-layout1';
+    s.src='assets/forest-layout-runtime.js?v=20260827-layout2';
     s.async=false;
     s.dataset.forestLayoutRuntime='1';
     document.head.appendChild(s);
