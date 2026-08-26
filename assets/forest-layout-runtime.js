@@ -16,7 +16,7 @@
       back:{x:3,y:72,w:30,h:66}
     },
     mobile:{
-      tabs:{x:8,y:25,w:84,h:108},
+      tabs:{x:7,y:33,w:86,h:96},
       search:{x:7,y:62,w:86,h:52},
       sort:{x:7,y:77,w:86,h:52},
       back:{x:3,y:70,w:52,h:58}
@@ -90,15 +90,26 @@
       }
     });
 
-    /* Mobile only: ignore the old editor-saved category-row coordinates so the
-       buttons stay inside the parchment instead of overlapping the sign/lantern. */
+    /* Mobile: keep all category buttons fully inside the parchment and directly
+       above the search field, regardless of old editor-saved coordinates. */
     if(mode==="mobile"&&map.tabs.el){
-      force(map.tabs.el,"left","8%");
-      force(map.tabs.el,"top","25%");
-      force(map.tabs.el,"width","84%");
-      force(map.tabs.el,"right","auto");
-      force(map.tabs.el,"bottom","auto");
-      force(map.tabs.el,"justify-content","center");
+      const tabs=map.tabs.el;
+      force(tabs,"left","7%");
+      force(tabs,"top","33%");
+      force(tabs,"width","86%");
+      force(tabs,"right","auto");
+      force(tabs,"bottom","auto");
+      force(tabs,"display","flex");
+      force(tabs,"flex-wrap","wrap");
+      force(tabs,"justify-content","center");
+      force(tabs,"align-items","center");
+      force(tabs,"gap","6px");
+      tabs.querySelectorAll(".tab").forEach(btn=>{
+        force(btn,"flex","0 0 calc((100% - 12px) / 3)");
+        force(btn,"width","calc((100% - 12px) / 3)");
+        force(btn,"min-width","0");
+        force(btn,"height","44px");
+      });
     }
 
     const q=map.search.el;
