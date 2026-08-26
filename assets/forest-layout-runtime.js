@@ -16,9 +16,9 @@
       back:{x:3,y:72,w:30,h:66}
     },
     mobile:{
-      tabs:{x:7,y:33,w:86,h:96},
-      search:{x:7,y:62,w:86,h:52},
-      sort:{x:7,y:77,w:86,h:52},
+      tabs:{x:7,y:41,w:86,h:42},
+      search:{x:7,y:65,w:66,h:52},
+      sort:{x:75,y:65,w:18,h:52},
       back:{x:3,y:70,w:52,h:58}
     }
   };
@@ -90,25 +90,24 @@
       }
     });
 
-    /* Mobile: keep all category buttons fully inside the parchment and directly
-       above the search field, regardless of old editor-saved coordinates. */
+    /* Mobile: one compact row, directly above the search bar. */
     if(mode==="mobile"&&map.tabs.el){
       const tabs=map.tabs.el;
       force(tabs,"left","7%");
-      force(tabs,"top","33%");
+      force(tabs,"top","41%");
       force(tabs,"width","86%");
       force(tabs,"right","auto");
       force(tabs,"bottom","auto");
       force(tabs,"display","flex");
-      force(tabs,"flex-wrap","wrap");
+      force(tabs,"flex-wrap","nowrap");
       force(tabs,"justify-content","center");
       force(tabs,"align-items","center");
-      force(tabs,"gap","6px");
+      force(tabs,"gap","5px");
       tabs.querySelectorAll(".tab").forEach(btn=>{
-        force(btn,"flex","0 0 calc((100% - 12px) / 3)");
-        force(btn,"width","calc((100% - 12px) / 3)");
+        force(btn,"flex","1 1 0");
+        force(btn,"width","auto");
         force(btn,"min-width","0");
-        force(btn,"height","44px");
+        force(btn,"height","40px");
       });
     }
 
