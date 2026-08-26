@@ -93,9 +93,9 @@
       margin:0 0 14px!important;
       gap:14px!important;
       color:#6d4e31!important;
-      font-size:14px!important;
+      font-size:16px!important;
       line-height:1.55!important;
-      font-weight:750!important;
+      font-weight:800!important;
     }
 
     #postModal .fc-author-link{color:#45652f!important;font-weight:900!important}
@@ -120,9 +120,9 @@
       box-shadow:inset 0 0 0 1px rgba(255,255,255,.32)!important;
     }
     #postModal .fc-community-score{gap:9px!important;color:#9c6b22!important}
-    #postModal .fc-community-score strong{font-size:27px!important;line-height:1!important}
-    #postModal .fc-community-score span{font-size:13px!important;color:#765d42!important}
-    #postModal .fc-community-note{font-size:12px!important;color:#765d42!important}
+    #postModal .fc-community-score strong{font-size:28px!important;line-height:1!important}
+    #postModal .fc-community-score span{font-size:16px!important;color:#765d42!important;font-weight:800!important}
+    #postModal .fc-community-note{font-size:14px!important;color:#765d42!important;line-height:1.45!important;font-weight:700!important}
     #postModal .fc-stars{gap:5px!important}
     #postModal .fc-star{font-size:34px!important;color:#807563!important;text-shadow:none!important}
     #postModal .fc-star.on,
@@ -134,7 +134,7 @@
       border:1px solid #8e653b!important;
       color:#f6e6c0!important;
       background:linear-gradient(180deg,#76502d,#56351c)!important;
-      font-size:13px!important;
+      font-size:14px!important;
     }
     #postModal .fc-favorite.on{
       border-color:#a6782e!important;
@@ -260,9 +260,13 @@
 
     @media(max-width:560px){
       #postModal .modal-content{padding:48px 16px 24px!important}
-      #postModal .fc-meta-line{font-size:12px!important;gap:8px!important}
+      #postModal .post-meta,
+      #postModal .fc-meta-line{font-size:15px!important;gap:8px!important}
       #postModal .fc-community{padding:14px!important}
-      #postModal .fc-community-score strong{font-size:23px!important}
+      #postModal .fc-community-score strong{font-size:25px!important}
+      #postModal .fc-community-score span{font-size:15px!important}
+      #postModal .fc-community-note{font-size:14px!important}
+      #postModal .fc-favorite{font-size:14px!important}
       #postModal .fc-star{font-size:30px!important}
       #postModal .fc-download-row,
       #postModal .fcb-download-row{padding:12px!important}
