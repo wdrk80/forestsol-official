@@ -94,9 +94,10 @@
     }
 
     #postModal .fc-meta-line{
-      font-size:16px!important;
+      font-size:17px!important;
       gap:10px 16px!important;
       margin:0 0 16px!important;
+      font-weight:800!important;
     }
 
     #postModal .fc-community{
@@ -116,7 +117,7 @@
     }
 
     #postModal .fc-community-score span{
-      font-size:17px!important;
+      font-size:18px!important;
       font-weight:800!important;
     }
 
@@ -131,7 +132,7 @@
 
     #postModal .fc-community-note{
       margin-top:7px!important;
-      font-size:15px!important;
+      font-size:16px!important;
       line-height:1.45!important;
       font-weight:700!important;
     }
@@ -200,14 +201,14 @@
 
     @media(max-width:560px){
       #postModal .modal-content{padding:62px 16px 24px!important}
-      #postModal .post-author{font-size:16px!important}
-      #postModal .fc-author-link{font-size:16px!important}
+      #postModal .post-author{font-size:17px!important}
+      #postModal .fc-author-link{font-size:17px!important}
       #postModal .fc-author-avatar{width:38px!important;height:38px!important}
-      #postModal .fc-meta-line{font-size:13px!important}
-      #postModal .fc-community-score strong{font-size:27px!important}
-      #postModal .fc-community-score span{font-size:14px!important}
-      #postModal .fc-community-note{font-size:13px!important}
-      #postModal .fc-favorite{font-size:14px!important;min-height:48px!important}
+      #postModal .fc-meta-line{font-size:15px!important;gap:9px 13px!important}
+      #postModal .fc-community-score strong{font-size:28px!important}
+      #postModal .fc-community-score span{font-size:15px!important}
+      #postModal .fc-community-note{font-size:14px!important}
+      #postModal .fc-favorite{font-size:15px!important;min-height:48px!important}
     }
   `;
   document.head.appendChild(style);
