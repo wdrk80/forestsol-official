@@ -197,6 +197,43 @@ rgba(0,0,0,0.10)
       margin-bottom: 10px;
     }
 
+    .teal-card {
+      display: grid;
+      grid-template-columns: minmax(280px, 46%) 1fr;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid #85e9f4;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #102e39, #12232c);
+      box-shadow: 0 12px 32px rgba(0,0,0,.3), 0 0 28px rgba(79,218,242,.12);
+    }
+    .teal-visual {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      background: #b0e9f4 url('images/mascots/teal-background.webp') center / cover;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .teal-visual img {
+      display: block;
+      width: 94%;
+      height: auto;
+      margin-bottom: 12%;
+      filter: drop-shadow(0 10px 7px rgba(15,66,86,.25));
+    }
+    .teal-copy { padding: 32px 36px; }
+    .teal-kicker { margin: 0 0 10px; color: #8eeaf4; font-size: 12px; font-weight: bold; letter-spacing: .16em; }
+    .teal-copy h2 { margin: 0 0 18px; text-align: left; color: #e0fbff; font-size: 32px; }
+    .teal-description { margin: 0; color: #e1f1f5; font-size: 16px; line-height: 1.95; }
+    .teal-description + .teal-description { margin-top: 16px; }
+    @media (max-width: 768px) {
+      .teal-card { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; border-radius: 16px; }
+      .teal-copy { padding: 24px 22px 28px; }
+      .teal-copy h2 { font-size: 26px; }
+      .teal-description { font-size: 14px; line-height: 1.85; }
+    }
+
     .sol-card {
       display: grid;
       grid-template-columns: minmax(260px, 340px) 1fr;
@@ -611,6 +648,20 @@ rgba(0,0,0,0.10)
   </div>
 </section>
 
+<section aria-labelledby="teal-title">
+  <div class="teal-card">
+    <div class="teal-visual">
+      <img src="images/mascots/teal.webp" alt="前足を交差させ、してやったりと笑う白狼ティール" loading="lazy" width="1312" height="1199">
+    </div>
+    <div class="teal-copy">
+      <p class="teal-kicker">FORESTSOL PARTNER</p>
+      <h2 id="teal-title">ティール</h2>
+      <p class="teal-description">ForestSolのいたずら好きな白狼、ティール。水色の瞳と額の宝石、赤いバンダナが目印。ちょっと生意気で、「してやったり」の笑みを浮かべながら、今日も何かをたくらんでいる。</p>
+      <p class="teal-description">遊びも、冒険も、ものづくりも。面白そうなことには真っ先に鼻を突っ込む、ウォルフィの相棒だ。</p>
+    </div>
+  </div>
+</section>
+
 <section aria-labelledby="sol-title">
   <div class="sol-card">
     <div class="sol-visual">
@@ -856,3 +907,4 @@ loadForestsolVideos(); </script>
 
 </body>
 </html>
+
